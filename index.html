@@ -1,98 +1,223 @@
-const slides = [
-    {
-        title: "Hacking: Understanding Cyber Threats",
-        subtitle: "An Introduction to Cybersecurity",
-        content: "<ul><li>Exploring the digital frontier responsibly</li><li>Understanding safety in a connected world</li><li>High School Computer Science Edition</li></ul>",
-        isTitle: true
-    },
-    {
-        title: "01. What is Hacking?",
-        content: "<ul><li><strong>Definition:</strong> Identifying and exploiting weaknesses in a computer system or network.</li><li><strong>Authorised:</strong> Permission granted (Legal).</li><li><strong>Unauthorised:</strong> No permission (Illegal).</li><li>Hacking is fundamentally about problem-solving and curiosity.</li></ul>"
-    },
-    {
-        title: "02. History of Hacking",
-        content: "<ul><li><strong>Early Days:</strong> Phone 'phreaking' and hardware curiosity in the 60s/70s.</li><li><strong>90s/00s:</strong> Rise of the internet led to global cybercrime.</li><li><strong>Today:</strong> A critical field of national security and corporate defense.</li></ul>"
-    },
-    {
-        title: "03. Types of Hackers",
-        content: "<ul><li><strong>White Hat:</strong> Ethical professionals helping organizations.</li><li><strong>Black Hat:</strong> Criminals acting for personal gain.</li><li><strong>Grey Hat:</strong> Individuals who may break laws but without malicious intent.</li></ul>"
-    },
-    {
-        title: "04. Common Cyber Attacks",
-        content: "<ul><li><strong>Phishing:</strong> Deceptive emails to steal data.</li><li><strong>Malware:</strong> Malicious software (Viruses/Ransomware).</li><li><strong>Password Attacks:</strong> Brute-forcing or stealing credentials.</li><li><strong>Social Engineering:</strong> Manipulating people into giving up info.</li></ul>"
-    },
-    {
-        title: "05. How Access is Gained",
-        content: "<ul><li>Weak or reused passwords across accounts.</li><li>Clicking malicious links in 'urgent' emails.</li><li>Using outdated software with known vulnerabilities.</li><li>Connecting to unsecured public Wi-Fi.</li></ul>"
-    },
-    {
-        title: "06. Real-World Examples",
-        content: "<ul><li><strong>Corporate Breaches:</strong> Massive data leaks involving millions of users.</li><li><strong>Social Media Hijacks:</strong> Losing control of personal identities.</li><li><strong>Financial Scams:</strong> Direct theft via online banking fraud.</li></ul>"
-    },
-    {
-        title: "07. Effects of Hacking",
-        content: "<ul><li>Financial loss for individuals and companies.</li><li>Severe privacy invasion.</li><li>Identity theft leading to long-term legal issues.</li><li>Emotional stress and loss of digital trust.</li></ul>"
-    },
-    {
-        title: "08. What is Ethical Hacking?",
-        content: "<ul><li>The practice of using hacking skills to find and fix security holes.</li><li>Companies hire them to 'test' their own defenses.</li><li>A vital part of modern infrastructure protection.</li></ul>"
-    },
-    {
-        title: "09. Cybersecurity Safety Tips",
-        content: "<ul><li>Use strong, unique passwords for every site.</li><li>Enable Multi-Factor Authentication (MFA).</li><li>Keep all software and OS updated.</li><li>Install reputable antivirus/firewall software.</li></ul>"
-    },
-    {
-        title: "10. Hacking as a Career",
-        content: "<ul><li><strong>Penetration Tester:</strong> Testing systems for holes.</li><li><strong>Security Analyst:</strong> Monitoring and defending networks.</li><li><strong>Incident Responder:</strong> Fixing things after a breach occurs.</li></ul>"
-    },
-    {
-        title: "11. Laws and Ethics",
-        content: "<ul><li><strong>CFA A:</strong> The Computer Fraud and Abuse Act.</li><li>Legal hacking requires written permission.</li><li>With great power comes great responsibility.</li></ul>"
-    },
-    {
-        title: "12. Key Takeaways",
-        content: "<ul><li>Hacking can be a tool for good or harm.</li><li>Awareness is your first line of defense.</li><li>Cybersecurity is a collective responsibility.</li></ul>"
-    },
-    {
-        title: "13. Conclusion / Q&A",
-        content: "<ul><li>Stay curious, but stay ethical.</li><li>The digital world needs more defenders.</li><li>Any questions?</li></ul>"
-    }
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Defense Games</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --neon-blue: #58a6ff;
+            --neon-green: #3fb950;
+            --neon-red: #f85149;
+            --text: #c9d1d9;
+        }
 
-let currentSlide = 0;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
 
-function renderSlide() {
-    const container = document.getElementById('slide-container');
-    const slide = slides[currentSlide];
-    
-    container.innerHTML = `
-        <div class="slide">
-            ${slide.isTitle ? `<h2 style="color:var(--neon-blue)">${slide.subtitle}</h2>` : ''}
-            <h1>${slide.title}</h1>
-            <div class="slide-body">${slide.content}</div>
+        h1 { color: var(--neon-blue); text-transform: uppercase; letter-spacing: 2px; }
+
+        .game-container {
+            background: var(--card);
+            border: 2px solid var(--neon-blue);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 40px;
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+        }
+
+        /* PHISHING GAME STYLES */
+        .email-card {
+            background: #f0f0f0;
+            color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+            border-left: 5px solid #ccc;
+        }
+
+        .email-header { border-bottom: 1px solid #ddd; margin-bottom: 10px; padding-bottom: 5px; font-size: 0.9rem; }
+        .email-body { font-size: 1rem; line-height: 1.4; }
+
+        .btn-group { display: flex; gap: 10px; justify-content: center; }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-safe { background: var(--neon-green); color: white; }
+        .btn-phish { background: var(--neon-red); color: white; }
+        button:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        /* PASSWORD GAME STYLES */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            background: #0d1117;
+            border: 1px solid var(--neon-blue);
+            color: white;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .result-box {
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>🛡️ Cyber Defense Lab</h1>
+
+    <div class="game-container" id="phishing-game">
+        <h2>Game 1: Phish or Legit?</h2>
+        <p>Analyze the email below. Is it a cyber attack or a safe message?</p>
+        
+        <div id="email-display" class="email-card">
+            </div>
+
+        <div class="btn-group">
+            <button class="btn-phish" onclick="checkPhish(true)">REPORT PHISHING</button>
+            <button class="btn-safe" onclick="checkPhish(false)">MARK AS SAFE</button>
         </div>
-    `;
+        <p id="phish-feedback" style="text-align:center; margin-top:15px;"></p>
+        <p style="text-align:center;">Score: <span id="score">0</span></p>
+    </div>
 
-    document.getElementById('slide-number').innerText = `${String(currentSlide + 1).padStart(2, '0')} / ${slides.length}`;
-    document.getElementById('progress-bar').style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
-    
-    document.getElementById('prevBtn').style.visibility = currentSlide === 0 ? 'hidden' : 'visible';
-    document.getElementById('nextBtn').innerText = currentSlide === slides.length - 1 ? '_FINISH' : '_NEXT_STEP';
-}
+    <div class="game-container">
+        <h2>Game 2: Password Cracker Lab</h2>
+        <p>How long would it take a hacker to crack your password?</p>
+        <input type="text" id="pw-input" placeholder="Type a test password..." oninput="calculatePassword()">
+        
+        <div id="pw-result" class="result-box" style="background: rgba(88,166,255,0.1);">
+            Enter a password to test security.
+        </div>
+        <p style="font-size: 0.8rem; color: #8b949e; margin-top: 10px;">
+            Note: This is a simulation. Never enter your real passwords into online tools!
+        </p>
+    </div>
 
-function nextSlide() {
-    if (currentSlide < slides.length - 1) {
-        currentSlide++;
-        renderSlide();
-    }
-}
+    <script>
+        // --- PHISHING GAME LOGIC ---
+        const emails = [
+            {
+                from: "support@netfIix.com", // Notice the capital I
+                subject: "Account Suspended",
+                body: "Your payment failed. Click <a href='#'>here</a> to update your credit card now or your account will be deleted.",
+                isPhish: true,
+                reason: "Suspicious 'from' address (NetfIix with an 'I') and urgent threats."
+            },
+            {
+                from: "noreply@github.com",
+                subject: "Security Alert: New Login",
+                body: "A new login was detected on your account from a Chrome browser in London. If this was you, ignore this email.",
+                isPhish: false,
+                reason: "This is a standard security notification from a verified domain."
+            },
+            {
+                from: "admin@your-bank-secure.biz",
+                subject: "Urgent: Unusual Activity",
+                body: "We noticed a login from Russia. Please download the attached Secure_Login.exe to verify your identity.",
+                isPhish: true,
+                reason: "Banks never ask you to download .exe files and use weird .biz domains."
+            }
+        ];
 
-function prevSlide() {
-    if (currentSlide > 0) {
-        currentSlide--;
-        renderSlide();
-    }
-}
+        let currentEmail = 0;
+        let score = 0;
 
-// Initial Load
-renderSlide();
+        function loadEmail() {
+            const e = emails[currentEmail];
+            document.getElementById('email-display').innerHTML = `
+                <div class="email-header"><strong>From:</strong> ${e.from}<br><strong>Subject:</strong> ${e.subject}</div>
+                <div class="email-body">${e.body}</div>
+            `;
+            document.getElementById('phish-feedback').innerText = "";
+        }
+
+        function checkPhish(userGuessPhish) {
+            const e = emails[currentEmail];
+            const feedback = document.getElementById('phish-feedback');
+            
+            if (userGuessPhish === e.isPhish) {
+                score++;
+                feedback.style.color = "var(--neon-green)";
+                feedback.innerText = "Correct! " + e.reason;
+            } else {
+                feedback.style.color = "var(--neon-red)";
+                feedback.innerText = "Incorrect. " + e.reason;
+            }
+            
+            document.getElementById('score').innerText = score;
+            currentEmail = (currentEmail + 1) % emails.length;
+            setTimeout(loadEmail, 3000);
+        }
+
+        // --- PASSWORD GAME LOGIC ---
+        function calculatePassword() {
+            const pw = document.getElementById('pw-input').value;
+            const result = document.getElementById('pw-result');
+            
+            if (pw.length === 0) {
+                result.innerText = "Enter a password to test security.";
+                result.style.color = "white";
+                return;
+            }
+
+            let entropy = 0;
+            if (/[a-z]/.test(pw)) entropy += 26;
+            if (/[A-Z]/.test(pw)) entropy += 26;
+            if (/[0-9]/.test(pw)) entropy += 10;
+            if (/[^a-zA-Z0-9]/.test(pw)) entropy += 32;
+
+            const combinations = Math.pow(entropy, pw.length);
+            const crackTimeSeconds = combinations / 1000000000; // Assume 1 billion guesses per second
+
+            let timeText = "";
+            if (crackTimeSeconds < 1) timeText = "Instantly (Less than a second)";
+            else if (crackTimeSeconds < 60) timeText = "Under a minute";
+            else if (crackTimeSeconds < 3600) timeText = "A few hours";
+            else if (crackTimeSeconds < 86400) timeText = "A few days";
+            else if (crackTimeSeconds < 31536000) timeText = "Months";
+            else timeText = "Centuries!";
+
+            result.innerText = "Time to crack: " + timeText;
+            
+            if (pw.length < 8) {
+                result.style.color = "var(--neon-red)";
+            } else if (pw.length >= 12 && entropy > 50) {
+                result.style.color = "var(--neon-green)";
+            } else {
+                result.style.color = "orange";
+            }
+        }
+
+        loadEmail();
+    </script>
+</body>
+</html>
