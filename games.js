@@ -115,9 +115,132 @@ function calculatePassword() {
     }
 }
 
+// --- NAVIGATION LOGIC ---
+function openGame(gameId) {
+    document.getElementById('game-dashboard').classList.add('hidden');
+    document.getElementById('game-arena').classList.remove('hidden');
+
+    // Hide all games
+    document.querySelectorAll('.game-container').forEach(g => g.classList.add('hidden'));
+
+    // Show selected game
+    const selected = document.getElementById('game-' + gameId);
+    selected.classList.remove('hidden');
+
+    // Initialize if needed
+    if (gameId === 'phishing') loadEmail();
+    if (gameId === 'encryption') initEncryption();
+    if (gameId === 'quiz') initQuiz();
+}
+
+function closeGame() {
+    document.getElementById('game-dashboard').classList.remove('hidden');
+    document.getElementById('game-arena').classList.add('hidden');
+}
+
+// --- ENCRYPTION GAME LOGIC ---
+const cipherSecrets = [
+    { cipher: "WKLV LV D VHFUHW", plain: "THIS IS A SECRET", shift: 3 },
+    { cipher: "DBEFS EFGFOTF", plain: "CYBER DEFENSE", shift: 1 },
+    { cipher: "KDEMLQJ LV IXQ", plain: "HACKING IS FUN", shift: 3 },
+    { cipher: "FYYFHP FY IFBS", plain: "ATTACK AT DAWN", shift: 5 }
+];
+
+let currentCipher = 0;
+
+function initEncryption() {
+    currentCipher = Math.floor(Math.random() * cipherSecrets.length);
+    document.getElementById('cipher-text').innerText = cipherSecrets[currentCipher].cipher;
+    document.getElementById('cipher-shift').value = 0;
+    updateDecryption();
+}
+
+function updateDecryption() {
+    const cipherText = document.getElementById('cipher-text').innerText;
+    const shift = parseInt(document.getElementById('cipher-shift').value) || 0;
+    const feedback = document.getElementById('encryption-feedback');
+
+    let result = "";
+    for (let i = 0; i < cipherText.length; i++) {
+        let charCode = cipherText.charCodeAt(i);
+        if (charCode >= 65 && charCode <= 90) {
+            result += String.fromCharCode(((charCode - 65 - shift + 26) % 26) + 65);
+        } else {
+            result += cipherText[i];
+        }
+    }
+
+    document.getElementById('decrypted-text').innerText = result;
+
+    if (result === cipherSecrets[currentCipher].plain) {
+        feedback.innerText = "🎉 Correct! You decrypted the message.";
+        feedback.style.color = "var(--neon-green)";
+    } else {
+        feedback.innerText = "";
+    }
+}
+
+// --- QUIZ GAME LOGIC ---
+const quizQuestions = [
+    {
+        q: "What does 'MFA' stand for?",
+        options: ["Multi-Factor Authentication", "Main Firewall Access", "Mobile File Archive", "Multi-Functional Array"],
+        a: 0
+    },
+    {
+        q: "Which of these is the strongest password?",
+        options: ["Password123", "Admin!", "Tr0pical_Breeze#99", "12345678"],
+        a: 2
+    },
+    {
+        q: "What is 'social engineering'?",
+        options: ["Writing code for social media", "Manipulating people to give up secrets", "Building faster networks", "Automated marketing"],
+        a: 1
+    }
+];
+
+let currentQuizIdx = 0;
+
+function initQuiz() {
+    currentQuizIdx = 0;
+    loadQuizQuestion();
+}
+
+function loadQuizQuestion() {
+    const question = quizQuestions[currentQuizIdx];
+    document.getElementById('quiz-question').innerText = question.q;
+    document.getElementById('quiz-feedback').innerText = "";
+
+    const optionsContainer = document.getElementById('quiz-options');
+    optionsContainer.innerHTML = "";
+
+    question.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "btn-nav";
+        btn.style.textAlign = "left";
+        btn.innerText = `${idx + 1}. ${opt}`;
+        btn.onclick = () => checkQuiz(idx);
+        optionsContainer.appendChild(btn);
+    });
+}
+
+function checkQuiz(idx) {
+    const question = quizQuestions[currentQuizIdx];
+    const feedback = document.getElementById('quiz-feedback');
+
+    if (idx === question.a) {
+        feedback.innerText = "Correct! Well done.";
+        feedback.style.color = "var(--neon-green)";
+
+        currentQuizIdx = (currentQuizIdx + 1) % quizQuestions.length;
+        setTimeout(loadQuizQuestion, 2000);
+    } else {
+        feedback.innerText = "Incorrect. Try again!";
+        feedback.style.color = "var(--neon-red)";
+    }
+}
+
 // Initialize games if elements exist
 window.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('email-display')) {
-        loadEmail();
-    }
+    // Initial load handled by showSection/openGame
 });
