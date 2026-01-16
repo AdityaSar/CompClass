@@ -56,6 +56,11 @@ const slides = [
     {
         title: "13. Conclusion / Q&A",
         content: "<ul><li>Stay curious, but stay ethical.</li><li>The digital world needs more defenders.</li><li>Any questions?</li></ul>"
+    },
+    {
+        title: "🛡️ The Cyber Pledge",
+        content: "<p>By completing this lab, I commit to:</p><ul><li>Using my skills only for ethical and legal purposes.</li><li>Protecting my own data and respecting the privacy of others.</li><li>Continuously learning about new threats and defenses.</li><li>Sharing security knowledge with my community.</li></ul><p style='text-align:center; font-weight:bold; color:var(--neon-blue);'>I am a Cyber Defender.</p>",
+        isTitle: false
     }
 ];
 
@@ -84,6 +89,11 @@ function nextSlide() {
     if (currentSlide < slides.length - 1) {
         currentSlide++;
         renderSlide();
+    } else {
+        // Handle finish action - transition to practice section
+        if (typeof showSection === 'function') {
+            showSection('practice');
+        }
     }
 }
 
@@ -95,4 +105,8 @@ function prevSlide() {
 }
 
 // Initial Load
-renderSlide();
+window.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('slide-container')) {
+        renderSlide();
+    }
+});
