@@ -131,11 +131,16 @@ function openGame(gameId) {
     if (gameId === 'phishing') loadEmail();
     if (gameId === 'encryption') initEncryption();
     if (gameId === 'quiz') initQuiz();
+    if (gameId === 'firewall') {
+        document.getElementById('firewall-start-screen').classList.remove('hidden');
+        document.getElementById('firewall-game-over').classList.add('hidden');
+    }
 }
 
 function closeGame() {
     document.getElementById('game-dashboard').classList.remove('hidden');
     document.getElementById('game-arena').classList.add('hidden');
+    stopFirewall();
 }
 
 // --- ENCRYPTION GAME LOGIC ---
@@ -238,6 +243,143 @@ function checkQuiz(idx) {
         feedback.innerText = "Incorrect. Try again!";
         feedback.style.color = "var(--neon-red)";
     }
+}
+
+// --- FIREWALL GAME LOGIC ---
+let firewallActive = false;
+let integrity = 100;
+let firewallScore = 0;
+let packetInterval;
+let gameLoopId;
+const packets = [];
+
+function startFirewall() {
+    firewallActive = true;
+    integrity = 100;
+    firewallScore = 0;
+    packets.forEach(p => p.el.remove());
+    packets.length = 0;
+
+    document.getElementById('integrity-fill').style.width = '100%';
+    document.getElementById('integrity-text').innerText = '100%';
+    document.getElementById('firewall-start-screen').classList.add('hidden');
+    document.getElementById('firewall-game-over').classList.add('hidden');
+    document.getElementById('firewall-message').innerText = "";
+
+    if (packetInterval) clearInterval(packetInterval);
+    packetInterval = setInterval(spawnPacket, 2000);
+
+    if (gameLoopId) cancelAnimationFrame(gameLoopId);
+    gameLoopId = requestAnimationFrame(updateFirewall);
+}
+
+function stopFirewall() {
+    firewallActive = false;
+    clearInterval(packetInterval);
+    cancelAnimationFrame(gameLoopId);
+    packets.forEach(p => p.el.remove());
+    packets.length = 0;
+}
+
+function spawnPacket() {
+    if (!firewallActive) return;
+
+    const arena = document.getElementById('firewall-arena');
+    const isThreat = Math.random() > 0.6;
+    const packetEl = document.createElement('div');
+    packetEl.className = `packet ${isThreat ? 'threat' : 'safe'}`;
+    packetEl.innerText = isThreat ? 'THREAT' : 'SAFE';
+
+    const x = Math.random() * (arena.clientWidth - 60);
+    packetEl.style.left = `${x}px`;
+    packetEl.style.top = '-50px';
+
+    arena.appendChild(packetEl);
+
+    const packet = {
+        el: packetEl,
+        y: -50,
+        speed: 1 + Math.random() * 2,
+        isThreat: isThreat
+    };
+
+    packetEl.onclick = () => {
+        if (packet.isThreat) {
+            firewallScore += 10;
+            showMessage("✅ THREAT BLOCKED", "var(--neon-green)");
+        } else {
+            integrity -= 10;
+            showMessage("❌ SAFE DATA BLOCKED", "var(--neon-red)");
+            updateIntegrity();
+        }
+        removePacket(packet);
+    };
+
+    packets.push(packet);
+}
+
+function updateFirewall() {
+    if (!firewallActive) return;
+
+    const arenaHeight = 400;
+
+    for (let i = packets.length - 1; i >= 0; i--) {
+        const p = packets[i];
+        p.y += p.speed;
+        p.el.style.top = `${p.y}px`;
+
+        // Check collision with core (bottom area)
+        if (p.y > arenaHeight - 60) {
+            if (p.isThreat) {
+                integrity -= 20;
+                showMessage("🚨 SYSTEM ATTACKED!", "var(--neon-red)");
+                updateIntegrity();
+            } else {
+                firewallScore += 5;
+                showMessage("📥 DATA RECEIVED", "var(--neon-blue)");
+            }
+            removePacket(p);
+        }
+    }
+
+    if (integrity <= 0) {
+        gameOver();
+    } else {
+        gameLoopId = requestAnimationFrame(updateFirewall);
+    }
+}
+
+function removePacket(packet) {
+    packet.el.remove();
+    const index = packets.indexOf(packet);
+    if (index > -1) packets.splice(index, 1);
+}
+
+function updateIntegrity() {
+    integrity = Math.max(0, integrity);
+    document.getElementById('integrity-fill').style.width = `${integrity}%`;
+    document.getElementById('integrity-text').innerText = `${integrity}%`;
+
+    if (integrity < 30) {
+        document.getElementById('integrity-fill').style.background = "var(--neon-red)";
+    } else if (integrity < 60) {
+        document.getElementById('integrity-fill').style.background = "orange";
+    } else {
+        document.getElementById('integrity-fill').style.background = "var(--neon-green)";
+    }
+}
+
+function showMessage(text, color) {
+    const msg = document.getElementById('firewall-message');
+    msg.innerText = text;
+    msg.style.color = color;
+}
+
+function gameOver() {
+    firewallActive = false;
+    clearInterval(packetInterval);
+    document.getElementById('firewall-game-over').classList.remove('hidden');
+    document.getElementById('firewall-final-score').innerText = firewallScore;
 }
 
 // Initialize games if elements exist

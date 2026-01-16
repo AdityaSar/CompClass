@@ -136,7 +136,7 @@
         /* GAME STYLES */
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
         }
@@ -153,6 +153,8 @@
             flex-direction: column;
             align-items: center;
             gap: 15px;
+            height: 100%;
+            box-sizing: border-box;
         }
 
         .game-card:hover {
@@ -185,6 +187,77 @@
             margin-bottom: 40px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             position: relative;
+        }
+
+        /* FIREWALL GAME SPECIFIC STYLES */
+        #firewall-arena {
+            width: 100%;
+            height: 400px;
+            background: #050a0f;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .packet {
+            position: absolute;
+            width: 60px;
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: transform 0.1s;
+            user-select: none;
+        }
+
+        .packet.safe { background: var(--neon-green); color: black; box-shadow: 0 0 10px var(--neon-green); }
+        .packet.threat { background: var(--neon-red); color: white; box-shadow: 0 0 10px var(--neon-red); }
+
+        #system-core {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 60px;
+            background: var(--card);
+            border: 2px solid var(--neon-blue);
+            border-bottom: none;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .integrity-bar {
+            width: 100%;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        #integrity-fill {
+            height: 100%;
+            background: var(--neon-green);
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        #firewall-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
         }
 
         .email-card {
@@ -247,7 +320,7 @@
             border: 1px solid var(--border);
         }
 
-        .hidden { display: none; }
+        .hidden { display: none !important; }
 
         footer {
             margin-top: auto;
@@ -296,6 +369,11 @@
                         <div style="font-size: 3rem;">📧</div>
                         <h3>Phish or Legit?</h3>
                         <p>Learn to spot deceptive emails before you click.</p>
+                    </div>
+                    <div class="game-card" onclick="openGame('firewall')">
+                        <div style="font-size: 3rem;">🧱</div>
+                        <h3>Firewall Defender</h3>
+                        <p>Filter network traffic and protect the system core.</p>
                     </div>
                     <div class="game-card" onclick="openGame('password')">
                         <div style="font-size: 3rem;">🔑</div>
@@ -370,9 +448,41 @@
                     <div id="encryption-feedback" style="text-align:center; margin-top: 15px; font-weight: bold;"></div>
                 </div>
 
+                <!-- FIREWALL GAME -->
+                <div class="game-container hidden" id="game-firewall">
+                    <h2>Game 2: Firewall Defender</h2>
+                    <p>Protect the System Core! Click <strong>ALLOW</strong> for <span style="color: var(--neon-green)">SAFE DATA</span> and <strong>BLOCK</strong> for <span style="color: var(--neon-red)">THREATS</span>.</p>
+
+                    <div class="integrity-bar">
+                        <div id="integrity-fill"></div>
+                    </div>
+                    <p style="font-size: 0.8rem; text-align: center; margin-bottom: 10px;">System Integrity: <span id="integrity-text">100%</span></p>
+
+                    <div id="firewall-arena">
+                        <div id="system-core">CORE</div>
+                        <!-- Packets will be spawned here -->
+                    </div>
+
+                    <div id="firewall-message" style="text-align: center; height: 1.5rem; font-weight: bold;"></div>
+
+                    <div id="firewall-start-screen" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; z-index: 20;">
+                        <button class="btn-safe" onclick="startFirewall()">START DEFENSE</button>
+                    </div>
+
+                    <div id="firewall-game-over" class="hidden" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; z-index: 30;">
+                        <h2 style="color: var(--neon-red);">SYSTEM COMPROMISED</h2>
+                        <p>Final Score: <span id="firewall-final-score">0</span></p>
+                        <button class="btn-safe" onclick="startFirewall()">RESTART</button>
+                    </div>
+
+                    <footer style="font-size: 0.8rem; color: #8b949e; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 10px;">
+                        <strong>Did you know?</strong> A Firewall acts as a filter between your computer and the internet, deciding which data is safe to let through.
+                    </footer>
+                </div>
+
                 <!-- QUIZ GAME -->
                 <div class="game-container hidden" id="game-quiz">
-                    <h2>Game 4: Security Trivia</h2>
+                    <h2>Game 5: Security Trivia</h2>
                     <div id="quiz-container">
                         <p id="quiz-question" style="font-size: 1.1rem; margin-bottom: 20px;"></p>
                         <div id="quiz-options" style="display: flex; flex-direction: column; gap: 10px;">
