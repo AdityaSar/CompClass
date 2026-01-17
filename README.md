@@ -15,10 +15,10 @@ An interactive, browser-based training platform designed to teach fundamental cy
 ## Technical Details
 
 - **Single Page Application (SPA)**: Built with vanilla JavaScript, HTML5, and CSS3 for high performance and zero dependencies.
-- **Circular Dashboard UI**: A central "Hacking Safety" hub with orbiting game modules, featuring CSS-based orbital positioning and animations.
+- **Interactive Dashboard**: A clean, tile-based grid layout for rapid access to all security modules.
 - **Cyberpunk Aesthetic**: Unified dark theme with neon accents and terminal-inspired UI components.
 - **Extensive Content**: Over 60+ unique educational scenarios across 7 interactive modules.
-- **Responsive Design**: Adapts to various screen sizes, including a mobile-friendly grid fallback for the circular dashboard.
+- **Responsive Design**: Fully responsive CSS Grid layout that adapts to various screen sizes.
 - **Real-time Process Monitor**: Custom simulation engine for the Threat Hunter module.
 
 ## Research Context

@@ -412,6 +412,30 @@ const socialScenarios = [
         message: "The coffee machine on floor 4 is broken. Maintenance is coming. Use the lobby one for now.",
         isSuspicious: false,
         briefing: "LEGITIMATE: Informational office update with no risky requests."
+    },
+    {
+        sender: "Travel_Desk",
+        message: "Your flight to the conference has been confirmed. See attached PDF for your boarding pass.",
+        isSuspicious: false,
+        briefing: "LEGITIMATE: Expected travel confirmation matching business activity."
+    },
+    {
+        sender: "Unknown_Entity",
+        message: "I found your wallet in the parking lot. Send me your home address so I can mail it back.",
+        isSuspicious: true,
+        briefing: "RED FLAGS: Soliciting personal PII (Personally Identifiable Information) from an unknown source."
+    },
+    {
+        sender: "Vendor_Support",
+        message: "Our billing system is down. Please wire the monthly payment to this new offshore account instead.",
+        isSuspicious: true,
+        briefing: "RED FLAGS: BEC (Business Email Compromise) tactic involving changing payment instructions."
+    },
+    {
+        sender: "Legal_Dept",
+        message: "Confidentiality agreement update. Please review the new terms on the internal portal.",
+        isSuspicious: false,
+        briefing: "LEGITIMATE: Internal administrative request directing users to known portals."
     }
 ];
 
@@ -532,7 +556,14 @@ const quizQuestions = [
     { q: "VPN primary purpose?", options: ["Faster internet", "Secure, encrypted tunnel", "Block all viruses"], a: 1 },
     { q: "What is 'Ransomware'?", options: ["Free software", "Encrypts files for payment", "Monitors screen"], a: 1 },
     { q: "More secure protocol?", options: ["HTTP", "FTP", "HTTPS"], a: 2 },
-    { q: "What is 'Phishing'?", options: ["Search for files", "Fraudulent emails for info", "Cracking Wi-Fi"], a: 1 }
+    { q: "What is 'Phishing'?", options: ["Search for files", "Fraudulent emails for info", "Cracking Wi-Fi"], a: 1 },
+    { q: "What is '2FA'?", options: ["Two-Factor Authentication", "Secondary File Access", "Twice Fast Algorithm"], a: 0 },
+    { q: "Which is a common Wi-Fi encryption?", options: ["WPA3", "WPF2", "WEP5"], a: 0 },
+    { q: "What does 'DDoS' stand for?", options: ["Distributed Denial of Service", "Direct Data on System", "Digital Data over Socket"], a: 0 },
+    { q: "What is 'SQL Injection'?", options: ["Database manipulation via code", "Injecting hardware", "Speeding up queries"], a: 0 },
+    { q: "What is a 'Firewall'?", options: ["Network security monitor", "Burning hardware", "File backup system"], a: 0 },
+    { q: "What is 'Encryption'?", options: ["Scrambling data for privacy", "Deleting data", "Compressing data"], a: 0 },
+    { q: "What is 'Brute Force'?", options: ["Trying every possible combination", "Using physical force", "Speeding up CPU"], a: 0 }
 ];
 
 let currentQuizIdx = 0;
