@@ -6,13 +6,14 @@
     <title>Cyber Defense Lab</title>
     <style>
         :root {
-            --bg: #0d1117;
-            --card: #161b22;
-            --neon-blue: #58a6ff;
-            --neon-green: #3fb950;
+            --bg: #050a0f;
+            --card: #0d141b;
+            --neon-blue: #00d4ff;
+            --neon-green: #39ff14;
             --neon-red: #f85149;
             --text: #c9d1d9;
-            --border: #30363d;
+            --border: #1b2733;
+            --terminal-green: #39ff14;
         }
 
         body {
@@ -25,534 +26,434 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 50%, #0a192f 0%, #050a0f 100%);
         }
 
-        header {
-            width: 100%;
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        nav button {
-            background: transparent;
-            border: 1px solid var(--neon-blue);
+        h1 {
             color: var(--neon-blue);
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        nav button.active {
-            background: var(--neon-blue);
-            color: var(--bg);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin: 40px 0 20px 0;
+            text-shadow: 0 0 10px var(--neon-blue);
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             width: 100%;
-            padding: 40px 20px;
+            padding: 20px;
             box-sizing: border-box;
         }
 
-        .section {
-            display: none;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 { color: var(--neon-blue); text-transform: uppercase; letter-spacing: 2px; margin: 0; }
-
-        /* SLIDE STYLES */
-        #slide-container {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 40px;
-            min-height: 400px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .slide h1 { font-size: 2.5rem; margin-bottom: 1.5rem; }
-        .slide h2 { color: var(--neon-green); font-size: 1.2rem; margin-top: 0; }
-        .slide-body { font-size: 1.2rem; line-height: 1.6; }
-        .slide-body ul { padding-left: 20px; }
-        .slide-body li { margin-bottom: 10px; }
-
-        .slide-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 4px;
-            background: var(--border);
-            margin-top: 20px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        #progress-bar {
-            height: 100%;
-            background: var(--neon-blue);
-            width: 0%;
-            transition: 0.3s;
-        }
-
-        #slide-number {
-            font-family: monospace;
-            color: var(--neon-blue);
-        }
-
-        /* GAME STYLES */
+        /* DASHBOARD STYLES */
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
         }
 
         .game-card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 24px;
+            padding: 30px;
             text-align: center;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 15px;
-            height: 100%;
-            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .game-card:hover {
             border-color: var(--neon-blue);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(88, 166, 255, 0.2);
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            background: #111b27;
         }
 
-        .game-card i {
-            font-size: 2.5rem;
-            color: var(--neon-blue);
+        .game-card .icon {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
         }
 
         .game-card h3 {
             margin: 0;
-            color: var(--text);
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .game-card p {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #8b949e;
             margin: 0;
+            line-height: 1.4;
+        }
+
+        /* GAME ARENA STYLES */
+        .game-arena {
+            width: 100%;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .game-arena.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .game-container {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-radius: 16px;
+            padding: 40px;
             position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
-        /* FIREWALL GAME SPECIFIC STYLES */
+        .btn-nav {
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-nav:hover {
+            background: var(--neon-blue);
+            color: var(--bg);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        /* PHISHING GAME STYLES */
+        .email-card {
+            background: #ffffff;
+            color: #1a1a1a;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            border-left: 6px solid #0078d4;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .email-header { border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 15px; font-size: 0.95rem; }
+        .email-body { font-size: 1.05rem; line-height: 1.6; }
+
+        .btn-group { display: flex; gap: 20px; justify-content: center; }
+        .btn-action {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-safe { background: var(--neon-green); color: #000; box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
+        .btn-phish { background: var(--neon-red); color: #fff; box-shadow: 0 0 10px rgba(248, 81, 73, 0.4); }
+        .btn-action:hover { transform: scale(1.05); filter: brightness(1.2); }
+
+        /* FIREWALL GAME STYLES */
         #firewall-arena {
             width: 100%;
-            height: 400px;
-            background: #050a0f;
+            height: 500px;
+            background: #020508;
             border: 2px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             position: relative;
             overflow: hidden;
             margin-bottom: 20px;
         }
 
-        .packet {
-            position: absolute;
-            width: 60px;
-            height: 40px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: transform 0.1s;
-            user-select: none;
-        }
-
-        .packet.safe { background: var(--neon-green); color: black; box-shadow: 0 0 10px var(--neon-green); }
-        .packet.threat { background: var(--neon-red); color: white; box-shadow: 0 0 10px var(--neon-red); }
-
         #system-core {
             position: absolute;
-            bottom: 0;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 120px;
-            height: 60px;
+            width: 160px;
+            height: 80px;
             background: var(--card);
-            border: 2px solid var(--neon-blue);
-            border-bottom: none;
-            border-radius: 20px 20px 0 0;
+            border: 3px solid var(--neon-blue);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 10;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .integrity-bar {
-            width: 100%;
-            height: 10px;
-            background: #333;
-            border-radius: 5px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-
-        #integrity-fill {
-            height: 100%;
-            background: var(--neon-green);
-            width: 100%;
-            transition: 0.3s;
-        }
-
-        #firewall-controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .email-card {
-            background: #ffffff;
-            color: #1a1a1a;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            border-left: 5px solid #0078d4;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .email-header { border-bottom: 1px solid #eee; margin-bottom: 15px; padding-bottom: 10px; font-size: 0.9rem; }
-        .email-body { font-size: 1rem; line-height: 1.5; }
-
-        .btn-group { display: flex; gap: 15px; justify-content: center; }
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+            color: var(--neon-blue);
             font-weight: bold;
-            transition: 0.2s;
-            font-family: inherit;
+            letter-spacing: 2px;
         }
 
-        .btn-safe { background: var(--neon-green); color: white; }
-        .btn-phish { background: var(--neon-red); color: white; }
-        .btn-nav { background: var(--border); color: white; border: 1px solid transparent; }
-        .btn-nav:hover { border-color: var(--neon-blue); }
+        .packet {
+            position: absolute;
+            width: 100px;
+            height: 70px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            z-index: 5;
+            transition: transform 0.1s;
+        }
 
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
-        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .packet.safe { background: rgba(57, 255, 20, 0.15); border: 2px solid var(--neon-green); box-shadow: 0 0 15px rgba(57, 255, 20, 0.3); }
+        .packet.threat { background: rgba(248, 81, 73, 0.15); border: 2px solid var(--neon-red); box-shadow: 0 0 15px rgba(248, 81, 73, 0.3); }
 
-        input[type="text"] {
+        .packet-btn {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border: 1px solid currentColor;
+            background: rgba(0,0,0,0.5);
+            cursor: pointer;
+            border-radius: 3px;
+            text-transform: uppercase;
+            color: inherit;
+        }
+
+        .packet-btn:hover { background: rgba(255,255,255,0.1); }
+
+        /* CRYPTO GAME STYLES */
+        .terminal-window {
+            background: #000;
+            border: 2px solid var(--terminal-green);
+            border-radius: 8px;
+            padding: 30px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--terminal-green);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+            position: relative;
+        }
+
+        .terminal-header {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 14px;
-            margin: 15px 0;
-            background: var(--bg);
+            background: var(--terminal-green);
+            color: #000;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        #encrypted-display {
+            font-size: 3rem;
+            text-align: center;
+            margin: 40px 0;
+            letter-spacing: 10px;
+            text-shadow: 0 0 10px var(--terminal-green);
+        }
+
+        .crypto-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        #shift-slider {
+            width: 80%;
+            accent-color: var(--terminal-green);
+        }
+
+        /* PASSWORD GAME STYLES */
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 16px;
+            margin: 20px 0;
+            background: #0d1117;
             border: 1px solid var(--border);
             color: white;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.3);
-        }
-
-        .result-box {
-            padding: 20px;
             border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            margin-top: 15px;
-            border: 1px solid var(--border);
+            box-sizing: border-box;
+            font-size: 1.1rem;
         }
+
+        input:focus { outline: none; border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
 
         .hidden { display: none !important; }
 
         footer {
-            margin-top: auto;
-            padding: 20px;
-            color: #8b949e;
-            font-size: 0.8rem;
+            margin-top: 50px;
+            padding-bottom: 40px;
+            color: #555;
+            font-size: 0.85rem;
             text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🛡️ Cyber Defense Lab</h1>
-        <nav>
-            <button id="nav-learn" class="active" onclick="showSection('learn')">01. LEARN</button>
-            <button id="nav-practice" onclick="showSection('practice')">02. PRACTICE</button>
-            <button id="nav-research" onclick="showSection('research')">03. RESEARCH</button>
-        </nav>
-    </header>
+    <h1>🛡️ Cyber Defense Lab</h1>
 
     <div class="container">
         
-        <!-- LEARN SECTION -->
-        <div id="learn-section" class="section active">
-            <div id="slide-container">
-                <!-- Slide content injected by slides.js -->
-            </div>
-            <div class="progress-container">
-                <div id="progress-bar"></div>
-            </div>
-            <div class="slide-controls">
-                <button id="prevBtn" class="btn-nav" onclick="prevSlide()">_PREVIOUS</button>
-                <span id="slide-number">01 / 14</span>
-                <button id="nextBtn" class="btn-nav" onclick="nextSlide()">_NEXT_STEP</button>
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="active">
+            <div class="game-grid">
+                <div class="game-card" onclick="openGame('phishing')">
+                    <div class="icon">📧</div>
+                    <h3>Phish or Legit?</h3>
+                    <p>Detect sophisticated phishing attempts and social engineering.</p>
+                </div>
+                <div class="game-card" onclick="openGame('firewall')">
+                    <div class="icon">🧱</div>
+                    <h3>Firewall Defender</h3>
+                    <p>Filter network traffic in real-time to protect the system core.</p>
+                </div>
+                <div class="game-card" onclick="openGame('crypto')">
+                    <div class="icon">🔐</div>
+                    <h3>Cryptography Lab</h3>
+                    <p>Decode secret messages using historical encryption methods.</p>
+                </div>
+                <div class="game-card" onclick="openGame('password')">
+                    <div class="icon">🔑</div>
+                    <h3>Password Vault</h3>
+                    <p>Test your credentials against brute-force cracking simulations.</p>
+                </div>
+                <div class="game-card" onclick="openGame('quiz')">
+                    <div class="icon">🛡️</div>
+                    <h3>Security Trivia</h3>
+                    <p>Challenge your overall cybersecurity knowledge.</p>
+                </div>
             </div>
         </div>
 
-        <!-- PRACTICE SECTION -->
-        <div id="practice-section" class="section">
+        <!-- GAME ARENA -->
+        <div id="game-arena" class="hidden">
+            <button class="btn-nav" onclick="closeGame()">⬅ Exit to Dashboard</button>
 
-            <div id="game-dashboard">
-                <h2 style="text-align:center; margin-bottom: 30px; color: var(--neon-blue);">Cyber Training Modules</h2>
-                <div class="game-grid">
-                    <div class="game-card" onclick="openGame('phishing')">
-                        <div style="font-size: 3rem;">📧</div>
-                        <h3>Phish or Legit?</h3>
-                        <p>Learn to spot deceptive emails before you click.</p>
-                    </div>
-                    <div class="game-card" onclick="openGame('firewall')">
-                        <div style="font-size: 3rem;">🧱</div>
-                        <h3>Firewall Defender</h3>
-                        <p>Filter network traffic and protect the system core.</p>
-                    </div>
-                    <div class="game-card" onclick="openGame('password')">
-                        <div style="font-size: 3rem;">🔑</div>
-                        <h3>Password Lab</h3>
-                        <p>Test your password strength against brute-force attacks.</p>
-                    </div>
-                    <div class="game-card" onclick="openGame('encryption')">
-                        <div style="font-size: 3rem;">🔐</div>
-                        <h3>Encryption Lab</h3>
-                        <p>Decrypt secret messages and learn about cryptography.</p>
-                    </div>
-                    <div class="game-card" onclick="openGame('quiz')">
-                        <div style="font-size: 3rem;">🛡️</div>
-                        <h3>Security Trivia</h3>
-                        <p>Test your knowledge on general cyber defense.</p>
-                    </div>
+            <!-- PHISHING GAME -->
+            <div id="game-phishing" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">Email Intelligence Analysis</h2>
+                <p>Examine the communication. Is it a legitimate message or a cyber attack?</p>
+
+                <div id="email-display" class="email-card"></div>
+
+                <div class="btn-group">
+                    <button id="phish-report-btn" class="btn-action btn-phish" onclick="checkPhish(true)">Report Phishing</button>
+                    <button id="phish-safe-btn" class="btn-action btn-safe" onclick="checkPhish(false)">Mark as Safe</button>
+                    <button id="phish-next-btn" class="btn-action btn-nav hidden" onclick="loadEmail()" style="margin-bottom: 0;">Next Email ➔</button>
                 </div>
+                <p id="phish-feedback" style="text-align:center; min-height: 4rem; margin-top:20px; line-height: 1.4;"></p>
+                <div style="text-align:center; font-weight: bold; font-size: 1.2rem; color: var(--neon-blue);">Score: <span id="score">0</span></div>
             </div>
 
-            <div id="game-arena" class="hidden">
-                <button class="btn-nav" onclick="closeGame()" style="margin-bottom: 20px;">⬅ BACK TO MODULES</button>
+            <!-- FIREWALL GAME -->
+            <div id="game-firewall" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">Network Firewall Defender</h2>
+                <p>A Firewall acts as a filter between your computer and the internet, deciding which data is safe to let through.</p>
 
-                <!-- PHISHING GAME -->
-                <div class="game-container hidden" id="game-phishing">
-                    <h2>Game 1: Phish or Legit?</h2>
-                    <p>Analyze the email below. Is it a cyber attack or a safe message?</p>
-
-                    <div id="email-display" class="email-card">
-                        <!-- Email content injected by games.js -->
-                    </div>
-
-                    <div class="btn-group">
-                        <button class="btn-phish" onclick="checkPhish(true)">REPORT PHISHING</button>
-                        <button class="btn-safe" onclick="checkPhish(false)">MARK AS SAFE</button>
-                    </div>
-                    <p id="phish-feedback" style="text-align:center; min-height: 3rem; margin-top:15px;"></p>
-                    <p style="text-align:center; font-weight: bold; color: var(--neon-blue);">Score: <span id="score">0</span></p>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>System Integrity: <span id="integrity-text">100%</span></span>
+                    <span>Score: <span id="firewall-score">0</span></span>
+                </div>
+                <div style="height: 12px; background: #333; border-radius: 6px; overflow: hidden; margin-bottom: 20px;">
+                    <div id="integrity-fill" style="height:100%; width:100%; background: var(--neon-green); transition: 0.3s;"></div>
                 </div>
 
-                <!-- PASSWORD GAME -->
-                <div class="game-container hidden" id="game-password">
-                    <h2>Game 2: Password Cracker Lab</h2>
-                    <p>How long would it take a hacker to crack your password?</p>
-                    <input type="text" id="pw-input" placeholder="Type a test password..." oninput="calculatePassword()">
+                <div id="firewall-arena">
+                    <div id="system-core">SERVER CORE</div>
 
-                    <div id="pw-result" class="result-box">
-                        Enter a password to test security.
+                    <div id="firewall-start-screen" style="position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 50; border-radius: 12px;">
+                        <h2 style="color: var(--neon-green); margin-bottom: 30px;">READY FOR TRAFFIC?</h2>
+                        <button class="btn-action btn-safe" onclick="startFirewall()">Initialize Firewall</button>
                     </div>
-                    <p style="font-size: 0.8rem; color: #8b949e; margin-top: 15px; line-height: 1.4;">
-                        <strong>Security Note:</strong> This simulation uses basic entropy calculations. Real-world cracking time depends on the hardware and techniques (like dictionary attacks) used by hackers. Never use your real passwords here!
-                    </p>
+
+                    <div id="firewall-game-over" class="hidden" style="position: absolute; inset: 0; background: rgba(0,0,0,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 60; border-radius: 12px;">
+                        <h2 style="color: var(--neon-red); font-size: 2rem;">CRITICAL FAILURE</h2>
+                        <p style="margin: 20px 0;">Final Score: <span id="firewall-final-score">0</span></p>
+                        <button class="btn-action btn-safe" onclick="startFirewall()">Reboot System</button>
+                    </div>
                 </div>
 
-                <!-- ENCRYPTION GAME -->
-                <div class="game-container hidden" id="game-encryption">
-                    <h2>Game 3: Encryption Lab</h2>
-                    <p>The Caesar Cipher shifts letters in the alphabet. Try to decrypt the message!</p>
+                <div id="firewall-message" style="text-align: center; height: 1.5rem; font-weight: bold;"></div>
 
-                    <div class="result-box" style="margin-bottom: 20px; font-family: monospace; font-size: 1.5rem; letter-spacing: 2px;">
-                        <span id="cipher-text">LOADING...</span>
-                    </div>
+                <footer style="color: #8b949e; font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 15px; margin-top: 20px;">
+                    A Firewall acts as a filter between your computer and the internet, deciding which data is safe to let through.
+                </footer>
+            </div>
 
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-                        <label>Shift Amount:</label>
-                        <input type="number" id="cipher-shift" value="0" min="0" max="25" oninput="updateDecryption()" style="width: 60px; background: var(--bg); color: white; border: 1px solid var(--border); padding: 5px; border-radius: 4px;">
-                    </div>
+            <!-- CRYPTO GAME -->
+            <div id="game-crypto" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">Cryptography Lab: Caesar Cipher</h2>
 
-                    <div class="result-box" style="border-style: dashed; color: var(--neon-green);">
-                        Result: <span id="decrypted-text"></span>
-                    </div>
+                <div class="terminal-window">
+                    <div class="terminal-header">SECURE_DECODER_V2.1</div>
+                    <p style="margin-top: 20px;">> LEVEL <span id="crypto-level">1</span></p>
+                    <p>> TASK: DECRYPT THE MESSAGE BELOW</p>
 
-                    <div id="encryption-feedback" style="text-align:center; margin-top: 15px; font-weight: bold;"></div>
-                </div>
+                    <div id="encrypted-display">LOADING...</div>
 
-                <!-- FIREWALL GAME -->
-                <div class="game-container hidden" id="game-firewall">
-                    <h2>Game 2: Firewall Defender</h2>
-                    <p>Protect the System Core! Click <strong>ALLOW</strong> for <span style="color: var(--neon-green)">SAFE DATA</span> and <strong>BLOCK</strong> for <span style="color: var(--neon-red)">THREATS</span>.</p>
+                    <div class="crypto-controls">
+                        <div>SHIFT: <span id="shift-value" style="font-size: 1.5rem; color: #fff;">0</span></div>
+                        <input type="range" id="shift-slider" min="0" max="25" value="0" oninput="updateCrypto()">
 
-                    <div class="integrity-bar">
-                        <div id="integrity-fill"></div>
-                    </div>
-                    <p style="font-size: 0.8rem; text-align: center; margin-bottom: 10px;">System Integrity: <span id="integrity-text">100%</span></p>
-
-                    <div id="firewall-arena">
-                        <div id="system-core">CORE</div>
-                        <!-- Packets will be spawned here -->
-                    </div>
-
-                    <div id="firewall-message" style="text-align: center; height: 1.5rem; font-weight: bold;"></div>
-
-                    <div id="firewall-start-screen" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; z-index: 20;">
-                        <button class="btn-safe" onclick="startFirewall()">START DEFENSE</button>
-                    </div>
-
-                    <div id="firewall-game-over" class="hidden" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; z-index: 30;">
-                        <h2 style="color: var(--neon-red);">SYSTEM COMPROMISED</h2>
-                        <p>Final Score: <span id="firewall-final-score">0</span></p>
-                        <button class="btn-safe" onclick="startFirewall()">RESTART</button>
-                    </div>
-
-                    <footer style="font-size: 0.8rem; color: #8b949e; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 10px;">
-                        <strong>Did you know?</strong> A Firewall acts as a filter between your computer and the internet, deciding which data is safe to let through.
-                    </footer>
-                </div>
-
-                <!-- QUIZ GAME -->
-                <div class="game-container hidden" id="game-quiz">
-                    <h2>Game 5: Security Trivia</h2>
-                    <div id="quiz-container">
-                        <p id="quiz-question" style="font-size: 1.1rem; margin-bottom: 20px;"></p>
-                        <div id="quiz-options" style="display: flex; flex-direction: column; gap: 10px;">
-                            <!-- Options injected by games.js -->
+                        <div style="border-top: 1px solid var(--terminal-green); width: 100%; padding-top: 15px; text-align: center;">
+                            DECRYPTED PREVIEW: <span id="decrypted-preview" style="color: #fff; font-size: 1.2rem;">LOADING...</span>
                         </div>
-                        <p id="quiz-feedback" style="text-align:center; margin-top: 15px; min-height: 1.5rem;"></p>
                     </div>
                 </div>
 
-            </div>
-        </div>
+                <div id="crypto-feedback" style="text-align:center; height: 1.5rem; margin: 20px 0; font-weight: bold; color: var(--neon-green);"></div>
 
-        <!-- RESEARCH SECTION -->
-        <div id="research-section" class="section">
-            <div class="game-container">
-                <h2>Cybersecurity Research Hub</h2>
-                <p>Deepen your knowledge with these trusted industry resources:</p>
-                <ul style="line-height: 2;">
-                    <li><strong><a href="https://owasp.org/www-project-top-ten/" target="_blank" style="color: var(--neon-blue);">OWASP Top 10</a></strong> - Most critical web application security risks.</li>
-                    <li><strong><a href="https://www.ncsc.gov.uk/cyberaware/home" target="_blank" style="color: var(--neon-blue);">NCSC Cyber Aware</a></strong> - Official UK government advice for staying safe online.</li>
-                    <li><strong><a href="https://www.cisa.gov/cyber-guidance-small-businesses" target="_blank" style="color: var(--neon-blue);">CISA Resources</a></strong> - Security guidance from the US Cybersecurity & Infrastructure Security Agency.</li>
-                    <li><strong><a href="https://haveibeenpwned.com/" target="_blank" style="color: var(--neon-blue);">Have I Been Pwned?</a></strong> - Check if your email has been compromised in a data breach.</li>
-                </ul>
-                <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
-                <h3>Glossary of Terms</h3>
-                <dl>
-                    <dt><strong style="color: var(--neon-green);">Zero-Day:</strong></dt>
-                    <dd>A vulnerability that is unknown to those who should be interested in its mitigation.</dd>
-                    <dt><strong style="color: var(--neon-green);">Ransomware:</strong></dt>
-                    <dd>Malware that encrypts files and demands payment for the decryption key.</dd>
-                    <dt><strong style="color: var(--neon-green);">MFA:</strong></dt>
-                    <dd>Multi-Factor Authentication - requiring more than just a password to log in.</dd>
-                </dl>
-                <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
-                <h3>Developing Research Skills</h3>
-                <p>Cybersecurity is an ever-evolving field. Here is how to stay ahead:</p>
-                <ul>
-                    <li><strong>Source Verification:</strong> Always cross-reference security alerts across multiple trusted sources.</li>
-                    <li><strong>Continuous Monitoring:</strong> Follow security researchers on platforms like Mastodon, LinkedIn, or specialized forums.</li>
-                    <li><strong>Hands-on Labs:</strong> Research is best paired with practice. Use platforms like Hack The Box or TryHackMe.</li>
-                    <li><strong>Documentation:</strong> Keep a record of your findings and the steps taken to verify them.</li>
-                </ul>
+                <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; padding: 25px; margin-top: 30px;">
+                    <h3 style="color: var(--neon-blue); margin-top: 0;">How it Works</h3>
+                    <p style="line-height: 1.6; margin-bottom: 0;">The Caesar Cipher is one of the oldest forms of encryption, used by Julius Caesar to send private messages. It works by shifting each letter of the alphabet by a fixed number of positions.</p>
+                </div>
             </div>
-        </div>
 
+            <!-- PASSWORD GAME -->
+            <div id="game-password" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">Password Brute-Force Simulator</h2>
+                <p>Discover how long it takes for automated tools to crack different password complexities.</p>
+                <input type="text" id="pw-input" placeholder="Type a password to test..." oninput="calculatePassword()">
+
+                <div id="pw-result" class="result-box" style="font-size: 1.2rem;">
+                    Enter a password to begin analysis.
+                </div>
+                <p style="font-size: 0.9rem; color: #8b949e; margin-top: 20px; line-height: 1.5;">
+                    <strong>Security Insight:</strong> Modern hackers use GPUs that can attempt billions of guesses per second. Length and character variety (entropy) are your best defenses.
+                </p>
+            </div>
+
+            <!-- QUIZ GAME -->
+            <div id="game-quiz" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">Security Awareness Trivia</h2>
+                <div id="quiz-container">
+                    <p id="quiz-question" style="font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5;"></p>
+                    <div id="quiz-options" style="display: flex; flex-direction: column; gap: 15px;"></div>
+                    <p id="quiz-feedback" style="text-align:center; margin-top: 25px; min-height: 2rem; font-weight: bold;"></p>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <footer>
-        &copy; 2025 Cyber Defense Lab | Built for Education
+        &copy; 2025 Cyber Defense Lab | Professional Cybersecurity Training Simulation
     </footer>
 
-    <script>
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            // Deactivate all nav buttons
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-            
-            // Show selected section
-            document.getElementById(sectionId + '-section').classList.add('active');
-            // Activate selected nav button
-            document.getElementById('nav-' + sectionId).classList.add('active');
-
-            if (sectionId === 'practice') {
-                // Reset to dashboard when entering practice section
-                closeGame();
-            }
-        }
-    </script>
-    <script src="slides.js"></script>
     <script src="games.js"></script>
 </body>
 </html>
