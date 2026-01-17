@@ -111,6 +111,14 @@ let currentEmail = 0;
 let phishScore = 0;
 
 function loadEmail() {
+    if (currentEmail >= emails.length) {
+        document.getElementById('email-display').innerHTML = "<div style='text-align:center; padding: 50px;'>Audit Log Finalized.</div>";
+        document.getElementById('phish-report-btn').classList.add('hidden');
+        document.getElementById('phish-safe-btn').classList.add('hidden');
+        document.getElementById('phish-next-btn').classList.add('hidden');
+        document.getElementById('phish-summary').classList.remove('hidden');
+        return;
+    }
     const e = emails[currentEmail];
     document.getElementById('email-display').innerHTML = `
         <div class="email-header">
@@ -124,6 +132,7 @@ function loadEmail() {
     document.getElementById('phish-report-btn').classList.remove('hidden');
     document.getElementById('phish-safe-btn').classList.remove('hidden');
     document.getElementById('phish-next-btn').classList.add('hidden');
+    document.getElementById('phish-summary').classList.add('hidden');
 }
 
 function checkPhish(userGuessPhish) {
@@ -132,7 +141,6 @@ function checkPhish(userGuessPhish) {
 
     document.getElementById('phish-report-btn').classList.add('hidden');
     document.getElementById('phish-safe-btn').classList.add('hidden');
-    document.getElementById('phish-next-btn').classList.remove('hidden');
 
     if (userGuessPhish === e.isPhish) {
         phishScore++;
@@ -144,7 +152,13 @@ function checkPhish(userGuessPhish) {
     }
 
     document.getElementById('score').innerText = phishScore;
-    currentEmail = (currentEmail + 1) % emails.length;
+    currentEmail++;
+
+    if (currentEmail < emails.length) {
+        document.getElementById('phish-next-btn').classList.remove('hidden');
+    } else {
+        setTimeout(loadEmail, 1500); // Transition to summary
+    }
 }
 
 // --- THREAT HUNTER GAME LOGIC ---
@@ -285,17 +299,17 @@ function victoryHunter() {
 
 // --- CRYPTOGRAPHY GAME LOGIC ---
 const cryptoLevels = [
-    { encrypted: "KHOOR", plain: "HELLO", shift: 3 },
-    { encrypted: "TFDVSF", plain: "SECURE", shift: 1 },
-    { encrypted: "CVVCEM CV FCYP", plain: "ATTACK AT DAWN", shift: 2 },
-    { encrypted: "GDWD EUHDFK", plain: "DATA BREACH", shift: 3 },
-    { encrypted: "QTAJ HTIJ", plain: "LOVE CODE", shift: 5 },
-    { encrypted: "GCT LIV", plain: "CYPHER", shift: 4 },
-    { encrypted: "ZLWK QHAW VWHW", plain: "WITH NEXT STEP", shift: 3 },
-    { encrypted: "XLI JVEK", plain: "THE FLAG", shift: 4 },
-    { encrypted: "SFNFNCFS", plain: "REMEMBER", shift: 1 },
-    { encrypted: "ZPV HPK JU", plain: "YOU GOT IT", shift: 1 },
-    { encrypted: "PSRK PMZI", plain: "LONG LIVE", shift: 4 }
+    { encrypted: "ROVVY", plain: "HELLO", shift: 10 },
+    { encrypted: "FRPHER", plain: "SECURE", shift: 13 },
+    { encrypted: "PIIPRZ PI SPLC", plain: "ATTACK AT DAWN", shift: 15 },
+    { encrypted: "VSLS TJWSUZ", plain: "DATA BREACH", shift: 18 },
+    { encrypted: "XAHQ OAPQ", plain: "LOVE CODE", shift: 12 },
+    { encrypted: "WSJBYL", plain: "CYPHER", shift: 20 },
+    { encrypted: "EQBP VMFB ABMX", plain: "WITH NEXT STEP", shift: 8 },
+    { encrypted: "PDA BHWC", plain: "THE FLAG", shift: 22 },
+    { encrypted: "ANVNVVKA", plain: "REMEMBER", shift: 9 },
+    { encrypted: "JZF RZE TE", plain: "YOU GOT IT", shift: 11 },
+    { encrypted: "ZCPU ZWJS", plain: "LONG LIVE", shift: 14 }
 ];
 
 let currentCryptoLevel = 0;
@@ -522,20 +536,44 @@ function inspectDesktopItem(item) {
     const content = document.getElementById('modal-content');
 
     let info = "";
-    let isLeak = true;
+    let isLeak = false;
 
     if (item === 'sticky') {
         title.innerText = "secrets.txt";
         info = "User: admin\nPass: Winter2025!\n\nCRITICAL: Plaintext credentials.";
+        isLeak = true;
     } else if (item === 'config') {
         title.innerText = "env.config";
         info = "DB_HOST: 10.0.0.5\nAPI_KEY: sk_live_51P2z...\n\nCRITICAL: Hardcoded API secrets.";
+        isLeak = true;
     } else if (item === 'trash') {
         title.innerText = "RECOVERY";
         info = "File: Deleted_Merger_Plan.docx\n\nCRITICAL: Sensitive data in trash bin.";
+        isLeak = true;
     } else if (item === 'logs') {
         title.innerText = "sys.log";
         info = "03:22:11 - Login Fail\n03:22:15 - Login Fail\n03:22:19 - Login Success\n\nCRITICAL: Brute-force logs.";
+        isLeak = true;
+    } else if (item === 'trojan') {
+        title.innerText = "system_patch.exe";
+        info = "Metadata: Created 2 mins ago\nSize: 4.2MB\nSignature: UNKNOWN\n\nCRITICAL: Malicious executable disguised as system update.";
+        isLeak = true;
+    } else if (item === 'keylogger') {
+        title.innerText = "lib_key.dll";
+        info = "Hooks: Keyboard, Clipboard\nDestination: 192.168.1.50\n\nCRITICAL: Active keylogger harvesting input.";
+        isLeak = true;
+    } else if (item === 'photos') {
+        title.innerText = "Vacation.jpg";
+        info = "Metadata: Taken with iPhone 13\nSize: 1.2MB\n\nSTATUS: Normal image file.";
+    } else if (item === 'music') {
+        title.innerText = "Song.mp3";
+        info = "Artist: Unknown\nDuration: 3:45\n\nSTATUS: Normal audio file.";
+    } else if (item === 'docs') {
+        title.innerText = "Report.pdf";
+        info = "Title: Quarterly Review\nAuthor: HR Dept\n\nSTATUS: Standard document.";
+    } else if (item === 'browser') {
+        title.innerText = "Web Browser";
+        info = "History:\n- mail.corporate.com\n- stackoverflow.com\n- cybersecurity-training.com\n\nSTATUS: No malicious history detected.";
     }
 
     content.innerText = info;
@@ -547,7 +585,7 @@ function inspectDesktopItem(item) {
         if(iconEl) iconEl.classList.add('leak-found');
         document.getElementById('leaks-found-count').innerText = leaksFound.size;
 
-        if (leaksFound.size === 4) {
+        if (leaksFound.size === 6) {
             setTimeout(() => {
                 modal.classList.add('hidden');
                 document.getElementById('forensics-summary').classList.remove('hidden');
@@ -580,14 +618,28 @@ const quizQuestions = [
 ];
 
 let currentQuizIdx = 0;
+let quizScore = 0;
 let shuffledOptions = [];
 
 function initQuiz() {
     currentQuizIdx = 0;
+    quizScore = 0;
+    document.getElementById('quiz-summary').classList.add('hidden');
+    document.getElementById('quiz-options').classList.remove('hidden');
+    document.getElementById('quiz-question').classList.remove('hidden');
     loadQuizQuestion();
 }
 
 function loadQuizQuestion() {
+    if (currentQuizIdx >= quizQuestions.length) {
+        document.getElementById('quiz-question').classList.add('hidden');
+        document.getElementById('quiz-options').classList.add('hidden');
+        document.getElementById('quiz-feedback').innerText = "";
+        document.getElementById('quiz-summary').classList.remove('hidden');
+        document.getElementById('quiz-final-score').innerText = `Final Score: ${quizScore} / ${quizQuestions.length}`;
+        return;
+    }
+
     const question = quizQuestions[currentQuizIdx];
     document.getElementById('quiz-question').innerText = question.q;
     document.getElementById('quiz-feedback').innerText = "";
@@ -612,19 +664,31 @@ function checkQuiz(idx, selectedOpt) {
     const feedback = document.getElementById('quiz-feedback');
     const buttons = document.getElementById('quiz-options').querySelectorAll('button');
 
+    // Disable all buttons after choice
+    buttons.forEach(b => b.onclick = null);
+
     if (selectedOpt === question.a) {
+        quizScore++;
         buttons[idx].style.background = "var(--neon-green)";
         buttons[idx].style.color = "#000";
         feedback.innerText = "✓ CORRECT";
         feedback.style.color = "var(--neon-green)";
-        currentQuizIdx = (currentQuizIdx + 1) % quizQuestions.length;
-        setTimeout(loadQuizQuestion, 1000);
     } else {
         buttons[idx].style.background = "var(--neon-red)";
         buttons[idx].style.color = "#fff";
         feedback.innerText = "✗ INCORRECT";
         feedback.style.color = "var(--neon-red)";
+
+        // Show correct answer
+        buttons.forEach(b => {
+            if (b.innerText.includes(question.a)) {
+                b.style.border = "2px solid var(--neon-green)";
+            }
+        });
     }
+
+    currentQuizIdx++;
+    setTimeout(loadQuizQuestion, 1500);
 }
 
 // --- NAVIGATION LOGIC ---
@@ -686,7 +750,12 @@ function launchGame(gameId) {
     const target = document.getElementById('game-' + gameId);
     if (target) target.classList.remove('hidden');
 
-    if (gameId === 'phishing') loadEmail();
+    if (gameId === 'phishing') {
+        currentEmail = 0;
+        phishScore = 0;
+        document.getElementById('score').innerText = "0";
+        loadEmail();
+    }
     if (gameId === 'threathunter') startHunter();
     if (gameId === 'crypto') initCrypto();
     if (gameId === 'password') calculatePassword();
@@ -700,7 +769,3 @@ function closeGame() {
     document.getElementById('game-arena').classList.remove('active');
     stopHunter();
 }
-
-// Initial Load
-window.addEventListener('DOMContentLoaded', () => {
-});

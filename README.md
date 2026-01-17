@@ -21,6 +21,13 @@ An interactive, browser-based training platform designed to teach fundamental cy
 - **Responsive Design**: Fully responsive CSS Grid layout that adapts to various screen sizes.
 - **Real-time Process Monitor**: Custom simulation engine for the Threat Hunter module.
 
+## How to Run
+
+1.  **Environment**: Ensure you have Python installed.
+2.  **Dependencies**: Install Flask using `pip install flask`.
+3.  **Launch**: Run `python app.py`.
+4.  **Access**: Open your browser and navigate to `http://127.0.0.1:5000`.
+
 ## Research Context
 
 This project demonstrates a "Learn-by-Doing" approach to cybersecurity education. Research shows that interactive simulations improve retention rates for technical concepts compared to passive reading. Each module is designed to provide immediate feedback, reinforcing correct security behaviors.
