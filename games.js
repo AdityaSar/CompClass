@@ -5,7 +5,7 @@ const emails = [
         subject: "Account Suspended",
         body: "Your payment failed. Click <a href='#'>here</a> to update your credit card now or your account will be deleted.",
         isPhish: true,
-        reason: "Suspicious 'from' address (NetfIix with an 'I' instead of 'l') and urgent threats."
+        reason: "Suspicious 'from' address (NetfIix with an 'I') and urgent threats."
     },
     {
         from: "noreply@github.com",
@@ -173,9 +173,7 @@ function initHunter() {
     stopHunter();
     stability = 100;
     hunterScore = 0;
-    document.getElementById('stability-text').innerText = "100%";
-    document.getElementById('stability-fill').style.width = "100%";
-    document.getElementById('stability-fill').style.background = "var(--neon-green)";
+    updateStabilityUI();
     document.getElementById('hunter-score').innerText = "0";
     document.getElementById('process-list-body').innerHTML = "";
     document.getElementById('hunter-start-screen').classList.remove('hidden');
@@ -223,7 +221,7 @@ function renderProcesses() {
 
     activeProcesses.slice().reverse().forEach(p => {
         const tr = document.createElement('tr');
-        tr.style.borderBottom = "1px solid #1b2733";
+        tr.style.borderBottom = "1px solid var(--border)";
         if (p.isThreat && Math.random() > 0.7) tr.style.color = "var(--neon-red)";
 
         tr.innerHTML = `
@@ -231,7 +229,7 @@ function renderProcesses() {
             <td style="padding: 10px;">${p.name}</td>
             <td style="padding: 10px;">${p.path}</td>
             <td style="padding: 10px;">
-                <button onclick="killProcess(${p.id})" style="background: var(--neon-red); color: white; border: none; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-weight:bold;">KILL</button>
+                <button onclick="killProcess(${p.id})" style="background: transparent; border: 1px solid var(--neon-red); color: var(--neon-red); cursor: pointer; padding: 2px 5px; font-family: inherit; font-size: 0.7rem;">KILL</button>
             </td>
         `;
         body.appendChild(tr);
@@ -325,12 +323,13 @@ function updateCrypto() {
     document.getElementById('decrypted-preview').innerText = result;
 
     if (result === level.plain) {
-        document.getElementById('crypto-feedback').innerText = "✓ ACCESS GRANTED: MESSAGE DECRYPTED";
+        document.getElementById('crypto-feedback').style.color = "var(--neon-green)";
+        document.getElementById('crypto-feedback').innerText = "✓ DECRYPTED";
         if (currentCryptoLevel < cryptoLevels.length - 1) {
             currentCryptoLevel++;
-            setTimeout(loadCryptoLevel, 1500);
+            setTimeout(loadCryptoLevel, 1200);
         } else {
-            document.getElementById('crypto-feedback').innerText = "★ CONGRATULATIONS: ALL LEVELS CLEARED";
+            document.getElementById('crypto-feedback').innerText = "★ ALL LEVELS CLEARED";
         }
     }
 }
@@ -341,8 +340,8 @@ function calculatePassword() {
     const result = document.getElementById('pw-result');
 
     if (pw.length === 0) {
-        result.innerText = "Enter a password to begin analysis.";
-        result.style.color = "var(--text)";
+        result.innerText = "READY FOR ANALYSIS.";
+        result.style.color = "var(--neon-green)";
         return;
     }
 
@@ -379,40 +378,40 @@ function calculatePassword() {
 // --- SOCIAL ENGINEERING CHAT LOGIC ---
 const socialScenarios = [
     {
-        sender: "David (Exec)",
-        message: "Hi, this is David from the Executive suite. I'm in the middle of a high-stakes board meeting and I'm locked out of my account. I need you to RESET my password to 'Boardroom2025!' IMMEDIATELY. I don't have time for the standard MFA process, just do it now!",
+        sender: "Exec_Admin",
+        message: "Hi, this is David from the Executive suite. I'm in a high-stakes board meeting and I'm locked out. RESET my password to 'Boardroom2025!' IMMEDIATELY. Bypass the MFA, I don't have my phone!",
         isSuspicious: true,
-        briefing: "RED FLAGS DETECTED: This is a classic 'Authority and Urgency' attack. Attackers impersonate high-ranking executives to pressure staff into bypassing security protocols (MFA)."
+        briefing: "RED FLAGS: Authority and Urgency used to bypass MFA protocols."
     },
     {
-        sender: "Sarah (HR)",
-        message: "Hi there! I'm Sarah, I just joined the HR team this morning. I'm trying to get through my onboarding checklist but I can't find the link to the official Employee Handbook on the internal portal. Could you point me in the right direction?",
+        sender: "Sarah_HR",
+        message: "Hi! I'm Sarah, just joined HR today. I'm trying to find the Employee Handbook on the portal. Can you send me the direct link?",
         isSuspicious: false,
-        briefing: "LEGITIMATE REQUEST: This is a common, low-risk request for publicly available internal information. It does not ask for credentials, access, or bypasses."
+        briefing: "LEGITIMATE: Standard request for public internal documentation."
     },
     {
-        sender: "Maintenance_Tech",
-        message: "Hey, I'm from building maintenance. We're doing a firmware update on the routers for this floor. Can you give me the office Wi-Fi password so I can verify the signal strength after the reboot?",
+        sender: "Mike_IT",
+        message: "Workstation check. We see weird traffic. Please install 'SecurityUpdate.exe' from this temp link and run it as admin ASAP.",
         isSuspicious: true,
-        briefing: "RED FLAGS DETECTED: This is 'Physical/Service' Social Engineering. Legitimate maintenance workers should have their own credentials or be managed by the IT department directly."
+        briefing: "RED FLAGS: IT rarely asks users to install .exe files via chat."
     },
     {
-        sender: "Mike (IT Support)",
-        message: "Hey, we're seeing some weird traffic from your workstation. I need to run a remote diagnostic tool. Can you please install this 'SecurityCheck.exe' from our shared drive and let me know when it's running?",
+        sender: "Maintenance",
+        message: "Firmware update on routers. Give me the office Wi-Fi password to test signal strength.",
         isSuspicious: true,
-        briefing: "RED FLAGS DETECTED: IT Support rarely asks users to install software via chat. Always verify the source and never install executable files from unverified internal links."
+        briefing: "RED FLAGS: Legitimate technicians should have their own access or tools."
     },
     {
         sender: "Internal_Audit",
-        message: "This is the annual security audit. To confirm your system is patched, please provide the last 4 digits of your corporate credit card and your employee ID number for verification.",
+        message: "Annual audit. Provide the last 4 digits of your corporate card and employee ID for identity verification.",
         isSuspicious: true,
-        briefing: "RED FLAGS DETECTED: Information Harvesting. Audits do not require sensitive personal or financial details to verify system patching status."
+        briefing: "RED FLAGS: Information harvesting tactic."
     },
     {
         sender: "Office_Manager",
-        message: "Hi everyone, the coffee machine on floor 4 is broken again. Maintenance is on the way. Please use the one in the lobby for now. Sorry for the inconvenience!",
+        message: "The coffee machine on floor 4 is broken. Maintenance is coming. Use the lobby one for now.",
         isSuspicious: false,
-        briefing: "LEGITIMATE COMMUNICATION: Standard office update with no requests for information or actions that compromise security."
+        briefing: "LEGITIMATE: Informational office update with no risky requests."
     }
 ];
 
@@ -422,7 +421,6 @@ let socialScore = 100;
 function initSocialChat() {
     currentSocialIdx = 0;
     socialScore = 100;
-    document.getElementById('social-score').innerText = socialScore;
     document.getElementById('chat-history').innerHTML = "";
     document.getElementById('briefing-overlay').classList.add('hidden');
     loadChatScenario();
@@ -431,7 +429,6 @@ function initSocialChat() {
 function loadChatScenario() {
     const scenario = socialScenarios[currentSocialIdx];
     const history = document.getElementById('chat-history');
-
     const msgEl = document.createElement('div');
     msgEl.className = "message-bubble msg-received";
     msgEl.innerHTML = `<strong>${scenario.sender}:</strong><br>${scenario.message}`;
@@ -443,15 +440,12 @@ function handleChatAction(isSuspicious) {
     const scenario = socialScenarios[currentSocialIdx];
     const isCorrect = isSuspicious === scenario.isSuspicious;
 
-    if (!isCorrect) {
-        socialScore = Math.max(0, socialScore - 20);
-        document.getElementById('social-score').innerText = socialScore;
-    }
+    if (!isCorrect) socialScore = Math.max(0, socialScore - 20);
 
     const briefingTitle = document.getElementById('briefing-title');
     const briefingText = document.getElementById('briefing-text');
 
-    briefingTitle.innerText = isCorrect ? "✓ CORRECT ANALYSIS" : "✗ SECURITY BREACH";
+    briefingTitle.innerText = isCorrect ? "✓ CORRECT" : "✗ BREACH";
     briefingTitle.style.color = isCorrect ? "var(--neon-green)" : "var(--neon-red)";
     briefingText.innerText = scenario.briefing;
 
@@ -469,7 +463,7 @@ function nextChatScenario() {
         const finalMsg = document.createElement('div');
         finalMsg.className = "message-bubble msg-received";
         finalMsg.style.border = "1px solid var(--neon-purple)";
-        finalMsg.innerHTML = `<strong>SYSTEM:</strong><br>Social Engineering Simulation Complete. Final Score: ${socialScore}%`;
+        finalMsg.innerHTML = `<strong>SYSTEM:</strong><br>SIMULATION COMPLETE. ACCURACY: ${socialScore}%`;
         history.appendChild(finalMsg);
     }
 }
@@ -494,21 +488,17 @@ function inspectDesktopItem(item) {
     let isLeak = true;
 
     if (item === 'sticky') {
-        title.innerText = "STICKY NOTE ANALYSIS";
-        info = "RECOVERED TEXT:\n----------------\nUser: admin\nPass: Winter2025!\n----------------\nCRITICAL: Passwords found in plain sight.";
+        title.innerText = "secrets.txt";
+        info = "User: admin\nPass: Winter2025!\n\nCRITICAL: Plaintext credentials.";
     } else if (item === 'config') {
-        title.innerText = "CONFIG.JS SOURCE CODE";
-        info = "const config = {\n  db_host: '10.0.4.15',\n  API_KEY: 'sk_live_51P2z...X7y8',\n  DEBUG: false\n};\n\nCRITICAL: Hardcoded secrets detected.";
+        title.innerText = "env.config";
+        info = "DB_HOST: 10.0.0.5\nAPI_KEY: sk_live_51P2z...\n\nCRITICAL: Hardcoded API secrets.";
     } else if (item === 'trash') {
-        title.innerText = "TRASH RECOVERY BIN";
-        info = "RECOVERED FILE: Deleted_Project_Mars.docx\n----------------\n'The merger with Galactic Corp is set for Q3 at $450/share...'\n\nCRITICAL: Sensitive business data not securely wiped.";
+        title.innerText = "RECOVERY";
+        info = "File: Deleted_Merger_Plan.docx\n\nCRITICAL: Sensitive data in trash bin.";
     } else if (item === 'logs') {
-        title.innerText = "SYSTEM ACCESS LOGS";
-        info = "2025-01-10 03:22:11 - Login Failed (Admin)\n2025-01-10 03:22:15 - Login Failed (Admin)\n2025-01-10 03:22:19 - Login Success (Admin)\n\nCRITICAL: Potential brute-force attack detected in logs.";
-    } else {
-        isLeak = false;
-        title.innerText = "SYSTEM BROWSER";
-        info = "No forensic evidence found here. Browser history has been cleared.";
+        title.innerText = "sys.log";
+        info = "03:22:11 - Login Fail\n03:22:15 - Login Fail\n03:22:19 - Login Success\n\nCRITICAL: Brute-force logs.";
     }
 
     content.innerText = info;
@@ -524,7 +514,7 @@ function inspectDesktopItem(item) {
             setTimeout(() => {
                 modal.classList.add('hidden');
                 document.getElementById('forensics-summary').classList.remove('hidden');
-            }, 2000);
+            }, 1500);
         }
     }
 }
@@ -535,81 +525,14 @@ function closeForensicsModal() {
 
 // --- QUIZ GAME LOGIC ---
 const quizQuestions = [
-    {
-        q: "What does 'MFA' stand for in cybersecurity?",
-        options: ["Multi-Factor Authentication", "Main Firewall Access", "Mobile File Archive", "Multi-Functional Array"],
-        a: 0
-    },
-    {
-        q: "Which of these is the strongest password strategy?",
-        options: ["Using your pet's name", "Changing one letter to a number", "Using a long phrase with varied characters", "Using your birth year"],
-        a: 2
-    },
-    {
-        q: "What is 'Social Engineering'?",
-        options: ["Building social media apps", "Manipulating people into giving up confidential info", "Designing office spaces", "Automated marketing scripts"],
-        a: 1
-    },
-    {
-        q: "What is a 'Zero-Day' vulnerability?",
-        options: ["A bug fixed in 0 days", "A flaw unknown to the vendor with no patch available", "A virus that deletes itself", "A security patch for old software"],
-        a: 1
-    },
-    {
-        q: "What is the primary purpose of a VPN?",
-        options: ["To make the internet faster", "To create a secure, encrypted tunnel for data", "To block all viruses", "To store passwords"],
-        a: 1
-    },
-    {
-        q: "What is 'Ransomware'?",
-        options: ["Free software with ads", "Malware that encrypts files and demands payment", "Software that monitors your screen", "A tool for recovering deleted files"],
-        a: 1
-    },
-    {
-        q: "Which protocol is more secure for web browsing?",
-        options: ["HTTP", "FTP", "HTTPS", "SMTP"],
-        a: 2
-    },
-    {
-        q: "What is 'Phishing'?",
-        options: ["Searching for files in a network", "Fraudulent attempts to obtain sensitive info via email", "Cracking a Wi-Fi password", "A type of network cable"],
-        a: 1
-    },
-    {
-        q: "What should you do if you receive a suspicious email from your bank?",
-        options: ["Click the link to verify", "Call the bank using a number from their official website", "Reply to the email asking if it's real", "Ignore it"],
-        a: 1
-    },
-    {
-        q: "What is a 'Brute Force' attack?",
-        options: ["Physically stealing a server", "Systematically trying every possible password combination", "A very fast download", "An attack using solar power"],
-        a: 1
-    },
-    {
-        q: "Which of these is a form of 'biometric' authentication?",
-        options: ["Fingerprint scan", "PIN code", "Security question", "MFA token"],
-        a: 0
-    },
-    {
-        q: "What is 'SQL Injection'?",
-        options: ["A way to speed up databases", "Malicious code that interferes with database queries", "A hardware upgrade", "A type of network cable"],
-        a: 1
-    },
-    {
-        q: "What does 'HTTPS' use to secure data?",
-        options: ["SSL/TLS encryption", "A faster server", "More bandwidth", "A secret password"],
-        a: 0
-    },
-    {
-        q: "What is a 'Botnet'?",
-        options: ["A group of friendly robots", "A network of compromised computers controlled by an attacker", "A fast internet connection", "A software testing tool"],
-        a: 1
-    },
-    {
-        q: "What is 'Shoulder Surfing'?",
-        options: ["Surfing on a big wave", "Watching someone enter their PIN or password over their shoulder", "A type of back massage", "Cleaning a keyboard"],
-        a: 1
-    }
+    { q: "What does 'MFA' stand for?", options: ["Multi-Factor Authentication", "Main Firewall Access", "Mobile File Archive"], a: 0 },
+    { q: "Strongest password strategy?", options: ["Pet's name", "Changing letter to number", "Long phrase with variety"], a: 2 },
+    { q: "What is 'Social Engineering'?", options: ["Building apps", "Manipulating people for data", "Designing offices"], a: 1 },
+    { q: "What is a 'Zero-Day'?", options: ["Fixed in 0 days", "Unknown flaw with no patch", "Virus that deletes itself"], a: 1 },
+    { q: "VPN primary purpose?", options: ["Faster internet", "Secure, encrypted tunnel", "Block all viruses"], a: 1 },
+    { q: "What is 'Ransomware'?", options: ["Free software", "Encrypts files for payment", "Monitors screen"], a: 1 },
+    { q: "More secure protocol?", options: ["HTTP", "FTP", "HTTPS"], a: 2 },
+    { q: "What is 'Phishing'?", options: ["Search for files", "Fraudulent emails for info", "Cracking Wi-Fi"], a: 1 }
 ];
 
 let currentQuizIdx = 0;
@@ -642,12 +565,12 @@ function checkQuiz(idx) {
     const feedback = document.getElementById('quiz-feedback');
 
     if (idx === question.a) {
-        feedback.innerText = "CORRECT! ADVANCING...";
+        feedback.innerText = "✓ CORRECT";
         feedback.style.color = "var(--neon-green)";
         currentQuizIdx = (currentQuizIdx + 1) % quizQuestions.length;
-        setTimeout(loadQuizQuestion, 1200);
+        setTimeout(loadQuizQuestion, 1000);
     } else {
-        feedback.innerText = "INCORRECT. RE-ANALYZE THE QUESTION.";
+        feedback.innerText = "✗ INCORRECT";
         feedback.style.color = "var(--neon-red)";
     }
 }
