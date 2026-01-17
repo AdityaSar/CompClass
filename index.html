@@ -15,7 +15,7 @@
             --db-border: #004400;
 
             /* Game Theme - Restore Cyberpunk Blue & Purple */
-            --game-bg: #0d141b;
+            --game-bg: #050a0f;
             --neon-blue: #00d4ff;
             --neon-purple: #bc13fe;
             --text-main: #c9d1d9;
@@ -59,7 +59,7 @@
             min-height: calc(100vh - 150px);
         }
 
-        /* CIRCULAR DASHBOARD */
+        /* CIRCULAR DASHBOARD STYLES */
         .dashboard-container {
             position: relative;
             width: 700px;
@@ -151,25 +151,27 @@
             to { stroke-dashoffset: 1000; }
         }
 
-        /* Equidistant Circle Items */
+        @media (max-width: 800px) {
+            .dashboard-container { width: 100%; height: auto; flex-direction: column; gap: 20px; padding-top: 40px; }
+            .hub-center { display: none; }
+            .orbit-item { position: static !important; transform: none !important; width: 90%; height: auto; padding: 20px; }
+            .orbit-svg { display: none; }
+        }
+
+        /* Equidistant Circle Positioning */
         .orbit-item:nth-child(odd) { border-color: var(--neon-green); }
         .orbit-item:nth-child(even) { border-color: var(--neon-red); }
 
         .orbit-item:nth-child(3) { transform: rotate(0deg) translate(280px) rotate(0deg); }
-        .orbit-item:nth-child(4) { transform: rotate(51.43deg) translate(280px) rotate(-51.43deg); }
-        .orbit-item:nth-child(5) { transform: rotate(102.86deg) translate(280px) rotate(-102.86deg); }
-        .orbit-item:nth-child(6) { transform: rotate(154.29deg) translate(280px) rotate(-154.29deg); }
-        .orbit-item:nth-child(7) { transform: rotate(205.71deg) translate(280px) rotate(-205.71deg); }
-        .orbit-item:nth-child(8) { transform: rotate(257.14deg) translate(280px) rotate(-257.14deg); }
-        .orbit-item:nth-child(9) { transform: rotate(308.57deg) translate(280px) rotate(-308.57deg); }
+        .orbit-item:nth-child(4) { transform: rotate(51.4deg) translate(280px) rotate(-51.4deg); }
+        .orbit-item:nth-child(5) { transform: rotate(102.8deg) translate(280px) rotate(-102.8deg); }
+        .orbit-item:nth-child(6) { transform: rotate(154.2deg) translate(280px) rotate(-154.2deg); }
+        .orbit-item:nth-child(7) { transform: rotate(205.6deg) translate(280px) rotate(-205.6deg); }
+        .orbit-item:nth-child(8) { transform: rotate(257deg) translate(280px) rotate(-257deg); }
+        .orbit-item:nth-child(9) { transform: rotate(308.4deg) translate(280px) rotate(-308.4deg); }
 
-        /* GAME ARENA - Restored Cyberpunk Aesthetic */
-        .game-arena {
-            width: 100%;
-            animation: fadeIn 0.5s ease-in-out;
-            display: none;
-        }
-
+        /* GAME ARENA STYLES */
+        .game-arena { width: 100%; animation: fadeIn 0.5s ease-in-out; display: none; }
         .game-arena.active { display: block; }
 
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
@@ -199,12 +201,11 @@
             transition: 0.3s;
             margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .btn-nav:hover { background: var(--neon-blue); color: #050a0f; box-shadow: 0 0 15px var(--neon-blue); }
 
-        /* Phishing Module */
+        /* PHISHING GAME STYLES */
         .email-card {
             background: #ffffff;
             color: #1a1a1a;
@@ -213,8 +214,10 @@
             margin-bottom: 25px;
             border-left: 6px solid var(--neon-blue);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-family: Arial, sans-serif;
         }
-        .email-header { border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 15px; font-size: 0.9rem; color: #555; }
+
+        .email-header { border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 15px; font-size: 0.85rem; color: #555; }
         .email-body { font-size: 1rem; line-height: 1.6; }
 
         .btn-group { display: flex; gap: 20px; justify-content: center; }
@@ -223,62 +226,55 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
+            font-family: inherit;
             font-weight: bold;
             transition: 0.3s;
             text-transform: uppercase;
-            font-family: inherit;
         }
+
         .btn-safe { background: var(--neon-green); color: #000; box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
         .btn-phish { background: var(--neon-red); color: #fff; box-shadow: 0 0 10px rgba(255, 49, 49, 0.4); }
         .btn-action:hover { transform: scale(1.05); filter: brightness(1.2); }
 
-        /* Social Engineering Module */
-        .chat-container { display: flex; height: 500px; background: #0d1117; border: 1px solid var(--neon-purple); border-radius: 12px; overflow: hidden; }
-        .chat-sidebar { width: 200px; background: #161b22; border-right: 1px solid #30363d; padding: 15px; }
-        .sidebar-user { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-size: 0.85rem; color: #8b949e; }
+        /* CHAT STYLES */
+        .chat-container { display: flex; height: 500px; background: #000; border: 1px solid var(--neon-purple); border-radius: 12px; overflow: hidden; }
+        .chat-sidebar { width: 200px; background: #050505; border-right: 1px solid var(--game-border); padding: 15px; }
+        .sidebar-user { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-size: 0.8rem; color: var(--neon-green); opacity: 0.6; }
         .user-status { width: 8px; height: 8px; border-radius: 50%; background: var(--neon-green); }
         .chat-main { flex: 1; display: flex; flex-direction: column; padding: 20px; position: relative; }
         .chat-history { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
-        .message-bubble { max-width: 80%; padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; line-height: 1.4; }
-        .msg-received { align-self: flex-start; background: #21262d; border: 1px solid #30363d; color: var(--text-main); border-bottom-left-radius: 2px; }
-        .msg-sent { align-self: flex-end; background: var(--neon-purple); color: white; border-bottom-right-radius: 2px; }
-        .briefing-overlay { position: absolute; inset: 0; background: rgba(13, 17, 23, 0.95); padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 100; border-radius: 12px; }
+        .message-bubble { max-width: 80%; padding: 12px 16px; border-radius: 18px; font-size: 0.9rem; line-height: 1.4; border: 1px solid var(--game-border); }
+        .msg-received { align-self: flex-start; background: #21262d; color: var(--text-main); }
+        .msg-sent { align-self: flex-end; background: var(--neon-purple); color: #fff; font-weight: bold; }
+        .briefing-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.95); padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 100; border: 1px solid var(--neon-green); border-radius: 12px; }
 
-        /* Digital Forensics Module */
+        /* FORENSICS STYLES */
         .virtual-desktop {
             width: 100%;
             height: 500px;
-            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-            border: 2px solid #30363d;
+            background: #000;
+            border: 1px solid var(--game-border);
             border-radius: 12px;
             position: relative;
             overflow: hidden;
-            background-image: radial-gradient(#30363d 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-image: radial-gradient(var(--game-border) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
         .desktop-icon { position: absolute; width: 80px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; padding: 10px; transition: 0.2s; }
-        .desktop-icon:hover { background: rgba(255,255,255,0.05); border-radius: 8px; }
-        .desktop-icon .icon-label { font-size: 0.75rem; color: #c9d1d9; text-shadow: 1px 1px 2px #000; }
-        .leak-found { border: 2px solid var(--neon-red) !important; box-shadow: 0 0 15px var(--neon-red); border-radius: 8px; }
-        .forensics-modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0d1117; border: 1px solid var(--neon-red); padding: 20px; z-index: 1000; min-width: 300px; border-radius: 8px; }
+        .desktop-icon:hover { background: rgba(0,255,0,0.1); border-radius: 8px; }
+        .desktop-icon .icon-img { font-size: 2rem; }
+        .desktop-icon .icon-label { font-size: 0.7rem; color: var(--neon-green); text-align: center; }
+        .leak-found { border: 1px solid var(--neon-red) !important; box-shadow: 0 0 10px var(--neon-red); border-radius: 8px; }
+        .forensics-modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #000; border: 1px solid var(--neon-green); padding: 20px; z-index: 1000; min-width: 300px; border-radius: 8px; }
 
-        /* Terminal Lab Style (Crypto) */
-        .terminal-window { background: #000; border: 2px solid var(--neon-green); border-radius: 8px; padding: 30px; font-family: 'Courier New', Courier, monospace; color: var(--neon-green); box-shadow: 0 0 20px rgba(57, 255, 20, 0.2); position: relative; }
-        .terminal-header { position: absolute; top: 0; left: 0; width: 100%; background: var(--neon-green); color: #000; padding: 4px 10px; font-size: 0.8rem; font-weight: bold; box-sizing: border-box; }
-        #encrypted-display { font-size: 3rem; text-align: center; margin: 40px 0; letter-spacing: 10px; text-shadow: 0 0 10px var(--neon-green); }
-
-        input[type="text"] { width: 100%; padding: 16px; margin: 20px 0; background: #0d1117; border: 1px solid #30363d; color: white; border-radius: 8px; box-sizing: border-box; font-size: 1.1rem; }
-        input[type="range"] { width: 100%; accent-color: var(--neon-green); }
-
+        /* TERMINAL STYLE */
+        .terminal-window { background: #000; border: 2px solid var(--neon-green); border-radius: 8px; padding: 30px; color: var(--neon-green); position: relative; }
+        .terminal-header { position: absolute; top: 0; left: 0; width: 100%; background: var(--neon-green); color: #000; padding: 4px 10px; font-size: 0.7rem; font-weight: bold; box-sizing: border-box; }
+        #encrypted-display { font-size: 2.5rem; text-align: center; margin: 40px 0; letter-spacing: 5px; }
+        input[type="text"], input[type="range"] { width: 100%; padding: 16px; margin: 20px 0; background: #000; border: 1px solid var(--game-border); color: var(--neon-green); font-family: 'Courier New', Courier, monospace; border-radius: 8px; }
+        input[type="range"] { accent-color: var(--neon-green); }
         .hidden { display: none !important; }
-        footer { margin-top: 50px; padding-bottom: 40px; color: #555; font-size: 0.85rem; text-align: center; width: 100%; font-family: sans-serif; }
-
-        @media (max-width: 800px) {
-            .dashboard-container { width: 100%; height: auto; flex-direction: column; gap: 20px; padding-top: 40px; }
-            .hub-center { display: none; }
-            .orbit-item { position: static !important; transform: none !important; width: 90%; height: auto; padding: 20px; }
-            .orbit-svg { display: none; }
-        }
+        footer { margin-top: 50px; padding-bottom: 40px; color: var(--game-border); font-size: 0.7rem; text-align: center; width: 100%; }
     </style>
 </head>
 <body>
@@ -286,7 +282,6 @@
     <h1>[ ROOT@CYBER_LAB ]</h1>
 
     <div class="container">
-        <!-- CIRCULAR DASHBOARD -->
         <div id="dashboard" class="active">
             <div class="dashboard-container">
                 <svg class="orbit-svg"><circle cx="350" cy="350" r="280" class="orbit-line" /></svg>
@@ -301,7 +296,6 @@
             </div>
         </div>
 
-        <!-- GAME ARENA -->
         <div id="game-arena" class="game-arena">
             <button class="btn-nav" onclick="closeGame()">[ BACK TO TERMINAL ]</button>
 
@@ -314,7 +308,7 @@
                     <button id="phish-next-btn" class="btn-action btn-nav hidden" onclick="loadEmail()" style="margin-bottom: 0;">[ NEXT PACKET ]</button>
                 </div>
                 <p id="phish-feedback" style="text-align:center; min-height: 4rem; margin-top:20px;"></p>
-                <div style="text-align:center; font-weight: bold; font-size: 1.2rem; color: var(--neon-blue);">SUCCESS_RATE: <span id="score">0</span></div>
+                <div style="text-align:center; font-weight: bold; color: var(--neon-blue);">SUCCESS_RATE: <span id="score">0</span></div>
             </div>
 
             <div id="game-threathunter" class="game-container hidden">
@@ -326,10 +320,10 @@
                 <div style="height: 12px; background: #333; border-radius: 6px; overflow: hidden; margin-bottom: 20px;">
                     <div id="stability-fill" style="height:100%; width:100%; background: var(--neon-green); transition: 0.3s;"></div>
                 </div>
-                <div id="process-list-container" style="background: #000; border: 1px solid #30363d; border-radius: 8px; height: 350px; overflow-y: auto; font-family: monospace;">
+                <div id="process-list-container" style="background: #000; border: 1px solid var(--game-border); border-radius: 8px; height: 350px; overflow-y: auto; font-family: monospace;">
                     <table style="width: 100%; border-collapse: collapse; text-align: left;">
                         <thead style="background: #161b22; color: var(--neon-blue); position: sticky; top: 0;">
-                            <tr><th style="padding: 10px;">PID</th><th style="padding: 10px;">NAME</th><th style="padding: 10px;">SOURCE</th><th style="padding: 10px;">ACTION</th></tr>
+                            <tr><th style="padding: 10px;">PID</th><th style="padding: 10px;">Process</th><th style="padding: 10px;">Path</th><th style="padding: 10px;">Action</th></tr>
                         </thead>
                         <tbody id="process-list-body"></tbody>
                     </table>
@@ -344,9 +338,9 @@
                     <div class="terminal-header">ENCRYPTED_STREAM_V2</div>
                     <div id="encrypted-display"></div>
                     <div class="crypto-controls">
-                        <div>KEY_OFFSET: <span id="shift-value" style="font-size: 1.5rem; color: #fff;">0</span></div>
+                        <div>KEY_OFFSET: <span id="shift-value" style="color: #fff;">0</span></div>
                         <input type="range" id="shift-slider" min="0" max="25" value="0" oninput="updateCrypto()">
-                        <div style="border-top: 1px solid var(--game-border); width: 100%; padding-top: 15px; text-align: center;">DECODED_OUTPUT: <span id="decrypted-preview" style="color: #fff; font-size: 1.2rem;"></span></div>
+                        <div style="border-top: 1px solid var(--game-border); width: 100%; padding-top: 15px; text-align: center;">DECODED_OUTPUT: <span id="decrypted-preview" style="color: #fff;"></span></div>
                     </div>
                 </div>
                 <div id="crypto-feedback" style="text-align:center; height: 1.5rem; margin: 20px 0; font-weight: bold; color: var(--neon-green);"></div>
@@ -360,8 +354,8 @@
 
             <div id="game-quiz" class="game-container hidden">
                 <h2 style="color: var(--neon-blue);">SECURITY AUDIT: TRIVIA</h2>
-                <p id="quiz-question" style="font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5;"></p>
-                <div id="quiz-options" style="display: flex; flex-direction: column; gap: 15px;"></div>
+                <p id="quiz-question" style="font-size: 1.1rem; margin-bottom: 30px;"></p>
+                <div id="quiz-options" style="display: flex; flex-direction: column; gap: 10px;"></div>
                 <p id="quiz-feedback" style="text-align:center; margin-top: 25px; min-height: 2rem; font-weight: bold;"></p>
             </div>
 
@@ -382,7 +376,7 @@
                         <div id="briefing-overlay" class="briefing-overlay hidden">
                             <h3 id="briefing-title" style="color: var(--neon-purple);">ANALYSIS</h3>
                             <p id="briefing-text" style="line-height: 1.6; margin: 20px 0;"></p>
-                            <button class="btn-nav" onclick="nextChatScenario()" style="border-color: var(--neon-purple); color: var(--neon-purple);">[ NEXT_LOG ]</button>
+                            <button class="btn-nav" onclick="nextChatScenario()">[ NEXT_LOG ]</button>
                         </div>
                     </div>
                 </div>
@@ -397,7 +391,7 @@
                     <div id="icon-logs" class="desktop-icon" onclick="inspectDesktopItem('logs')" style="top: 160px; left: 60px;"><div class="icon-img">📊</div><div class="icon-label">sys.log</div></div>
                     <div id="icon-trash" class="desktop-icon" onclick="inspectDesktopItem('trash')" style="bottom: 40px; right: 40px;"><div class="icon-img">🗑️</div><div class="icon-label">RECOVERY</div></div>
                     <div id="forensics-modal" class="forensics-modal hidden"><h3 id="modal-title">EXTRACTING...</h3><div id="modal-content" style="font-family: monospace; background: #000; padding: 10px; margin: 15px 0; white-space: pre-wrap; border: 1px solid var(--game-border);"></div><button class="btn-nav" onclick="closeForensicsModal()">[ EXIT_VIEW ]</button></div>
-                    <div id="forensics-summary" class="briefing-overlay hidden" style="background: rgba(13, 17, 23, 0.98); border: 2px solid var(--neon-red);">
+                    <div id="forensics-summary" class="briefing-overlay hidden">
                         <h2 style="color: var(--neon-red);">ARTIFACTS_COLLECTED</h2>
                         <div style="text-align: left; max-width: 600px; margin: 20px 0; font-size: 0.9rem;">
                             <p>> LEAKS_IDENTIFIED:</p>
@@ -412,7 +406,7 @@
     </div>
 
     <footer>
-        &copy; 2025 CYBER_DEF_LAB | V6.0.0_STABLE
+        &copy; 2025 CYBER_DEF_LAB | V7.0.0_ULTIMATE_POLISH
     </footer>
 
     <script src="games.js"></script>
