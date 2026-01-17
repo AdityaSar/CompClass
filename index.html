@@ -11,6 +11,7 @@
             --neon-blue: #00d4ff;
             --neon-green: #39ff14;
             --neon-red: #f85149;
+            --neon-purple: #bc13fe;
             --text: #c9d1d9;
             --border: #1b2733;
             --terminal-green: #39ff14;
@@ -29,10 +30,10 @@
             background-image: radial-gradient(circle at 50% 50%, #0a192f 0%, #050a0f 100%);
         }
 
-        h1 {
-            color: var(--neon-blue);
-            text-transform: uppercase;
-            letter-spacing: 4px;
+        h1 { 
+            color: var(--neon-blue); 
+            text-transform: uppercase; 
+            letter-spacing: 4px; 
             margin: 40px 0 20px 0;
             text-shadow: 0 0 10px var(--neon-blue);
         }
@@ -167,6 +168,160 @@
         .btn-safe { background: var(--neon-green); color: #000; box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
         .btn-phish { background: var(--neon-red); color: #fff; box-shadow: 0 0 10px rgba(248, 81, 73, 0.4); }
         .btn-action:hover { transform: scale(1.05); filter: brightness(1.2); }
+
+        /* SOCIAL ENGINEERING CHAT STYLES */
+        .chat-container {
+            display: flex;
+            height: 500px;
+            background: #0d1117;
+            border: 1px solid var(--neon-purple);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .chat-sidebar {
+            width: 200px;
+            background: #161b22;
+            border-right: 1px solid var(--border);
+            padding: 15px;
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: #8b949e;
+        }
+
+        .user-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--neon-green);
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+        }
+
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .msg-received {
+            align-self: flex-start;
+            background: #21262d;
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg-sent {
+            align-self: flex-end;
+            background: var(--neon-purple);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .briefing-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(13, 17, 23, 0.95);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 100;
+            border-radius: 12px;
+        }
+
+        /* DIGITAL FORENSICS STYLES */
+        .virtual-desktop {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px, 100% 2px;
+        }
+
+        .desktop-icon {
+            position: absolute;
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .desktop-icon:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .desktop-icon .icon-img {
+            font-size: 2.5rem;
+        }
+
+        .desktop-icon .icon-label {
+            font-size: 0.75rem;
+            text-align: center;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .leak-found {
+            border: 2px solid var(--neon-red) !important;
+            box-shadow: 0 0 15px var(--neon-red);
+            animation: pulse-red 1s infinite alternate;
+        }
+
+        @keyframes pulse-red {
+            from { box-shadow: 0 0 5px var(--neon-red); }
+            to { box-shadow: 0 0 20px var(--neon-red); }
+        }
+
+        .forensics-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0d1117;
+            border: 1px solid var(--neon-red);
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            min-width: 300px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
 
         /* FIREWALL GAME STYLES */
         #firewall-arena {
@@ -336,18 +491,28 @@
                     <h3>Security Trivia</h3>
                     <p>Challenge your overall cybersecurity knowledge.</p>
                 </div>
+                <div class="game-card" onclick="openGame('social')">
+                    <div class="icon">💬</div>
+                    <h3>Social Engineering</h3>
+                    <p>Detect human-based manipulation in a live chat simulation.</p>
+                </div>
+                <div class="game-card" onclick="openGame('forensics')">
+                    <div class="icon">🔍</div>
+                    <h3>Digital Forensics</h3>
+                    <p>Hunt for sensitive data leaks in a virtual environment.</p>
+                </div>
             </div>
         </div>
 
         <!-- GAME ARENA -->
         <div id="game-arena" class="hidden">
             <button class="btn-nav" onclick="closeGame()">⬅ Exit to Dashboard</button>
-
+            
             <!-- PHISHING GAME -->
             <div id="game-phishing" class="game-container hidden">
                 <h2 style="color: var(--neon-blue);">Email Intelligence Analysis</h2>
                 <p>Examine the communication. Is it a legitimate message or a cyber attack?</p>
-
+                
                 <div id="email-display" class="email-card"></div>
 
                 <div class="btn-group">
@@ -363,7 +528,7 @@
             <div id="game-firewall" class="game-container hidden">
                 <h2 style="color: var(--neon-blue);">Network Firewall Defender</h2>
                 <p>A Firewall acts as a filter between your computer and the internet, deciding which data is safe to let through.</p>
-
+                
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                     <span>System Integrity: <span id="integrity-text">100%</span></span>
                     <span>Score: <span id="firewall-score">0</span></span>
@@ -374,7 +539,7 @@
 
                 <div id="firewall-arena">
                     <div id="system-core">SERVER CORE</div>
-
+                    
                     <div id="firewall-start-screen" style="position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 50; border-radius: 12px;">
                         <h2 style="color: var(--neon-green); margin-bottom: 30px;">READY FOR TRAFFIC?</h2>
                         <button class="btn-action btn-safe" onclick="startFirewall()">Initialize Firewall</button>
@@ -386,7 +551,7 @@
                         <button class="btn-action btn-safe" onclick="startFirewall()">Reboot System</button>
                     </div>
                 </div>
-
+                
                 <div id="firewall-message" style="text-align: center; height: 1.5rem; font-weight: bold;"></div>
 
                 <footer style="color: #8b949e; font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 15px; margin-top: 20px;">
@@ -397,18 +562,18 @@
             <!-- CRYPTO GAME -->
             <div id="game-crypto" class="game-container hidden">
                 <h2 style="color: var(--neon-blue);">Cryptography Lab: Caesar Cipher</h2>
-
+                
                 <div class="terminal-window">
                     <div class="terminal-header">SECURE_DECODER_V2.1</div>
                     <p style="margin-top: 20px;">> LEVEL <span id="crypto-level">1</span></p>
                     <p>> TASK: DECRYPT THE MESSAGE BELOW</p>
-
+                    
                     <div id="encrypted-display">LOADING...</div>
-
+                    
                     <div class="crypto-controls">
                         <div>SHIFT: <span id="shift-value" style="font-size: 1.5rem; color: #fff;">0</span></div>
                         <input type="range" id="shift-slider" min="0" max="25" value="0" oninput="updateCrypto()">
-
+                        
                         <div style="border-top: 1px solid var(--terminal-green); width: 100%; padding-top: 15px; text-align: center;">
                             DECRYPTED PREVIEW: <span id="decrypted-preview" style="color: #fff; font-size: 1.2rem;">LOADING...</span>
                         </div>
@@ -428,7 +593,7 @@
                 <h2 style="color: var(--neon-blue);">Password Brute-Force Simulator</h2>
                 <p>Discover how long it takes for automated tools to crack different password complexities.</p>
                 <input type="text" id="pw-input" placeholder="Type a password to test..." oninput="calculatePassword()">
-
+                
                 <div id="pw-result" class="result-box" style="font-size: 1.2rem;">
                     Enter a password to begin analysis.
                 </div>
@@ -444,6 +609,92 @@
                     <p id="quiz-question" style="font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5;"></p>
                     <div id="quiz-options" style="display: flex; flex-direction: column; gap: 15px;"></div>
                     <p id="quiz-feedback" style="text-align:center; margin-top: 25px; min-height: 2rem; font-weight: bold;"></p>
+                </div>
+            </div>
+
+            <!-- SOCIAL ENGINEERING GAME -->
+            <div id="game-social" class="game-container hidden">
+                <h2 style="color: var(--neon-purple);">Social Engineering Defense</h2>
+                <p>Identify social engineering tactics. Analyze the requests from colleagues and strangers.</p>
+                
+                <div class="chat-container">
+                    <div class="chat-sidebar">
+                        <div style="font-size: 0.7rem; color: #555; text-transform: uppercase; margin-bottom: 15px;">Active Users</div>
+                        <div class="sidebar-user"><div class="user-status"></div> Sarah (HR)</div>
+                        <div class="sidebar-user"><div class="user-status"></div> Mike (IT)</div>
+                        <div class="sidebar-user"><div class="user-status"></div> David (Exec)</div>
+                        <div class="sidebar-user"><div class="user-status" style="background:#555"></div> unknown_user</div>
+                    </div>
+                    <div class="chat-main">
+                        <div id="chat-history" class="chat-history"></div>
+                        
+                        <div id="chat-controls" class="btn-group">
+                            <button class="btn-action btn-safe" onclick="handleChatAction(false)">Validate & Help</button>
+                            <button class="btn-action btn-phish" onclick="handleChatAction(true)" style="background: var(--neon-purple);">Flag as Suspicious</button>
+                        </div>
+
+                        <div id="briefing-overlay" class="briefing-overlay hidden">
+                            <h3 id="briefing-title" style="color: var(--neon-purple);">SECURITY BRIEFING</h3>
+                            <p id="briefing-text" style="line-height: 1.6; margin: 20px 0;"></p>
+                            <button class="btn-nav" onclick="nextChatScenario()" style="border-color: var(--neon-purple); color: var(--neon-purple);">Next Message ➔</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align:center; font-weight: bold; font-size: 1.2rem; color: var(--neon-purple); margin-top: 20px;">
+                    Security Accuracy: <span id="social-score">100</span>%
+                </div>
+            </div>
+
+            <!-- DIGITAL FORENSICS GAME -->
+            <div id="game-forensics" class="game-container hidden">
+                <h2 style="color: var(--neon-red);">Digital Forensics: OS Security Audit</h2>
+                <p>Search the virtual desktop for security leaks and operational errors. Find all 3 to complete the audit.</p>
+                
+                <div class="virtual-desktop" id="virtual-desktop">
+                    <!-- Icons will be positioned via JS -->
+                    <div id="icon-sticky" class="desktop-icon" onclick="inspectDesktopItem('sticky')" style="top: 40px; left: 60px;">
+                        <div class="icon-img">📝</div>
+                        <div class="icon-label">notes.txt</div>
+                    </div>
+                    
+                    <div id="icon-config" class="desktop-icon" onclick="inspectDesktopItem('config')" style="top: 40px; left: 180px;">
+                        <div class="icon-img">⚙️</div>
+                        <div class="icon-label">config.js</div>
+                    </div>
+
+                    <div id="icon-trash" class="desktop-icon" onclick="inspectDesktopItem('trash')" style="bottom: 40px; right: 40px;">
+                        <div class="icon-img">🗑️</div>
+                        <div class="icon-label">Trash</div>
+                    </div>
+
+                    <div id="icon-browser" class="desktop-icon" style="top: 160px; left: 60px;">
+                        <div class="icon-img">🌐</div>
+                        <div class="icon-label">Browser</div>
+                    </div>
+
+                    <div id="forensics-modal" class="forensics-modal hidden">
+                        <h3 id="modal-title" style="margin-top:0">FILE INSPECTION</h3>
+                        <div id="modal-content" style="font-family: monospace; background: #000; padding: 10px; margin: 15px 0;"></div>
+                        <button class="btn-nav" onclick="closeForensicsModal()" style="margin-bottom:0">Close</button>
+                    </div>
+
+                    <div id="forensics-summary" class="briefing-overlay hidden" style="background: rgba(13, 17, 23, 0.98); border: 2px solid var(--neon-red);">
+                        <h2 style="color: var(--neon-red);">OPSEC SUMMARY COMPLETE</h2>
+                        <div style="text-align: left; max-width: 600px; margin: 20px 0;">
+                            <p><strong>Operational Security (OPSEC)</strong> is the process of protecting individual pieces of data that could be grouped together to give a bigger picture to an adversary.</p>
+                            <ul>
+                                <li><strong>Credential Storage:</strong> Never store passwords on physical or digital 'sticky notes'.</li>
+                                <li><strong>Code Hygiene:</strong> API keys and secrets should never be hardcoded in configuration files.</li>
+                                <li><strong>Data Destruction:</strong> Files in the 'Trash' are still recoverable. Sensitive data must be securely wiped.</li>
+                            </ul>
+                        </div>
+                        <button class="btn-nav" onclick="closeGame()" style="border-color: var(--neon-red); color: var(--neon-red);">Return to Dashboard</button>
+                    </div>
+                </div>
+
+                <div style="text-align:center; margin-top: 20px;">
+                    Leaks Detected: <span id="leaks-found-count">0</span> / 3
                 </div>
             </div>
 
