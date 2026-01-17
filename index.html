@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Defense Lab</title>
+    <style>
+        :root {
+            --bg: #0a0a12;
+            --card: #151525;
+            --neon-blue: #00f2ff;
+            --neon-purple: #bc13fe;
+            --neon-pink: #ff00c8;
+            --text: #e0e0ff;
+            --border: #303050;
+            --success: #00ff9d;
+            --danger: #ff3131;
+            --neon-green: #00ff9d;
+            --neon-red: #ff3131;
+            --neon-yellow: #f0f000;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a12 100%);
+        }
+
+        h1 {
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin: 40px 0;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* DASHBOARD GRID */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+
+        .module-card {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.15);
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .module-card:hover::before {
+            opacity: 1;
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .module-card h3 {
+            margin: 10px 0;
+            color: var(--neon-blue);
+            font-size: 1.4rem;
+        }
+
+        .module-card p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* GAME ARENA */
+        .game-arena {
+            width: 100%;
+            animation: fadeIn 0.5s ease-in-out;
+            display: none;
+        }
+
+        .game-arena.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-container {
+            background: var(--card);
+            border: 2px solid var(--neon-blue);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .btn-nav {
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .btn-nav:hover {
+            background: var(--neon-blue);
+            color: var(--bg);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .btn-nav:active, .btn-action:active {
+            transform: scale(0.95);
+        }
+
+        .hidden { display: none !important; }
+
+        /* GAME SPECIFIC UI */
+        .email-client {
+            display: flex;
+            background: #fdfdfd;
+            color: #333;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 450px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 2px solid #ccc;
+        }
+        .email-sidebar {
+            width: 180px;
+            background: #f5f5f5;
+            border-right: 1px solid #ddd;
+            padding: 20px 0;
+        }
+        .email-folder {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+        }
+        .email-folder.active {
+            background: #e8f0fe;
+            color: #1a73e8;
+            font-weight: bold;
+        }
+        .email-content {
+            flex: 1;
+            padding: 30px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            overflow-y: auto;
+        }
+        .email-header {
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+        }
+        .email-meta {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .email-body {
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            padding: 14px 28px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-safe { background: var(--success); color: #000; }
+        .btn-phish { background: var(--danger); color: #fff; }
+        .btn-action:hover { opacity: 0.9; transform: scale(1.05); }
+
+        .terminal-box {
+            background: #050505;
+            border: 2px solid var(--neon-purple);
+            border-radius: 12px;
+            padding: 30px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--neon-blue);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--neon-blue);
+            margin: 20px 0;
+        }
+
+        /* Social Engineering Styles */
+        .chat-container {
+            display: flex;
+            height: 450px;
+            border: 2px solid var(--neon-pink);
+            border-radius: 12px;
+            overflow: hidden;
+            background: #080810;
+        }
+        .chat-sidebar {
+            width: 200px;
+            background: rgba(0,0,0,0.3);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+        }
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            position: relative;
+        }
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .msg-received {
+            align-self: flex-start;
+            background: #1a1a2e;
+            border: 1px solid var(--border);
+        }
+        .msg-sent {
+            align-self: flex-end;
+            background: var(--neon-blue);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card);
+            border: 3px solid var(--neon-blue);
+            border-radius: 16px;
+            padding: 30px;
+            z-index: 100;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            width: 80%;
+        }
+
+        /* Forensics Styles */
+        .virtual-desktop {
+            width: 100%;
+            height: 480px;
+            background: #0a0a1a;
+            border: 2px solid var(--neon-blue);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            background-image: radial-gradient(circle at center, #1a1a3a 0%, #0a0a1a 100%);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 8px;
+            transition: 0.2s;
+            height: 90px;
+            border: 1px solid transparent;
+        }
+        .desktop-icon:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .icon-label {
+            font-size: 0.7rem;
+            margin-top: 5px;
+            text-align: center;
+            text-shadow: 1px 1px 2px #000;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+        }
+        .leak-found {
+            background: rgba(255, 49, 49, 0.2) !important;
+            border: 1px solid var(--danger) !important;
+        }
+
+        footer {
+            margin: 50px 0;
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="margin-bottom: 5px;">🛡️ Cyber Defense Lab</h1>
+    <div style="color: var(--neon-purple); font-weight: bold; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; font-size: 0.8rem; text-shadow: 0 0 5px var(--neon-purple);">HACKING SAFETY</div>
+
+    <div class="container">
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="dashboard-grid active">
+            <div class="module-card" onclick="openGame('phishing')">
+                <span class="icon">📧</span>
+                <h3>Phish or Legit?</h3>
+                <p>Detect sophisticated social engineering.</p>
+            </div>
+            <div class="module-card" onclick="openGame('threathunter')">
+                <span class="icon">🕵️‍♂️</span>
+                <h3>Threat Hunter</h3>
+                <p>Terminate malicious system processes.</p>
+            </div>
+            <div class="module-card" onclick="openGame('crypto')">
+                <span class="icon">🔐</span>
+                <h3>Crypto Lab</h3>
+                <p>Decode secret historical messages.</p>
+            </div>
+            <div class="module-card" onclick="openGame('password')">
+                <span class="icon">🔑</span>
+                <h3>Password Vault</h3>
+                <p>Test brute-force cracking speeds.</p>
+            </div>
+            <div class="module-card" onclick="openGame('quiz')">
+                <span class="icon">🛡️</span>
+                <h3>Security Trivia</h3>
+                <p>Challenge your general knowledge.</p>
+            </div>
+            <div class="module-card" onclick="openGame('social')">
+                <span class="icon">💬</span>
+                <h3>Social Engineering</h3>
+                <p>Identify human manipulation tactics.</p>
+            </div>
+            <div class="module-card" onclick="openGame('forensics')">
+                <span class="icon">🔍</span>
+                <h3>Digital Forensics</h3>
+                <p>Audit system for data leaks.</p>
+            </div>
+        </div>
+
+        <!-- GAME ARENA -->
+        <div id="game-arena" class="game-arena">
+            <button class="btn-nav" onclick="closeGame()">← Return to Dashboard</button>
+
+            <!-- MISSION INTRO -->
+            <div id="game-intro" class="game-container hidden" style="text-align: center;">
+                <h2 id="intro-title" style="color: var(--neon-blue); margin-bottom: 20px;">Mission Briefing</h2>
+                <div id="intro-icon" style="font-size: 4rem; margin-bottom: 20px;"></div>
+                <p id="intro-description" style="font-size: 1.1rem; line-height: 1.6; margin: 30px 0; color: var(--text); opacity: 0.9;"></p>
+                <button id="start-mission-btn" class="btn-action btn-safe">Start Mission</button>
+            </div>
+
+            <!-- PHISHING -->
+            <div id="game-phishing" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">📧 Inbox Defender</h2>
+                <div class="email-client">
+                    <div class="email-sidebar">
+                        <div class="email-folder active">📥 Inbox</div>
+                        <div class="email-folder">📤 Sent</div>
+                        <div class="email-folder">📁 Drafts</div>
+                        <div class="email-folder">🗑️ Trash</div>
+                    </div>
+                    <div id="email-display" class="email-content"></div>
+                </div>
+                <div class="btn-group">
+                    <button id="phish-report-btn" class="btn-action btn-phish" onclick="checkPhish(true)">Report Phish</button>
+                    <button id="phish-safe-btn" class="btn-action btn-safe" onclick="checkPhish(false)">Mark as Safe</button>
+                    <button id="phish-next-btn" class="btn-action btn-nav hidden" onclick="loadEmail()" style="margin-bottom: 0;">Next Email</button>
+                </div>
+                <p id="phish-feedback" style="text-align:center; min-height: 4rem; margin-top:20px; font-weight: bold;"></p>
+                <div id="phish-summary" class="hidden" style="text-align:center; margin-top: 20px;">
+                    <h3 style="color: var(--success);">SIMULATION COMPLETE</h3>
+                    <p>Audit report generated. Return to base.</p>
+                    <button class="btn-nav" onclick="closeGame()">Return to Dashboard</button>
+                </div>
+                <div style="text-align:center; font-size: 1.2rem; border-top: 1px solid var(--border); padding-top: 10px;">Security Score: <span id="score">0</span> / 15</div>
+            </div>
+
+            <!-- THREAT HUNTER -->
+            <div id="game-threathunter" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">Threat Hunter</h2>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <span>System Stability: <span id="stability-text" style="font-weight:bold;">100%</span></span>
+                    <span>Threats Neutralized: <span id="hunter-score" style="font-weight:bold;">0</span></span>
+                </div>
+                <div style="height: 10px; background: #000; border-radius: 5px; margin-bottom: 25px; overflow: hidden; border: 1px solid var(--border);">
+                    <div id="stability-fill" style="height:100%; width:100%; background: var(--success); transition: 0.3s;"></div>
+                </div>
+                <div id="process-list-container" style="background: #050505; border-radius: 12px; border: 2px solid var(--neon-blue); height: 350px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead style="background: #101020; position: sticky; top: 0; z-index: 10;">
+                            <tr>
+                                <th style="padding: 15px; border-bottom: 1px solid var(--border);">PID</th>
+                                <th style="padding: 15px; border-bottom: 1px solid var(--border);">Process Name</th>
+                                <th style="padding: 15px; border-bottom: 1px solid var(--border);">Path</th>
+                                <th style="padding: 15px; border-bottom: 1px solid var(--border);">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="process-list-body"></tbody>
+                    </table>
+                </div>
+                <div id="hunter-game-over" class="hidden" style="text-align: center; margin-top: 30px;">
+                    <h3 style="color: var(--danger);">SYSTEM COMPROMISED</h3>
+                    <button class="btn-action btn-safe" onclick="startHunter()">Reboot & Retry</button>
+                </div>
+                <div id="hunter-victory" class="hidden" style="text-align: center; margin-top: 30px;">
+                    <h3 style="color: var(--success);">MISSION ACCOMPLISHED</h3>
+                    <p>You have successfully secured the system perimeter.</p>
+                    <button class="btn-nav" onclick="closeGame()">Return to Dashboard</button>
+                </div>
+            </div>
+
+            <!-- CRYPTO -->
+            <div id="game-crypto" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">Crypto Lab: Level <span id="crypto-level">1</span></h2>
+                <div class="terminal-box">
+                    <div id="encrypted-display" style="font-size: 2.5rem; text-align: center; margin: 40px 0; color: var(--neon-purple); letter-spacing: 5px; font-weight: bold;"></div>
+                    <div style="max-width: 500px; margin: 0 auto;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Cipher Shift:</span>
+                            <span id="shift-value" style="color: var(--neon-blue); font-weight: bold;">0</span>
+                        </div>
+                        <input type="range" id="shift-slider" min="0" max="25" value="0" oninput="updateCrypto()">
+                        <div style="margin-top:20px; border-top: 1px solid var(--border); padding-top:20px;">
+                            <span>Decrypted Preview:</span>
+                            <div id="decrypted-preview" style="font-size: 1.5rem; color: var(--success); margin-top: 10px; min-height: 1.8rem;"></div>
+                        </div>
+                    </div>
+                </div>
+                <p id="crypto-feedback" style="text-align:center; height: 1.5rem; margin-top: 25px; font-weight: bold; font-size: 1.2rem;"></p>
+            </div>
+
+            <!-- PASSWORD -->
+            <div id="game-password" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">🔑 Password Vault</h2>
+                <div class="terminal-box" style="margin-top: 20px;">
+                    <div style="color: var(--neon-blue); margin-bottom: 20px; font-family: monospace;">[SYSTEM]: ENTER ACCESS KEY FOR ENTROPY ANALYSIS...</div>
+                    <input type="text" id="pw-input" placeholder="ACCESS_KEY_HERE" oninput="calculatePassword()" style="font-family: monospace; border: 1px dashed var(--neon-blue);">
+                    <div id="pw-result" style="text-align:center; margin-top: 30px; font-size: 1.5rem; font-weight: bold; font-family: monospace;">READY</div>
+                </div>
+                <div style="margin-top: 40px; padding: 20px; background: rgba(0,242,255,0.05); border: 2px solid var(--neon-blue); border-radius: 8px; font-size: 0.9rem;">
+                    <strong>DEFENSIVE ADVISORY:</strong> Use long passphrases with varied character sets to maximize brute-force resistance.
+                </div>
+            </div>
+
+            <!-- QUIZ -->
+            <div id="game-quiz" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">Security Trivia</h2>
+                <p id="quiz-question" style="font-size: 1.2rem; margin-bottom: 30px; line-height: 1.6;"></p>
+                <div id="quiz-options" style="display: grid; gap: 15px;"></div>
+                <p id="quiz-feedback" style="text-align:center; margin-top: 30px; min-height: 2rem; font-weight: bold; font-size: 1.2rem;"></p>
+                <div id="quiz-summary" class="hidden" style="text-align:center; margin-top: 20px;">
+                    <h3 style="color: var(--success);">QUIZ COMPLETE</h3>
+                    <p id="quiz-final-score" style="font-size: 1.5rem; margin: 20px 0;"></p>
+                    <button class="btn-nav" onclick="closeGame()">Return to Dashboard</button>
+                </div>
+            </div>
+
+            <!-- SOCIAL ENGINEERING -->
+            <div id="game-social" class="game-container hidden">
+                <h2 style="color: var(--neon-pink);">Social Engineering</h2>
+                <div class="chat-container">
+                    <div class="chat-sidebar">
+                        <div style="font-size: 0.8rem; margin-bottom: 15px; opacity: 0.6;">CONVERSATIONS</div>
+                        <div style="padding: 10px; background: rgba(0, 242, 255, 0.1); border-radius: 5px; margin-bottom: 5px; border: 1px solid var(--neon-blue);">Sarah_HR</div>
+                        <div style="padding: 10px; opacity: 0.5;">Mike_IT</div>
+                        <div style="padding: 10px; opacity: 0.5;">Exec_Admin</div>
+                    </div>
+                    <div class="chat-main">
+                        <div id="chat-history" class="chat-history"></div>
+                        <div id="chat-controls" class="btn-group">
+                            <button class="btn-action btn-safe" onclick="handleChatAction(false)">Legitimate</button>
+                            <button class="btn-action btn-phish" onclick="handleChatAction(true)">Suspicious</button>
+                        </div>
+                        <div id="briefing-overlay" class="modal hidden">
+                            <h3 id="briefing-title">ANALYSIS RESULT</h3>
+                            <p id="briefing-text" style="margin: 20px 0; line-height: 1.6;"></p>
+                            <button class="btn-nav" onclick="nextChatScenario()" style="margin-bottom:0;">Continue Audit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORENSICS -->
+            <div id="game-forensics" class="game-container hidden">
+                <h2 style="color: var(--neon-blue);">Digital Forensics</h2>
+                <div class="virtual-desktop">
+                    <!-- LEAKS/THREATS -->
+                    <div id="icon-sticky" class="desktop-icon" onclick="inspectDesktopItem('sticky')"><span style="font-size:2rem;">📝</span><div class="icon-label">secrets.txt</div></div>
+                    <div id="icon-config" class="desktop-icon" onclick="inspectDesktopItem('config')"><span style="font-size:2rem;">⚙️</span><div class="icon-label">env.config</div></div>
+                    <div id="icon-logs" class="desktop-icon" onclick="inspectDesktopItem('logs')"><span style="font-size:2rem;">📊</span><div class="icon-label">access.log</div></div>
+                    <div id="icon-trash" class="desktop-icon" onclick="inspectDesktopItem('trash')"><span style="font-size:2rem;">🗑️</span><div class="icon-label">Trash</div></div>
+                    <div id="icon-trojan" class="desktop-icon" onclick="inspectDesktopItem('trojan')"><span style="font-size:2rem;">👾</span><div class="icon-label">system_patch.exe</div></div>
+                    <div id="icon-keylogger" class="desktop-icon" onclick="inspectDesktopItem('keylogger')"><span style="font-size:2rem;">🕷️</span><div class="icon-label">lib_key.dll</div></div>
+                    <div id="icon-malware" class="desktop-icon" onclick="inspectDesktopItem('malware')"><span style="font-size:2rem;">💊</span><div class="icon-label">ransom.dmg</div></div>
+                    <div id="icon-ssh_keys" class="desktop-icon" onclick="inspectDesktopItem('ssh_keys')"><span style="font-size:2rem;">🔑</span><div class="icon-label">id_rsa</div></div>
+
+                    <!-- NORMAL ITEMS -->
+                    <div id="icon-photos" class="desktop-icon" onclick="inspectDesktopItem('photos')"><span style="font-size:2rem;">🖼️</span><div class="icon-label">Vacation.jpg</div></div>
+                    <div id="icon-music" class="desktop-icon" onclick="inspectDesktopItem('music')"><span style="font-size:2rem;">🎵</span><div class="icon-label">Song.mp3</div></div>
+                    <div id="icon-docs" class="desktop-icon" onclick="inspectDesktopItem('docs')"><span style="font-size:2rem;">📄</span><div class="icon-label">Report.pdf</div></div>
+                    <div id="icon-browser" class="desktop-icon" onclick="inspectDesktopItem('browser')"><span style="font-size:2rem;">🌐</span><div class="icon-label">Browser</div></div>
+                    <div id="icon-network_map" class="desktop-icon" onclick="inspectDesktopItem('network_map')"><span style="font-size:2rem;">🗺️</span><div class="icon-label">network.png</div></div>
+                    <div id="icon-keygen" class="desktop-icon" onclick="inspectDesktopItem('keygen')"><span style="font-size:2rem;">🛠️</span><div class="icon-label">keygen.zip</div></div>
+
+                    <div id="forensics-modal" class="modal hidden">
+                        <h3 id="modal-title">File Inspector</h3>
+                        <div id="modal-content" style="background:#000; padding:20px; margin:20px 0; border-radius:8px; font-family:monospace; border:1px solid var(--border); white-space:pre-wrap;"></div>
+                        <button class="btn-nav" onclick="closeForensicsModal()" style="margin-bottom:0;">Close File</button>
+                    </div>
+
+                    <div id="forensics-summary" class="modal hidden">
+                        <h2 style="color: var(--success);">FORENSICS COMPLETE</h2>
+                        <p>All critical security artifacts have been recovered from the host machine.</p>
+                        <ul style="text-align: left; line-height: 2;">
+                            <li>Unencrypted Credentials Extracted</li>
+                            <li>Hardcoded API Secrets Identified</li>
+                            <li>Brute Force Logs Verified</li>
+                            <li>Deleted Files Recovered</li>
+                            <li>Ransomware Payloads Isolated</li>
+                        </ul>
+                        <button class="btn-nav" onclick="closeGame()" style="margin-bottom:0;">Submit Report</button>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:20px; font-size: 1.1rem;">
+                    Security Risks Identified: <span id="leaks-found-count" style="color: var(--neon-blue); font-weight: bold;">0</span> / 8
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>© 2026 Cyber Defense Training Lab | v4.2.0 Stable</footer>
+
+    <script src="games.js"></script>
+</body>
+</html>

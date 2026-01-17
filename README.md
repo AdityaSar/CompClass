@@ -23,10 +23,7 @@ An interactive, browser-based training platform designed to teach fundamental cy
 
 ## How to Run
 
-1.  **Environment**: Ensure you have Python installed.
-2.  **Dependencies**: Install Flask using `pip install flask`.
-3.  **Launch**: Run `python app.py`.
-4.  **Access**: Open your browser and navigate to `http://127.0.0.1:5000`.
+1.  **Access**: Simply open `index.html` in any modern web browser. No server or dependencies required.
 
 ## Research Context
 

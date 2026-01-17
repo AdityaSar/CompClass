@@ -112,7 +112,12 @@ let phishScore = 0;
 
 function loadEmail() {
     if (currentEmail >= emails.length) {
-        document.getElementById('email-display').innerHTML = "<div style='text-align:center; padding: 50px;'>Audit Log Finalized.</div>";
+        document.getElementById('email-display').innerHTML = `
+            <div style='text-align:center; padding: 50px;'>
+                <h2 style="color: var(--neon-blue);">AUDIT LOG FINALIZED</h2>
+                <p>You have processed all 15 security alerts.</p>
+                <div style="font-size: 2rem; margin: 20px 0;">Final Score: ${phishScore}/15</div>
+            </div>`;
         document.getElementById('phish-report-btn').classList.add('hidden');
         document.getElementById('phish-safe-btn').classList.add('hidden');
         document.getElementById('phish-next-btn').classList.add('hidden');
@@ -157,7 +162,7 @@ function checkPhish(userGuessPhish) {
     if (currentEmail < emails.length) {
         document.getElementById('phish-next-btn').classList.remove('hidden');
     } else {
-        setTimeout(loadEmail, 1500); // Transition to summary
+        setTimeout(loadEmail, 1500);
     }
 }
 
@@ -299,17 +304,17 @@ function victoryHunter() {
 
 // --- CRYPTOGRAPHY GAME LOGIC ---
 const cryptoLevels = [
-    { encrypted: "ROVVY", plain: "HELLO", shift: 10 },
-    { encrypted: "FRPHER", plain: "SECURE", shift: 13 },
-    { encrypted: "PIIPRZ PI SPLC", plain: "ATTACK AT DAWN", shift: 15 },
-    { encrypted: "VSLS TJWSUZ", plain: "DATA BREACH", shift: 18 },
-    { encrypted: "XAHQ OAPQ", plain: "LOVE CODE", shift: 12 },
-    { encrypted: "WSJBYL", plain: "CYPHER", shift: 20 },
-    { encrypted: "EQBP VMFB ABMX", plain: "WITH NEXT STEP", shift: 8 },
-    { encrypted: "PDA BHWC", plain: "THE FLAG", shift: 22 },
-    { encrypted: "ANVNVVKA", plain: "REMEMBER", shift: 9 },
-    { encrypted: "JZF RZE TE", plain: "YOU GOT IT", shift: 11 },
-    { encrypted: "ZCPU ZWJS", plain: "LONG LIVE", shift: 14 }
+    { encrypted: "YVCCF", plain: "HELLO", shift: 17 },
+    { encrypted: "NZXPMZ", plain: "SECURE", shift: 21 },
+    { encrypted: "VOOVXF VO YVRI", plain: "ATTACK AT DAWN", shift: 21 },
+    { encrypted: "WTVT UKXTVA", plain: "DATA BREACH", shift: 19 },
+    { encrypted: "FIPY WIXY", plain: "LOVE CODE", shift: 20 },
+    { encrypted: "XDKCZM", plain: "CIPHER", shift: 21 },
+    { encrypted: "QCNS NYRN MNJL", plain: "WITH NEXT STEP", shift: 20 },
+    { encrypted: "MAX YETZ", plain: "THE FLAG", shift: 19 },
+    { encrypted: "GTBTBQTG", plain: "REMEMBER", shift: 15 },
+    { encrypted: "NDJ VDI XI", plain: "YOU GOT IT", shift: 15 },
+    { encrypted: "CFXG CMVM", plain: "LONG LIVE", shift: 17 }
 ];
 
 let currentCryptoLevel = 0;
@@ -521,6 +526,7 @@ function nextChatScenario() {
 
 // --- DIGITAL FORENSICS LOGIC ---
 let leaksFound = new Set();
+const TOTAL_LEAKS = 8; // Increased from 6
 
 function initForensics() {
     leaksFound = new Set();
@@ -562,6 +568,14 @@ function inspectDesktopItem(item) {
         title.innerText = "lib_key.dll";
         info = "Hooks: Keyboard, Clipboard\nDestination: 192.168.1.50\n\nCRITICAL: Active keylogger harvesting input.";
         isLeak = true;
+    } else if (item === 'malware') {
+        title.innerText = "ransom.dmg";
+        info = "Metadata: Encrypted blob detected.\n\nCRITICAL: Potential ransomware payload.";
+        isLeak = true;
+    } else if (item === 'ssh_keys') {
+        title.innerText = "id_rsa";
+        info = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA7...\n\nCRITICAL: Exposed private SSH key.";
+        isLeak = true;
     } else if (item === 'photos') {
         title.innerText = "Vacation.jpg";
         info = "Metadata: Taken with iPhone 13\nSize: 1.2MB\n\nSTATUS: Normal image file.";
@@ -574,6 +588,12 @@ function inspectDesktopItem(item) {
     } else if (item === 'browser') {
         title.innerText = "Web Browser";
         info = "History:\n- mail.corporate.com\n- stackoverflow.com\n- cybersecurity-training.com\n\nSTATUS: No malicious history detected.";
+    } else if (item === 'network_map') {
+        title.innerText = "network.png";
+        info = "Image showing internal IP ranges.\n\nSTATUS: Internal documentation.";
+    } else if (item === 'keygen') {
+        title.innerText = "keygen.zip";
+        info = "Contains cracked software tools.\n\nSTATUS: Policy violation, potentially unsafe.";
     }
 
     content.innerText = info;
@@ -585,7 +605,7 @@ function inspectDesktopItem(item) {
         if(iconEl) iconEl.classList.add('leak-found');
         document.getElementById('leaks-found-count').innerText = leaksFound.size;
 
-        if (leaksFound.size === 6) {
+        if (leaksFound.size === TOTAL_LEAKS) {
             setTimeout(() => {
                 modal.classList.add('hidden');
                 document.getElementById('forensics-summary').classList.remove('hidden');
