@@ -323,45 +323,46 @@
 </head>
 <body>
 
-    <h1>Cyber Defense Lab</h1>
+    <h1 style="margin-bottom: 5px;">🛡️ Cyber Defense Lab</h1>
+    <div style="color: var(--neon-purple); font-weight: bold; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; font-size: 0.8rem; text-shadow: 0 0 5px var(--neon-purple);">HACKING SAFETY</div>
 
     <div class="container">
         <!-- DASHBOARD -->
         <div id="dashboard" class="dashboard-grid active">
             <div class="module-card" onclick="openGame('phishing')">
                 <span class="icon">📧</span>
-                <h3>Phish Hunter</h3>
-                <p>Analyze incoming communications for social engineering markers and malicious links.</p>
+                <h3>Phish or Legit?</h3>
+                <p>Detect sophisticated social engineering.</p>
             </div>
             <div class="module-card" onclick="openGame('threathunter')">
                 <span class="icon">🕵️‍♂️</span>
-                <h3>Kernel Monitor</h3>
-                <p>Live process auditing. Identify and terminate unauthorized system behavior.</p>
+                <h3>Threat Hunter</h3>
+                <p>Terminate malicious system processes.</p>
             </div>
             <div class="module-card" onclick="openGame('crypto')">
                 <span class="icon">🔐</span>
-                <h3>Cipher Breach</h3>
-                <p>Decrypt intercepted transmissions using cryptographic analysis tools.</p>
+                <h3>Crypto Lab</h3>
+                <p>Decode secret historical messages.</p>
             </div>
             <div class="module-card" onclick="openGame('password')">
                 <span class="icon">🔑</span>
-                <h3>Brute Force</h3>
-                <p>Analyze password entropy and simulate real-world cracking vulnerabilities.</p>
+                <h3>Password Vault</h3>
+                <p>Test brute-force cracking speeds.</p>
             </div>
             <div class="module-card" onclick="openGame('quiz')">
                 <span class="icon">🛡️</span>
-                <h3>SysAudit Quiz</h3>
-                <p>Comprehensive security knowledge assessment across multiple domains.</p>
+                <h3>Security Trivia</h3>
+                <p>Challenge your general knowledge.</p>
             </div>
             <div class="module-card" onclick="openGame('social')">
                 <span class="icon">💬</span>
-                <h3>SocEng Alert</h3>
-                <p>Detect psychological manipulation in real-time communication logs.</p>
+                <h3>Social Engineering</h3>
+                <p>Identify human manipulation tactics.</p>
             </div>
             <div class="module-card" onclick="openGame('forensics')">
                 <span class="icon">🔍</span>
-                <h3>Data Recovery</h3>
-                <p>Perform digital forensics on compromised systems to recover artifacts.</p>
+                <h3>Digital Forensics</h3>
+                <p>Audit system for data leaks.</p>
             </div>
         </div>
 
@@ -371,7 +372,7 @@
 
             <!-- PHISHING -->
             <div id="game-phishing" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Email Security Sandbox</h2>
+                <h2 style="color: var(--neon-blue);">Phish or Legit?</h2>
                 <div id="email-display" class="email-card"></div>
                 <div class="btn-group">
                     <button id="phish-report-btn" class="btn-action btn-phish" onclick="checkPhish(true)">Report Phish</button>
@@ -384,7 +385,7 @@
 
             <!-- THREAT HUNTER -->
             <div id="game-threathunter" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Active Threat Monitor</h2>
+                <h2 style="color: var(--neon-blue);">Threat Hunter</h2>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                     <span>System Stability: <span id="stability-text" style="font-weight:bold;">100%</span></span>
                     <span>Threats Neutralized: <span id="hunter-score" style="font-weight:bold;">0</span></span>
@@ -416,7 +417,7 @@
 
             <!-- CRYPTO -->
             <div id="game-crypto" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Cryptographic Analysis: Level <span id="crypto-level">1</span></h2>
+                <h2 style="color: var(--neon-blue);">Crypto Lab: Level <span id="crypto-level">1</span></h2>
                 <div class="terminal-box">
                     <div id="encrypted-display" style="font-size: 2.5rem; text-align: center; margin: 40px 0; color: var(--neon-purple); letter-spacing: 5px; font-weight: bold;"></div>
                     <div style="max-width: 500px; margin: 0 auto;">
@@ -436,7 +437,7 @@
 
             <!-- PASSWORD -->
             <div id="game-password" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Vulnerability Simulator: Brute Force</h2>
+                <h2 style="color: var(--neon-blue);">Password Vault</h2>
                 <p>Enter a password to analyze its defensive strength against entropy decay.</p>
                 <input type="text" id="pw-input" placeholder="Enter password..." oninput="calculatePassword()">
                 <div id="pw-result" style="text-align:center; margin-top: 30px; font-size: 1.5rem; font-weight: bold;">READY</div>
@@ -447,7 +448,7 @@
 
             <!-- QUIZ -->
             <div id="game-quiz" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Security Compliance Audit</h2>
+                <h2 style="color: var(--neon-blue);">Security Trivia</h2>
                 <p id="quiz-question" style="font-size: 1.2rem; margin-bottom: 30px; line-height: 1.6;"></p>
                 <div id="quiz-options" style="display: grid; gap: 15px;"></div>
                 <p id="quiz-feedback" style="text-align:center; margin-top: 30px; min-height: 2rem; font-weight: bold; font-size: 1.2rem;"></p>
@@ -455,7 +456,7 @@
 
             <!-- SOCIAL ENGINEERING -->
             <div id="game-social" class="game-container hidden">
-                <h2 style="color: var(--neon-pink);">SocEng Threat Detection</h2>
+                <h2 style="color: var(--neon-pink);">Social Engineering</h2>
                 <div class="chat-container">
                     <div class="chat-sidebar">
                         <div style="font-size: 0.8rem; margin-bottom: 15px; opacity: 0.6;">CONVERSATIONS</div>
@@ -480,7 +481,7 @@
 
             <!-- FORENSICS -->
             <div id="game-forensics" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Digital Forensics Terminal</h2>
+                <h2 style="color: var(--neon-blue);">Digital Forensics</h2>
                 <div class="virtual-desktop">
                     <div id="icon-sticky" class="desktop-icon" onclick="inspectDesktopItem('sticky')" style="top: 30px; left: 30px;"><span style="font-size:2.5rem;">📝</span><div class="icon-label">secrets.txt</div></div>
                     <div id="icon-config" class="desktop-icon" onclick="inspectDesktopItem('config')" style="top: 30px; left: 150px;"><span style="font-size:2.5rem;">⚙️</span><div class="icon-label">env.config</div></div>

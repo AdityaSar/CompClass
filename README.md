@@ -4,13 +4,13 @@ An interactive, browser-based training platform designed to teach fundamental cy
 
 ## Modules
 
-1. **Phishing Intelligence Analysis**: Identify sophisticated email-based threats, including CEO fraud, typosquatting, and social engineering.
-2. **Threat Hunter: Process Monitor**: A real-time system monitoring simulation. Identify and terminate malicious processes to maintain system stability.
-3. **Cryptography Lab**: Explore the history of encryption with an interactive Caesar Cipher decoder.
-4. **Password Brute-Force Simulator**: Understand the relationship between password entropy and the time required for automated cracking.
-5. **Social Engineering Defense**: Engage in a simulated chat to identify psychological manipulation and data harvesting techniques.
-6. **Digital Forensics**: Audit a virtual workstation to identify security leaks, misplaced credentials, and misconfigured permissions.
-7. **Security Awareness Trivia**: Test your knowledge on critical security topics like MFA, Zero-Day vulnerabilities, and Ransomware.
+1. **Phish or Legit?**: Detect sophisticated social engineering and email-based threats.
+2. **Threat Hunter**: A real-time system monitoring simulation. Identify and terminate malicious processes.
+3. **Crypto Lab**: Decode secret historical messages with an interactive Caesar Cipher decoder.
+4. **Password Vault**: Test brute-force cracking speeds and understand password entropy.
+5. **Security Trivia**: Challenge your general knowledge on critical security topics.
+6. **Social Engineering**: Identify human manipulation tactics in a simulated chat environment.
+7. **Digital Forensics**: Audit a system for data leaks, misplaced credentials, and misconfigured permissions.
 
 ## Technical Details
 
