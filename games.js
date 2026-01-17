@@ -306,15 +306,7 @@ function victoryHunter() {
 const cryptoLevels = [
     { encrypted: "YVCCF", plain: "HELLO", shift: 17 },
     { encrypted: "NZXPMZ", plain: "SECURE", shift: 21 },
-    { encrypted: "VOOVXF VO YVRI", plain: "ATTACK AT DAWN", shift: 21 },
-    { encrypted: "WTVT UKXTVA", plain: "DATA BREACH", shift: 19 },
-    { encrypted: "FIPY WIXY", plain: "LOVE CODE", shift: 20 },
-    { encrypted: "XDKCZM", plain: "CIPHER", shift: 21 },
-    { encrypted: "QCNS NYRN MNJL", plain: "WITH NEXT STEP", shift: 20 },
-    { encrypted: "MAX YETZ", plain: "THE FLAG", shift: 19 },
-    { encrypted: "GTBTBQTG", plain: "REMEMBER", shift: 15 },
-    { encrypted: "NDJ VDI XI", plain: "YOU GOT IT", shift: 15 },
-    { encrypted: "CFXG CMVM", plain: "LONG LIVE", shift: 17 }
+    { encrypted: "VOOVXF VO YVRI", plain: "ATTACK AT DAWN", shift: 21 }
 ];
 
 let currentCryptoLevel = 0;
@@ -534,6 +526,12 @@ function initForensics() {
     document.querySelectorAll('.desktop-icon').forEach(icon => icon.classList.remove('leak-found'));
     document.getElementById('forensics-summary').classList.add('hidden');
     document.getElementById('forensics-modal').classList.add('hidden');
+
+    // Randomize icons
+    const desktop = document.querySelector('.virtual-desktop');
+    const icons = Array.from(desktop.querySelectorAll('.desktop-icon'));
+    icons.sort(() => Math.random() - 0.5);
+    icons.forEach(icon => desktop.appendChild(icon));
 }
 
 function inspectDesktopItem(item) {
