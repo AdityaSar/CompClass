@@ -28,6 +28,7 @@
             align-items: center;
             min-height: 100vh;
             background-image: radial-gradient(circle at 50% 50%, #0a192f 0%, #050a0f 100%);
+            overflow-x: hidden;
         }
 
         h1 {
@@ -36,68 +37,152 @@
             letter-spacing: 4px;
             margin: 40px 0 20px 0;
             text-shadow: 0 0 10px var(--neon-blue);
+            z-index: 10;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 150px);
         }
 
-        /* DASHBOARD STYLES */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
+        /* CIRCULAR DASHBOARD STYLES */
+        .dashboard-container {
+            position: relative;
+            width: 700px;
+            height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .game-card {
+        .hub-center {
+            width: 180px;
+            height: 180px;
+            background: var(--card);
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 5;
+            box-shadow: 0 0 30px var(--neon-blue);
+            animation: pulse-blue 3s infinite alternate;
+        }
+
+        .hub-center h2 {
+            font-size: 1.4rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        @keyframes pulse-blue {
+            from { box-shadow: 0 0 20px var(--neon-blue); }
+            to { box-shadow: 0 0 40px var(--neon-blue), 0 0 10px white inset; }
+        }
+
+        .orbit-item {
+            position: absolute;
+            width: 180px;
+            height: 120px;
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 10px;
+            text-align: center;
+            z-index: 2;
         }
 
-        .game-card:hover {
-            border-color: var(--neon-blue);
-            transform: translateY(-10px);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        .orbit-item:hover {
+            border-color: var(--neon-green);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--neon-green);
             background: #111b27;
+            z-index: 10;
         }
 
-        .game-card .icon {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
+        .orbit-item .icon { font-size: 2rem; margin-bottom: 5px; }
+        .orbit-item h3 { font-size: 0.9rem; margin: 0; text-transform: uppercase; color: var(--neon-blue); }
+        .orbit-item p { font-size: 0.7rem; color: #8b949e; margin: 5px 0 0 0; line-height: 1.2; }
+
+        /* Position the 7 items in a circle */
+        /* Orbit items start at child index 3 (after SVG and Hub) */
+        /* 7 items: 360 / 7 = 51.4 degrees each */
+        .orbit-item:nth-child(3) { transform: rotate(0deg) translate(280px) rotate(0deg); }
+        .orbit-item:nth-child(4) { transform: rotate(51.4deg) translate(280px) rotate(-51.4deg); }
+        .orbit-item:nth-child(5) { transform: rotate(102.8deg) translate(280px) rotate(-102.8deg); }
+        .orbit-item:nth-child(6) { transform: rotate(154.2deg) translate(280px) rotate(-154.2deg); }
+        .orbit-item:nth-child(7) { transform: rotate(205.6deg) translate(280px) rotate(-205.6deg); }
+        .orbit-item:nth-child(8) { transform: rotate(257deg) translate(280px) rotate(-257deg); }
+        .orbit-item:nth-child(9) { transform: rotate(308.4deg) translate(280px) rotate(-308.4deg); }
+
+        /* Connection lines (SVG) */
+        .orbit-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .game-card h3 {
-            margin: 0;
-            color: var(--neon-blue);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .orbit-line {
+            stroke: rgba(0, 212, 255, 0.2);
+            stroke-width: 1;
+            fill: none;
+            stroke-dasharray: 5;
+            animation: dash 20s linear infinite;
         }
 
-        .game-card p {
-            font-size: 0.95rem;
-            color: #8b949e;
-            margin: 0;
-            line-height: 1.4;
+        @keyframes dash {
+            to { stroke-dashoffset: 1000; }
+        }
+
+        /* Responsive Dashboard */
+        @media (max-width: 800px) {
+            .dashboard-container {
+                width: 100%;
+                height: auto;
+                flex-direction: column;
+                gap: 20px;
+                padding-top: 40px;
+            }
+            .hub-center { display: none; }
+            .orbit-item {
+                position: static !important;
+                transform: none !important;
+                width: 90%;
+                height: auto;
+                padding: 20px;
+            }
+            .orbit-svg { display: none; }
         }
 
         /* GAME ARENA STYLES */
         .game-arena {
             width: 100%;
             animation: fadeIn 0.5s ease-in-out;
+            display: none;
+        }
+
+        .game-arena.active {
+            display: block;
         }
 
         @keyframes fadeIn {
@@ -112,6 +197,8 @@
             padding: 40px;
             position: relative;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .btn-nav {
@@ -230,13 +317,6 @@
             border-bottom-left-radius: 2px;
         }
 
-        .msg-sent {
-            align-self: flex-end;
-            background: var(--neon-purple);
-            color: white;
-            border-bottom-right-radius: 2px;
-        }
-
         .briefing-overlay {
             position: absolute;
             inset: 0;
@@ -318,68 +398,6 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
 
-        /* FIREWALL GAME STYLES */
-        #firewall-arena {
-            width: 100%;
-            height: 500px;
-            background: #020508;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        #system-core {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 80px;
-            background: var(--card);
-            border: 3px solid var(--neon-blue);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
-            color: var(--neon-blue);
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-
-        .packet {
-            position: absolute;
-            width: 100px;
-            height: 70px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            z-index: 5;
-            transition: transform 0.1s;
-        }
-
-        .packet.safe { background: rgba(57, 255, 20, 0.15); border: 2px solid var(--neon-green); box-shadow: 0 0 15px rgba(57, 255, 20, 0.3); }
-        .packet.threat { background: rgba(248, 81, 73, 0.15); border: 2px solid var(--neon-red); box-shadow: 0 0 15px rgba(248, 81, 73, 0.3); }
-
-        .packet-btn {
-            font-size: 0.7rem;
-            padding: 4px 8px;
-            border: 1px solid currentColor;
-            background: rgba(0,0,0,0.5);
-            cursor: pointer;
-            border-radius: 3px;
-            text-transform: uppercase;
-            color: inherit;
-        }
-
-        .packet-btn:hover { background: rgba(255,255,255,0.1); }
-
         /* CRYPTO GAME STYLES */
         .terminal-window {
             background: #000;
@@ -426,8 +444,7 @@
             accent-color: var(--terminal-green);
         }
 
-        /* PASSWORD GAME STYLES */
-        input[type="text"], input[type="number"] {
+        input[type="text"] {
             width: 100%;
             padding: 16px;
             margin: 20px 0;
@@ -439,8 +456,6 @@
             font-size: 1.1rem;
         }
 
-        input:focus { outline: none; border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
-
         .hidden { display: none !important; }
 
         footer {
@@ -449,6 +464,7 @@
             color: #555;
             font-size: 0.85rem;
             text-align: center;
+            width: 100%;
         }
     </style>
 </head>
@@ -458,72 +474,76 @@
 
     <div class="container">
         
-        <!-- DASHBOARD -->
+        <!-- CIRCULAR DASHBOARD -->
         <div id="dashboard" class="active">
-            <div class="game-grid">
-                <div class="game-card" onclick="openGame('phishing')">
+            <div class="dashboard-container">
+                <svg class="orbit-svg">
+                    <circle cx="350" cy="350" r="280" class="orbit-line" />
+                    <circle cx="350" cy="350" r="140" class="orbit-line" style="stroke-dasharray: 2; opacity: 0.1;" />
+                </svg>
+
+                <div class="hub-center">
+                    <h2>HACKING<br>SAFETY</h2>
+                </div>
+
+                <div class="orbit-item" onclick="openGame('phishing')">
                     <div class="icon">📧</div>
                     <h3>Phish or Legit?</h3>
-                    <p>Detect sophisticated phishing attempts and social engineering.</p>
+                    <p>Detect sophisticated social engineering.</p>
                 </div>
-                <div class="game-card" onclick="openGame('threathunter')">
+                <div class="orbit-item" onclick="openGame('threathunter')">
                     <div class="icon">🕵️‍♂️</div>
                     <h3>Threat Hunter</h3>
-                    <p>Monitor system processes and terminate malicious activities.</p>
+                    <p>Terminate malicious system processes.</p>
                 </div>
-                <div class="game-card" onclick="openGame('crypto')">
+                <div class="orbit-item" onclick="openGame('crypto')">
                     <div class="icon">🔐</div>
-                    <h3>Cryptography Lab</h3>
-                    <p>Decode secret messages using historical encryption methods.</p>
+                    <h3>Crypto Lab</h3>
+                    <p>Decode secret historical messages.</p>
                 </div>
-                <div class="game-card" onclick="openGame('password')">
+                <div class="orbit-item" onclick="openGame('password')">
                     <div class="icon">🔑</div>
                     <h3>Password Vault</h3>
-                    <p>Test your credentials against brute-force cracking simulations.</p>
+                    <p>Test brute-force cracking speeds.</p>
                 </div>
-                <div class="game-card" onclick="openGame('quiz')">
+                <div class="orbit-item" onclick="openGame('quiz')">
                     <div class="icon">🛡️</div>
                     <h3>Security Trivia</h3>
-                    <p>Challenge your overall cybersecurity knowledge.</p>
+                    <p>Challenge your general knowledge.</p>
                 </div>
-                <div class="game-card" onclick="openGame('social')">
+                <div class="orbit-item" onclick="openGame('social')">
                     <div class="icon">💬</div>
                     <h3>Social Engineering</h3>
-                    <p>Detect human-based manipulation in a live chat simulation.</p>
+                    <p>Identify human manipulation tactics.</p>
                 </div>
-                <div class="game-card" onclick="openGame('forensics')">
+                <div class="orbit-item" onclick="openGame('forensics')">
                     <div class="icon">🔍</div>
                     <h3>Digital Forensics</h3>
-                    <p>Hunt for sensitive data leaks in a virtual environment.</p>
+                    <p>Audit system for data leaks.</p>
                 </div>
             </div>
         </div>
 
         <!-- GAME ARENA -->
-        <div id="game-arena" class="hidden">
+        <div id="game-arena" class="game-arena">
             <button class="btn-nav" onclick="closeGame()">⬅ Exit to Dashboard</button>
 
             <!-- PHISHING GAME -->
             <div id="game-phishing" class="game-container hidden">
                 <h2 style="color: var(--neon-blue);">Email Intelligence Analysis</h2>
-                <p>Examine the communication. Is it a legitimate message or a cyber attack?</p>
-
                 <div id="email-display" class="email-card"></div>
-
                 <div class="btn-group">
                     <button id="phish-report-btn" class="btn-action btn-phish" onclick="checkPhish(true)">Report Phishing</button>
                     <button id="phish-safe-btn" class="btn-action btn-safe" onclick="checkPhish(false)">Mark as Safe</button>
                     <button id="phish-next-btn" class="btn-action btn-nav hidden" onclick="loadEmail()" style="margin-bottom: 0;">Next Email ➔</button>
                 </div>
-                <p id="phish-feedback" style="text-align:center; min-height: 4rem; margin-top:20px; line-height: 1.4;"></p>
+                <p id="phish-feedback" style="text-align:center; min-height: 4rem; margin-top:20px;"></p>
                 <div style="text-align:center; font-weight: bold; font-size: 1.2rem; color: var(--neon-blue);">Score: <span id="score">0</span></div>
             </div>
 
             <!-- THREAT HUNTER GAME -->
             <div id="game-threathunter" class="game-container hidden">
                 <h2 style="color: var(--neon-blue);">Threat Hunter: Process Monitor</h2>
-                <p>Analyze running processes. Identify and terminate those that exhibit suspicious behavior.</p>
-
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                     <span>System Stability: <span id="stability-text">100%</span></span>
                     <span>Threats Neutralized: <span id="hunter-score">0</span></span>
@@ -531,107 +551,64 @@
                 <div style="height: 12px; background: #333; border-radius: 6px; overflow: hidden; margin-bottom: 20px;">
                     <div id="stability-fill" style="height:100%; width:100%; background: var(--neon-green); transition: 0.3s;"></div>
                 </div>
-
                 <div id="process-list-container" style="background: #000; border: 1px solid var(--border); border-radius: 8px; height: 350px; overflow-y: auto; font-family: monospace;">
                     <table style="width: 100%; border-collapse: collapse; text-align: left;">
                         <thead style="background: #161b22; color: var(--neon-blue); position: sticky; top: 0;">
-                            <tr>
-                                <th style="padding: 10px;">PID</th>
-                                <th style="padding: 10px;">Process Name</th>
-                                <th style="padding: 10px;">Path</th>
-                                <th style="padding: 10px;">Action</th>
-                            </tr>
+                            <tr><th style="padding: 10px;">PID</th><th style="padding: 10px;">Process</th><th style="padding: 10px;">Path</th><th style="padding: 10px;">Action</th></tr>
                         </thead>
-                        <tbody id="process-list-body">
-                            <!-- Processes will be injected here -->
-                        </tbody>
+                        <tbody id="process-list-body"></tbody>
                     </table>
                 </div>
-
-                <div id="hunter-start-screen" style="text-align: center; margin-top: 20px;">
-                    <button class="btn-action btn-safe" onclick="startHunter()">Start Monitoring</button>
-                </div>
-
-                <div id="hunter-game-over" class="hidden" style="text-align: center; margin-top: 20px;">
-                    <h3 style="color: var(--neon-red);">SYSTEM COMPROMISED</h3>
-                    <button class="btn-action btn-safe" onclick="startHunter()">Restart Monitor</button>
-                </div>
+                <div id="hunter-start-screen" style="text-align: center; margin-top: 20px;"><button class="btn-action btn-safe" onclick="startHunter()">Start Monitoring</button></div>
+                <div id="hunter-game-over" class="hidden" style="text-align: center; margin-top: 20px;"><h3 style="color: var(--neon-red);">SYSTEM COMPROMISED</h3><button class="btn-action btn-safe" onclick="startHunter()">Restart Monitor</button></div>
             </div>
 
             <!-- CRYPTO GAME -->
             <div id="game-crypto" class="game-container hidden">
                 <h2 style="color: var(--neon-blue);">Cryptography Lab: Caesar Cipher</h2>
-
                 <div class="terminal-window">
                     <div class="terminal-header">SECURE_DECODER_V2.1</div>
                     <p style="margin-top: 20px;">> LEVEL <span id="crypto-level">1</span></p>
-                    <p>> TASK: DECRYPT THE MESSAGE BELOW</p>
-
-                    <div id="encrypted-display">LOADING...</div>
-
+                    <div id="encrypted-display"></div>
                     <div class="crypto-controls">
                         <div>SHIFT: <span id="shift-value" style="font-size: 1.5rem; color: #fff;">0</span></div>
                         <input type="range" id="shift-slider" min="0" max="25" value="0" oninput="updateCrypto()">
-
-                        <div style="border-top: 1px solid var(--terminal-green); width: 100%; padding-top: 15px; text-align: center;">
-                            DECRYPTED PREVIEW: <span id="decrypted-preview" style="color: #fff; font-size: 1.2rem;">LOADING...</span>
-                        </div>
+                        <div style="border-top: 1px solid var(--terminal-green); width: 100%; padding-top: 15px; text-align: center;">DECRYPTED PREVIEW: <span id="decrypted-preview" style="color: #fff; font-size: 1.2rem;"></span></div>
                     </div>
                 </div>
-
                 <div id="crypto-feedback" style="text-align:center; height: 1.5rem; margin: 20px 0; font-weight: bold; color: var(--neon-green);"></div>
-
-                <div style="background: rgba(0, 212, 255, 0.05); border: 1px solid var(--border); border-radius: 12px; padding: 25px; margin-top: 30px;">
-                    <h3 style="color: var(--neon-blue); margin-top: 0;">How it Works</h3>
-                    <p style="line-height: 1.6; margin-bottom: 0;">The Caesar Cipher is one of the oldest forms of encryption, used by Julius Caesar to send private messages. It works by shifting each letter of the alphabet by a fixed number of positions.</p>
-                </div>
             </div>
 
             <!-- PASSWORD GAME -->
             <div id="game-password" class="game-container hidden">
                 <h2 style="color: var(--neon-blue);">Password Brute-Force Simulator</h2>
-                <p>Discover how long it takes for automated tools to crack different password complexities.</p>
                 <input type="text" id="pw-input" placeholder="Type a password to test..." oninput="calculatePassword()">
-
-                <div id="pw-result" class="result-box" style="font-size: 1.2rem;">
-                    Enter a password to begin analysis.
-                </div>
-                <p style="font-size: 0.9rem; color: #8b949e; margin-top: 20px; line-height: 1.5;">
-                    <strong>Security Insight:</strong> Modern hackers use GPUs that can attempt billions of guesses per second. Length and character variety (entropy) are your best defenses.
-                </p>
+                <div id="pw-result" style="font-size: 1.2rem; text-align:center;">Enter a password to begin analysis.</div>
             </div>
 
             <!-- QUIZ GAME -->
             <div id="game-quiz" class="game-container hidden">
                 <h2 style="color: var(--neon-blue);">Security Awareness Trivia</h2>
-                <div id="quiz-container">
-                    <p id="quiz-question" style="font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5;"></p>
-                    <div id="quiz-options" style="display: flex; flex-direction: column; gap: 15px;"></div>
-                    <p id="quiz-feedback" style="text-align:center; margin-top: 25px; min-height: 2rem; font-weight: bold;"></p>
-                </div>
+                <p id="quiz-question" style="font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5;"></p>
+                <div id="quiz-options" style="display: flex; flex-direction: column; gap: 15px;"></div>
+                <p id="quiz-feedback" style="text-align:center; margin-top: 25px; min-height: 2rem; font-weight: bold;"></p>
             </div>
 
             <!-- SOCIAL ENGINEERING GAME -->
             <div id="game-social" class="game-container hidden">
                 <h2 style="color: var(--neon-purple);">Social Engineering Defense</h2>
-                <p>Identify social engineering tactics. Analyze the requests from colleagues and strangers.</p>
-
                 <div class="chat-container">
                     <div class="chat-sidebar">
-                        <div style="font-size: 0.7rem; color: #555; text-transform: uppercase; margin-bottom: 15px;">Active Users</div>
                         <div class="sidebar-user"><div class="user-status"></div> Sarah (HR)</div>
                         <div class="sidebar-user"><div class="user-status"></div> Mike (IT)</div>
                         <div class="sidebar-user"><div class="user-status"></div> David (Exec)</div>
-                        <div class="sidebar-user"><div class="user-status" style="background:#555"></div> unknown_user</div>
                     </div>
                     <div class="chat-main">
                         <div id="chat-history" class="chat-history"></div>
-
                         <div id="chat-controls" class="btn-group">
                             <button class="btn-action btn-safe" onclick="handleChatAction(false)">Validate & Help</button>
                             <button class="btn-action btn-phish" onclick="handleChatAction(true)" style="background: var(--neon-purple);">Flag as Suspicious</button>
                         </div>
-
                         <div id="briefing-overlay" class="briefing-overlay hidden">
                             <h3 id="briefing-title" style="color: var(--neon-purple);">SECURITY BRIEFING</h3>
                             <p id="briefing-text" style="line-height: 1.6; margin: 20px 0;"></p>
@@ -639,62 +616,45 @@
                         </div>
                     </div>
                 </div>
-
-                <div style="text-align:center; font-weight: bold; font-size: 1.2rem; color: var(--neon-purple); margin-top: 20px;">
-                    Security Accuracy: <span id="social-score">100</span>%
-                </div>
+                <div style="text-align:center; font-weight: bold; font-size: 1.2rem; color: var(--neon-purple); margin-top: 20px;">Security Accuracy: <span id="social-score">100</span>%</div>
             </div>
 
             <!-- DIGITAL FORENSICS GAME -->
             <div id="game-forensics" class="game-container hidden">
                 <h2 style="color: var(--neon-red);">Digital Forensics: OS Security Audit</h2>
-                <p>Search the virtual desktop for security leaks and operational errors. Find all 3 to complete the audit.</p>
-
                 <div class="virtual-desktop" id="virtual-desktop">
-                    <!-- Icons will be positioned via JS -->
                     <div id="icon-sticky" class="desktop-icon" onclick="inspectDesktopItem('sticky')" style="top: 40px; left: 60px;">
-                        <div class="icon-img">📝</div>
-                        <div class="icon-label">notes.txt</div>
+                        <div class="icon-img">📝</div><div class="icon-label">notes.txt</div>
                     </div>
-
                     <div id="icon-config" class="desktop-icon" onclick="inspectDesktopItem('config')" style="top: 40px; left: 180px;">
-                        <div class="icon-img">⚙️</div>
-                        <div class="icon-label">config.js</div>
+                        <div class="icon-img">⚙️</div><div class="icon-label">config.js</div>
                     </div>
-
+                    <div id="icon-logs" class="desktop-icon" onclick="inspectDesktopItem('logs')" style="top: 160px; left: 60px;">
+                        <div class="icon-img">📊</div><div class="icon-label">access.log</div>
+                    </div>
                     <div id="icon-trash" class="desktop-icon" onclick="inspectDesktopItem('trash')" style="bottom: 40px; right: 40px;">
-                        <div class="icon-img">🗑️</div>
-                        <div class="icon-label">Trash</div>
+                        <div class="icon-img">🗑️</div><div class="icon-label">Trash</div>
                     </div>
-
-                    <div id="icon-browser" class="desktop-icon" style="top: 160px; left: 60px;">
-                        <div class="icon-img">🌐</div>
-                        <div class="icon-label">Browser</div>
-                    </div>
-
                     <div id="forensics-modal" class="forensics-modal hidden">
                         <h3 id="modal-title" style="margin-top:0">FILE INSPECTION</h3>
-                        <div id="modal-content" style="font-family: monospace; background: #000; padding: 10px; margin: 15px 0;"></div>
+                        <div id="modal-content" style="font-family: monospace; background: #000; padding: 10px; margin: 15px 0; white-space: pre-wrap;"></div>
                         <button class="btn-nav" onclick="closeForensicsModal()" style="margin-bottom:0">Close</button>
                     </div>
-
                     <div id="forensics-summary" class="briefing-overlay hidden" style="background: rgba(13, 17, 23, 0.98); border: 2px solid var(--neon-red);">
                         <h2 style="color: var(--neon-red);">OPSEC SUMMARY COMPLETE</h2>
                         <div style="text-align: left; max-width: 600px; margin: 20px 0;">
-                            <p><strong>Operational Security (OPSEC)</strong> is the process of protecting individual pieces of data that could be grouped together to give a bigger picture to an adversary.</p>
+                            <p><strong>Operational Security (OPSEC)</strong> process complete. Leaks found:</p>
                             <ul>
-                                <li><strong>Credential Storage:</strong> Never store passwords on physical or digital 'sticky notes'.</li>
-                                <li><strong>Code Hygiene:</strong> API keys and secrets should never be hardcoded in configuration files.</li>
-                                <li><strong>Data Destruction:</strong> Files in the 'Trash' are still recoverable. Sensitive data must be securely wiped.</li>
+                                <li><strong>Plaintext Credentials:</strong> notes.txt</li>
+                                <li><strong>Hardcoded Secrets:</strong> config.js</li>
+                                <li><strong>Brute-force Evidence:</strong> access.log</li>
+                                <li><strong>Residual Data:</strong> Trash bin</li>
                             </ul>
                         </div>
                         <button class="btn-nav" onclick="closeGame()" style="border-color: var(--neon-red); color: var(--neon-red);">Return to Dashboard</button>
                     </div>
                 </div>
-
-                <div style="text-align:center; margin-top: 20px;">
-                    Leaks Detected: <span id="leaks-found-count">0</span> / 3
-                </div>
+                <div style="text-align:center; margin-top: 20px;">Leaks Detected: <span id="leaks-found-count">0</span> / 4</div>
             </div>
 
         </div>
