@@ -223,7 +223,7 @@ function renderProcesses() {
 
     activeProcesses.slice().reverse().forEach(p => {
         const tr = document.createElement('tr');
-        tr.style.borderBottom = "1px solid var(--border)";
+        tr.style.borderBottom = "1px solid #1b2733";
         if (p.isThreat && Math.random() > 0.7) tr.style.color = "var(--neon-red)";
 
         tr.innerHTML = `
@@ -231,7 +231,7 @@ function renderProcesses() {
             <td style="padding: 10px;">${p.name}</td>
             <td style="padding: 10px;">${p.path}</td>
             <td style="padding: 10px;">
-                <button onclick="killProcess(${p.id})" style="background: transparent; color: var(--neon-red); border: 1px solid var(--neon-red); padding: 4px 8px; cursor: pointer; font-weight:bold; font-family: 'Courier New', Courier, monospace;">KILL</button>
+                <button onclick="killProcess(${p.id})" style="background: var(--neon-red); color: white; border: none; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-weight:bold;">KILL</button>
             </td>
         `;
         body.appendChild(tr);
