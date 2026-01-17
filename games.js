@@ -468,7 +468,7 @@ function nextChatScenario() {
         const history = document.getElementById('chat-history');
         const finalMsg = document.createElement('div');
         finalMsg.className = "message-bubble msg-received";
-        finalMsg.style.border = "1px solid var(--neon-red)";
+        finalMsg.style.border = "1px solid var(--neon-purple)";
         finalMsg.innerHTML = `<strong>SYSTEM:</strong><br>Social Engineering Simulation Complete. Final Score: ${socialScore}%`;
         history.appendChild(finalMsg);
     }
