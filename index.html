@@ -67,15 +67,15 @@
             width: 180px;
             height: 180px;
             background: var(--card);
-            border: 2px solid var(--neon-green);
+            border: 4px solid var(--neon-green);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
             z-index: 5;
-            box-shadow: 0 0 30px var(--neon-green);
-            animation: pulse-green 3s infinite alternate;
+            box-shadow: 0 0 30px var(--neon-red);
+            animation: pulse-hub 3s infinite alternate;
         }
 
         .hub-center h2 {
@@ -84,12 +84,12 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 0;
-            text-shadow: 0 0 10px var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-red);
         }
 
-        @keyframes pulse-green {
-            from { box-shadow: 0 0 20px var(--neon-green); }
-            to { box-shadow: 0 0 50px var(--neon-green), 0 0 10px var(--neon-green) inset; }
+        @keyframes pulse-hub {
+            from { box-shadow: 0 0 20px var(--neon-red); border-color: var(--neon-green); }
+            to { box-shadow: 0 0 50px var(--neon-red), 0 0 20px var(--neon-green) inset; border-color: var(--neon-red); }
         }
 
         .orbit-item {
@@ -111,10 +111,10 @@
         }
 
         .orbit-item:hover {
-            border-color: var(--neon-green);
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--neon-green);
-            background: #001100;
+            border-color: var(--neon-yellow) !important;
+            transform: scale(1.1) !important;
+            box-shadow: 0 0 30px var(--neon-yellow) !important;
+            background: #111;
             z-index: 10;
         }
 
@@ -133,11 +133,12 @@
         }
 
         .orbit-line {
-            stroke: rgba(0, 255, 0, 0.2);
-            stroke-width: 1;
+            stroke: var(--neon-red);
+            stroke-width: 3;
             fill: none;
-            stroke-dasharray: 5;
-            animation: dash 20s linear infinite;
+            stroke-dasharray: 10;
+            opacity: 0.6;
+            animation: dash 30s linear infinite;
         }
 
         @keyframes dash {
@@ -252,13 +253,17 @@
         footer { margin-top: 50px; padding-bottom: 40px; color: var(--border); font-size: 0.7rem; text-align: center; width: 100%; }
 
         /* CIRCLE POSITIONING */
+        /* Items 3, 5, 7, 9 are green. 4, 6, 8 are red. */
+        .orbit-item:nth-child(odd) { border-color: var(--neon-green); }
+        .orbit-item:nth-child(even) { border-color: var(--neon-red); }
+
         .orbit-item:nth-child(3) { transform: rotate(0deg) translate(280px) rotate(0deg); }
-        .orbit-item:nth-child(4) { transform: rotate(51.4deg) translate(280px) rotate(-51.4deg); }
-        .orbit-item:nth-child(5) { transform: rotate(102.8deg) translate(280px) rotate(-102.8deg); }
-        .orbit-item:nth-child(6) { transform: rotate(154.2deg) translate(280px) rotate(-154.2deg); }
-        .orbit-item:nth-child(7) { transform: rotate(205.6deg) translate(280px) rotate(-205.6deg); }
-        .orbit-item:nth-child(8) { transform: rotate(257deg) translate(280px) rotate(-257deg); }
-        .orbit-item:nth-child(9) { transform: rotate(308.4deg) translate(280px) rotate(-308.4deg); }
+        .orbit-item:nth-child(4) { transform: rotate(51.43deg) translate(280px) rotate(-51.43deg); }
+        .orbit-item:nth-child(5) { transform: rotate(102.86deg) translate(280px) rotate(-102.86deg); }
+        .orbit-item:nth-child(6) { transform: rotate(154.29deg) translate(280px) rotate(-154.29deg); }
+        .orbit-item:nth-child(7) { transform: rotate(205.71deg) translate(280px) rotate(-205.71deg); }
+        .orbit-item:nth-child(8) { transform: rotate(257.14deg) translate(280px) rotate(-257.14deg); }
+        .orbit-item:nth-child(9) { transform: rotate(308.57deg) translate(280px) rotate(-308.57deg); }
     </style>
 </head>
 <body>
