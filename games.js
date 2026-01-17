@@ -113,7 +113,11 @@ let phishScore = 0;
 function loadEmail() {
     const e = emails[currentEmail];
     document.getElementById('email-display').innerHTML = `
-        <div class="email-header"><strong>From:</strong> ${e.from}<br><strong>Subject:</strong> ${e.subject}</div>
+        <div class="email-header">
+            <div class="email-meta"><strong>From:</strong> ${e.from}</div>
+            <div class="email-meta"><strong>To:</strong> user@corporate-net.com</div>
+            <div class="email-meta"><strong>Subject:</strong> ${e.subject}</div>
+        </div>
         <div class="email-body">${e.body}</div>
     `;
     document.getElementById('phish-feedback').innerText = "";
@@ -148,6 +152,7 @@ let hunterActive = false;
 let stability = 100;
 let hunterScore = 0;
 let processInterval;
+const THREAT_GOAL = 15;
 const activeProcesses = [];
 
 const processTemplates = [
@@ -176,14 +181,13 @@ function initHunter() {
     updateStabilityUI();
     document.getElementById('hunter-score').innerText = "0";
     document.getElementById('process-list-body').innerHTML = "";
-    document.getElementById('hunter-start-screen').classList.remove('hidden');
     document.getElementById('hunter-game-over').classList.add('hidden');
+    document.getElementById('hunter-victory').classList.add('hidden');
 }
 
 function startHunter() {
     hunterActive = true;
     initHunter();
-    document.getElementById('hunter-start-screen').classList.add('hidden');
 
     for(let i=0; i<5; i++) spawnProcess();
 
@@ -229,14 +233,14 @@ function renderProcesses() {
             <td style="padding: 10px;">${p.name}</td>
             <td style="padding: 10px;">${p.path}</td>
             <td style="padding: 10px;">
-                <button onclick="killProcess(${p.id})" style="background: transparent; border: 1px solid var(--neon-red); color: var(--neon-red); cursor: pointer; padding: 2px 5px; font-family: inherit; font-size: 0.7rem;">KILL</button>
+                <button onclick="terminateProcess(${p.id})" style="background: transparent; border: 1px solid var(--neon-red); color: var(--neon-red); cursor: pointer; padding: 2px 5px; font-family: inherit; font-size: 0.7rem; text-transform: uppercase;">Terminate</button>
             </td>
         `;
         body.appendChild(tr);
     });
 }
 
-function killProcess(id) {
+function terminateProcess(id) {
     const idx = activeProcesses.findIndex(p => p.id === id);
     if (idx === -1) return;
 
@@ -244,6 +248,9 @@ function killProcess(id) {
     if (p.isThreat) {
         hunterScore++;
         document.getElementById('hunter-score').innerText = hunterScore;
+        if (hunterScore >= THREAT_GOAL) {
+            victoryHunter();
+        }
     } else {
         stability -= 15;
         updateStabilityUI();
@@ -270,19 +277,25 @@ function gameOverHunter() {
     document.getElementById('hunter-game-over').classList.remove('hidden');
 }
 
+function victoryHunter() {
+    hunterActive = false;
+    clearInterval(processInterval);
+    document.getElementById('hunter-victory').classList.remove('hidden');
+}
+
 // --- CRYPTOGRAPHY GAME LOGIC ---
 const cryptoLevels = [
     { encrypted: "KHOOR", plain: "HELLO", shift: 3 },
     { encrypted: "TFDVSF", plain: "SECURE", shift: 1 },
     { encrypted: "CVVCEM CV FCYP", plain: "ATTACK AT DAWN", shift: 2 },
     { encrypted: "GDWD EUHDFK", plain: "DATA BREACH", shift: 3 },
-    { encrypted: "NQYH DTQI", plain: "LOVE CODE", shift: 5 },
-    { encrypted: "MXSIV", plain: "CYPHER", shift: 4 },
+    { encrypted: "QTAJ HTIJ", plain: "LOVE CODE", shift: 5 },
+    { encrypted: "GCT LIV", plain: "CYPHER", shift: 4 },
     { encrypted: "ZLWK QHAW VWHW", plain: "WITH NEXT STEP", shift: 3 },
     { encrypted: "XLI JVEK", plain: "THE FLAG", shift: 4 },
-    { encrypted: "EBMBNFNCFS", plain: "REMEMBER", shift: 1 },
+    { encrypted: "SFNFNCFS", plain: "REMEMBER", shift: 1 },
     { encrypted: "ZPV HPK JU", plain: "YOU GOT IT", shift: 1 },
-    { encrypted: "MPRG GPSV", plain: "LONG LIVE", shift: 4 }
+    { encrypted: "PSRK PMZI", plain: "LONG LIVE", shift: 4 }
 ];
 
 let currentCryptoLevel = 0;
@@ -549,24 +562,25 @@ function closeForensicsModal() {
 
 // --- QUIZ GAME LOGIC ---
 const quizQuestions = [
-    { q: "What does 'MFA' stand for?", options: ["Multi-Factor Authentication", "Main Firewall Access", "Mobile File Archive"], a: 0 },
-    { q: "Strongest password strategy?", options: ["Pet's name", "Changing letter to number", "Long phrase with variety"], a: 2 },
-    { q: "What is 'Social Engineering'?", options: ["Building apps", "Manipulating people for data", "Designing offices"], a: 1 },
-    { q: "What is a 'Zero-Day'?", options: ["Fixed in 0 days", "Unknown flaw with no patch", "Virus that deletes itself"], a: 1 },
-    { q: "VPN primary purpose?", options: ["Faster internet", "Secure, encrypted tunnel", "Block all viruses"], a: 1 },
-    { q: "What is 'Ransomware'?", options: ["Free software", "Encrypts files for payment", "Monitors screen"], a: 1 },
-    { q: "More secure protocol?", options: ["HTTP", "FTP", "HTTPS"], a: 2 },
-    { q: "What is 'Phishing'?", options: ["Search for files", "Fraudulent emails for info", "Cracking Wi-Fi"], a: 1 },
-    { q: "What is '2FA'?", options: ["Two-Factor Authentication", "Secondary File Access", "Twice Fast Algorithm"], a: 0 },
-    { q: "Which is a common Wi-Fi encryption?", options: ["WPA3", "WPF2", "WEP5"], a: 0 },
-    { q: "What does 'DDoS' stand for?", options: ["Distributed Denial of Service", "Direct Data on System", "Digital Data over Socket"], a: 0 },
-    { q: "What is 'SQL Injection'?", options: ["Database manipulation via code", "Injecting hardware", "Speeding up queries"], a: 0 },
-    { q: "What is a 'Firewall'?", options: ["Network security monitor", "Burning hardware", "File backup system"], a: 0 },
-    { q: "What is 'Encryption'?", options: ["Scrambling data for privacy", "Deleting data", "Compressing data"], a: 0 },
-    { q: "What is 'Brute Force'?", options: ["Trying every possible combination", "Using physical force", "Speeding up CPU"], a: 0 }
+    { q: "What does 'MFA' stand for?", options: ["Multi-Factor Authentication", "Main Firewall Access", "Mobile File Archive"], a: "Multi-Factor Authentication" },
+    { q: "Strongest password strategy?", options: ["Pet's name", "Changing letter to number", "Long phrase with variety"], a: "Long phrase with variety" },
+    { q: "What is 'Social Engineering'?", options: ["Building apps", "Manipulating people for data", "Designing offices"], a: "Manipulating people for data" },
+    { q: "What is a 'Zero-Day'?", options: ["Fixed in 0 days", "Unknown flaw with no patch", "Virus that deletes itself"], a: "Unknown flaw with no patch" },
+    { q: "VPN primary purpose?", options: ["Faster internet", "Secure, encrypted tunnel", "Block all viruses"], a: "Secure, encrypted tunnel" },
+    { q: "What is 'Ransomware'?", options: ["Free software", "Encrypts files for payment", "Monitors screen"], a: "Encrypts files for payment" },
+    { q: "More secure protocol?", options: ["HTTP", "FTP", "HTTPS"], a: "HTTPS" },
+    { q: "What is 'Phishing'?", options: ["Search for files", "Fraudulent emails for info", "Cracking Wi-Fi"], a: "Fraudulent emails for info" },
+    { q: "What is '2FA'?", options: ["Two-Factor Authentication", "Secondary File Access", "Twice Fast Algorithm"], a: "Two-Factor Authentication" },
+    { q: "Which is a common Wi-Fi encryption?", options: ["WPA3", "WPF2", "WEP5"], a: "WPA3" },
+    { q: "What does 'DDoS' stand for?", options: ["Distributed Denial of Service", "Direct Data on System", "Digital Data over Socket"], a: "Distributed Denial of Service" },
+    { q: "What is 'SQL Injection'?", options: ["Database manipulation via code", "Injecting hardware", "Speeding up queries"], a: "Database manipulation via code" },
+    { q: "What is a 'Firewall'?", options: ["Network security monitor", "Burning hardware", "File backup system"], a: "Network security monitor" },
+    { q: "What is 'Encryption'?", options: ["Scrambling data for privacy", "Deleting data", "Compressing data"], a: "Scrambling data for privacy" },
+    { q: "What is 'Brute Force'?", options: ["Trying every possible combination", "Using physical force", "Speeding up CPU"], a: "Trying every possible combination" }
 ];
 
 let currentQuizIdx = 0;
+let shuffledOptions = [];
 
 function initQuiz() {
     currentQuizIdx = 0;
@@ -581,42 +595,99 @@ function loadQuizQuestion() {
     const optionsContainer = document.getElementById('quiz-options');
     optionsContainer.innerHTML = "";
 
-    question.options.forEach((opt, idx) => {
+    shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+
+    shuffledOptions.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = "btn-nav";
         btn.style.textAlign = "left";
         btn.innerText = `${idx + 1}. ${opt}`;
-        btn.onclick = () => checkQuiz(idx);
+        btn.onclick = () => checkQuiz(idx, opt);
         optionsContainer.appendChild(btn);
     });
 }
 
-function checkQuiz(idx) {
+function checkQuiz(idx, selectedOpt) {
     const question = quizQuestions[currentQuizIdx];
     const feedback = document.getElementById('quiz-feedback');
+    const buttons = document.getElementById('quiz-options').querySelectorAll('button');
 
-    if (idx === question.a) {
+    if (selectedOpt === question.a) {
+        buttons[idx].style.background = "var(--neon-green)";
+        buttons[idx].style.color = "#000";
         feedback.innerText = "✓ CORRECT";
         feedback.style.color = "var(--neon-green)";
         currentQuizIdx = (currentQuizIdx + 1) % quizQuestions.length;
         setTimeout(loadQuizQuestion, 1000);
     } else {
+        buttons[idx].style.background = "var(--neon-red)";
+        buttons[idx].style.color = "#fff";
         feedback.innerText = "✗ INCORRECT";
         feedback.style.color = "var(--neon-red)";
     }
 }
 
 // --- NAVIGATION LOGIC ---
+const missionIntros = {
+    phishing: {
+        title: "Inbox Defender",
+        icon: "📧",
+        description: "Analyze incoming emails for signs of phishing. Attackers use deceptive domains, urgent threats, and malicious links to compromise your security. Your mission is to audit the inbox and report any suspicious activity."
+    },
+    threathunter: {
+        title: "Threat Hunter",
+        icon: "🕵️‍♂️",
+        description: "The system is under attack! Monitor the active processes and terminate any malicious entities (red-flagged or suspicious paths) before they compromise system stability. Avoid terminating critical system services."
+    },
+    crypto: {
+        title: "Crypto Lab",
+        icon: "🔐",
+        description: "Decrypt intercepted communications using historical cipher techniques. Adjust the shift value to reverse the Caesar Cipher and reveal the original plaintext message."
+    },
+    password: {
+        title: "Password Vault",
+        icon: "🔑",
+        description: "Evaluate the strength of various access keys. High entropy and long passphrases are essential to withstand modern brute-force cracking attempts. Test different combinations to see how they hold up."
+    },
+    quiz: {
+        title: "Security Trivia",
+        icon: "🛡️",
+        description: "Test your fundamental cybersecurity knowledge. From network protocols to common attack vectors, see if you have what it takes to be a security professional."
+    },
+    social: {
+        title: "Social Engineering",
+        icon: "💬",
+        description: "Human vulnerability is the weakest link. Audit a series of chat interactions to identify manipulation tactics like authority, urgency, and technical baiting."
+    },
+    forensics: {
+        title: "Digital Forensics",
+        icon: "🔍",
+        description: "A workstation has been potentially compromised. Audit the desktop environment to find security leaks, exposed credentials, and suspicious activity logs."
+    }
+};
+
 function openGame(gameId) {
     document.getElementById('dashboard').classList.add('hidden');
     document.getElementById('game-arena').classList.add('active');
     document.querySelectorAll('.game-container').forEach(g => g.classList.add('hidden'));
 
+    const intro = missionIntros[gameId];
+    if (intro) {
+        document.getElementById('game-intro').classList.remove('hidden');
+        document.getElementById('intro-title').innerText = intro.title;
+        document.getElementById('intro-icon').innerText = intro.icon;
+        document.getElementById('intro-description').innerText = intro.description;
+        document.getElementById('start-mission-btn').onclick = () => launchGame(gameId);
+    }
+}
+
+function launchGame(gameId) {
+    document.getElementById('game-intro').classList.add('hidden');
     const target = document.getElementById('game-' + gameId);
     if (target) target.classList.remove('hidden');
 
     if (gameId === 'phishing') loadEmail();
-    if (gameId === 'threathunter') initHunter();
+    if (gameId === 'threathunter') startHunter();
     if (gameId === 'crypto') initCrypto();
     if (gameId === 'password') calculatePassword();
     if (gameId === 'quiz') initQuiz();

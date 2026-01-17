@@ -15,6 +15,9 @@
             --border: #303050;
             --success: #00ff9d;
             --danger: #ff3131;
+            --neon-green: #00ff9d;
+            --neon-red: #ff3131;
+            --neon-yellow: #f0f000;
         }
 
         body {
@@ -152,22 +155,63 @@
             box-shadow: 0 0 15px var(--neon-blue);
         }
 
+        .btn-nav:active, .btn-action:active {
+            transform: scale(0.95);
+        }
+
         .hidden { display: none !important; }
 
         /* GAME SPECIFIC UI */
-        .email-card {
-            background: rgba(0,0,0,0.2);
-            padding: 25px;
+        .email-client {
+            display: flex;
+            background: #fdfdfd;
+            color: #333;
             border-radius: 12px;
-            border-left: 4px solid var(--neon-blue);
+            overflow: hidden;
+            height: 450px;
             margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid #ccc;
         }
-
+        .email-sidebar {
+            width: 180px;
+            background: #f5f5f5;
+            border-right: 1px solid #ddd;
+            padding: 20px 0;
+        }
+        .email-folder {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+        }
+        .email-folder.active {
+            background: #e8f0fe;
+            color: #1a73e8;
+            font-weight: bold;
+        }
+        .email-content {
+            flex: 1;
+            padding: 30px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            overflow-y: auto;
+        }
         .email-header {
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #eee;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            font-family: monospace;
+        }
+        .email-meta {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .email-body {
+            line-height: 1.6;
+            color: #444;
         }
 
         .btn-group {
@@ -370,17 +414,33 @@
         <div id="game-arena" class="game-arena">
             <button class="btn-nav" onclick="closeGame()">← Return to Dashboard</button>
 
+            <!-- MISSION INTRO -->
+            <div id="game-intro" class="game-container hidden" style="text-align: center;">
+                <h2 id="intro-title" style="color: var(--neon-blue); margin-bottom: 20px;">Mission Briefing</h2>
+                <div id="intro-icon" style="font-size: 4rem; margin-bottom: 20px;"></div>
+                <p id="intro-description" style="font-size: 1.1rem; line-height: 1.6; margin: 30px 0; color: var(--text); opacity: 0.9;"></p>
+                <button id="start-mission-btn" class="btn-action btn-safe">Start Mission</button>
+            </div>
+
             <!-- PHISHING -->
             <div id="game-phishing" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Phish or Legit?</h2>
-                <div id="email-display" class="email-card"></div>
+                <h2 style="color: var(--neon-blue);">📧 Inbox Defender</h2>
+                <div class="email-client">
+                    <div class="email-sidebar">
+                        <div class="email-folder active">📥 Inbox</div>
+                        <div class="email-folder">📤 Sent</div>
+                        <div class="email-folder">📁 Drafts</div>
+                        <div class="email-folder">🗑️ Trash</div>
+                    </div>
+                    <div id="email-display" class="email-content"></div>
+                </div>
                 <div class="btn-group">
                     <button id="phish-report-btn" class="btn-action btn-phish" onclick="checkPhish(true)">Report Phish</button>
                     <button id="phish-safe-btn" class="btn-action btn-safe" onclick="checkPhish(false)">Mark as Safe</button>
                     <button id="phish-next-btn" class="btn-action btn-nav hidden" onclick="loadEmail()" style="margin-bottom: 0;">Next Email</button>
                 </div>
                 <p id="phish-feedback" style="text-align:center; min-height: 4rem; margin-top:20px; font-weight: bold;"></p>
-                <div style="text-align:center; font-size: 1.2rem;">Score: <span id="score">0</span></div>
+                <div style="text-align:center; font-size: 1.2rem;">Security Level: <span id="score">0</span></div>
             </div>
 
             <!-- THREAT HUNTER -->
@@ -406,12 +466,14 @@
                         <tbody id="process-list-body"></tbody>
                     </table>
                 </div>
-                <div id="hunter-start-screen" style="text-align: center; margin-top: 30px;">
-                    <button class="btn-action btn-safe" onclick="startHunter()">Initialize Monitor</button>
-                </div>
                 <div id="hunter-game-over" class="hidden" style="text-align: center; margin-top: 30px;">
                     <h3 style="color: var(--danger);">SYSTEM COMPROMISED</h3>
                     <button class="btn-action btn-safe" onclick="startHunter()">Reboot & Retry</button>
+                </div>
+                <div id="hunter-victory" class="hidden" style="text-align: center; margin-top: 30px;">
+                    <h3 style="color: var(--success);">MISSION ACCOMPLISHED</h3>
+                    <p>You have successfully secured the system perimeter.</p>
+                    <button class="btn-nav" onclick="closeGame()">Return to Dashboard</button>
                 </div>
             </div>
 
@@ -437,12 +499,14 @@
 
             <!-- PASSWORD -->
             <div id="game-password" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Password Vault</h2>
-                <p>Enter a password to analyze its defensive strength against entropy decay.</p>
-                <input type="text" id="pw-input" placeholder="Enter password..." oninput="calculatePassword()">
-                <div id="pw-result" style="text-align:center; margin-top: 30px; font-size: 1.5rem; font-weight: bold;">READY</div>
-                <div style="margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.9rem;">
-                    <strong>Security Tip:</strong> Use passphrases with mixed casing, symbols, and numbers to increase crack time exponentially.
+                <h2 style="color: var(--neon-blue);">🔑 Password Vault</h2>
+                <div class="terminal-box" style="margin-top: 20px;">
+                    <div style="color: var(--neon-blue); margin-bottom: 20px; font-family: monospace;">[SYSTEM]: ENTER ACCESS KEY FOR ENTROPY ANALYSIS...</div>
+                    <input type="text" id="pw-input" placeholder="ACCESS_KEY_HERE" oninput="calculatePassword()" style="font-family: monospace; border: 1px dashed var(--neon-blue);">
+                    <div id="pw-result" style="text-align:center; margin-top: 30px; font-size: 1.5rem; font-weight: bold; font-family: monospace;">READY</div>
+                </div>
+                <div style="margin-top: 40px; padding: 20px; background: rgba(0,242,255,0.05); border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem;">
+                    <strong>DEFENSIVE ADVISORY:</strong> Use long passphrases with varied character sets to maximize brute-force resistance.
                 </div>
             </div>
 
