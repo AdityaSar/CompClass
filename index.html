@@ -6,19 +6,18 @@
     <title>Cyber Defense Lab</title>
     <style>
         :root {
-            --bg: #050a0f;
-            --card: #0d141b;
-            --neon-blue: #00d4ff;
-            --neon-green: #39ff14;
-            --neon-red: #f85149;
-            --neon-purple: #bc13fe;
-            --text: #c9d1d9;
-            --border: #1b2733;
-            --terminal-green: #39ff14;
+            --bg: #000000;
+            --card: #080808;
+            --neon-green: #00ff00;
+            --neon-red: #ff3131;
+            --neon-yellow: #ffde59;
+            --text: #00ff00;
+            --border: #004400;
+            --terminal-green: #00ff00;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Courier New', Courier, monospace;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
@@ -27,16 +26,19 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            background-image: radial-gradient(circle at 50% 50%, #0a192f 0%, #050a0f 100%);
+            background-image:
+                linear-gradient(rgba(0, 51, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 51, 0, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
             overflow-x: hidden;
         }
 
         h1 {
-            color: var(--neon-blue);
+            color: var(--neon-green);
             text-transform: uppercase;
             letter-spacing: 4px;
             margin: 40px 0 20px 0;
-            text-shadow: 0 0 10px var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
             z-index: 10;
         }
 
@@ -65,29 +67,29 @@
             width: 180px;
             height: 180px;
             background: var(--card);
-            border: 2px solid var(--neon-blue);
+            border: 2px solid var(--neon-green);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
             z-index: 5;
-            box-shadow: 0 0 30px var(--neon-blue);
-            animation: pulse-blue 3s infinite alternate;
+            box-shadow: 0 0 30px var(--neon-green);
+            animation: pulse-green 3s infinite alternate;
         }
 
         .hub-center h2 {
             font-size: 1.4rem;
-            color: var(--neon-blue);
+            color: var(--neon-green);
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 0;
-            text-shadow: 0 0 10px var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-green);
         }
 
-        @keyframes pulse-blue {
-            from { box-shadow: 0 0 20px var(--neon-blue); }
-            to { box-shadow: 0 0 40px var(--neon-blue), 0 0 10px white inset; }
+        @keyframes pulse-green {
+            from { box-shadow: 0 0 20px var(--neon-green); }
+            to { box-shadow: 0 0 50px var(--neon-green), 0 0 10px var(--neon-green) inset; }
         }
 
         .orbit-item {
@@ -96,13 +98,13 @@
             height: 120px;
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 4px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             padding: 10px;
             text-align: center;
             z-index: 2;
@@ -110,28 +112,16 @@
 
         .orbit-item:hover {
             border-color: var(--neon-green);
-            transform: scale(1.1);
+            transform: scale(1.05);
             box-shadow: 0 0 20px var(--neon-green);
-            background: #111b27;
+            background: #001100;
             z-index: 10;
         }
 
-        .orbit-item .icon { font-size: 2rem; margin-bottom: 5px; }
-        .orbit-item h3 { font-size: 0.9rem; margin: 0; text-transform: uppercase; color: var(--neon-blue); }
-        .orbit-item p { font-size: 0.7rem; color: #8b949e; margin: 5px 0 0 0; line-height: 1.2; }
+        .orbit-item .icon { font-size: 2rem; margin-bottom: 5px; filter: grayscale(1) sepia(1) hue-rotate(90deg) brightness(1.5); }
+        .orbit-item h3 { font-size: 0.9rem; margin: 0; text-transform: uppercase; color: var(--neon-green); }
+        .orbit-item p { font-size: 0.7rem; color: var(--neon-green); opacity: 0.7; margin: 5px 0 0 0; line-height: 1.2; }
 
-        /* Position the 7 items in a circle */
-        /* Orbit items start at child index 3 (after SVG and Hub) */
-        /* 7 items: 360 / 7 = 51.4 degrees each */
-        .orbit-item:nth-child(3) { transform: rotate(0deg) translate(280px) rotate(0deg); }
-        .orbit-item:nth-child(4) { transform: rotate(51.4deg) translate(280px) rotate(-51.4deg); }
-        .orbit-item:nth-child(5) { transform: rotate(102.8deg) translate(280px) rotate(-102.8deg); }
-        .orbit-item:nth-child(6) { transform: rotate(154.2deg) translate(280px) rotate(-154.2deg); }
-        .orbit-item:nth-child(7) { transform: rotate(205.6deg) translate(280px) rotate(-205.6deg); }
-        .orbit-item:nth-child(8) { transform: rotate(257deg) translate(280px) rotate(-257deg); }
-        .orbit-item:nth-child(9) { transform: rotate(308.4deg) translate(280px) rotate(-308.4deg); }
-
-        /* Connection lines (SVG) */
         .orbit-svg {
             position: absolute;
             top: 0;
@@ -143,7 +133,7 @@
         }
 
         .orbit-line {
-            stroke: rgba(0, 212, 255, 0.2);
+            stroke: rgba(0, 255, 0, 0.2);
             stroke-width: 1;
             fill: none;
             stroke-dasharray: 5;
@@ -154,514 +144,252 @@
             to { stroke-dashoffset: 1000; }
         }
 
-        /* Responsive Dashboard */
         @media (max-width: 800px) {
-            .dashboard-container {
-                width: 100%;
-                height: auto;
-                flex-direction: column;
-                gap: 20px;
-                padding-top: 40px;
-            }
+            .dashboard-container { width: 100%; height: auto; flex-direction: column; gap: 20px; padding-top: 40px; }
             .hub-center { display: none; }
-            .orbit-item {
-                position: static !important;
-                transform: none !important;
-                width: 90%;
-                height: auto;
-                padding: 20px;
-            }
+            .orbit-item { position: static !important; transform: none !important; width: 90%; height: auto; padding: 20px; }
             .orbit-svg { display: none; }
         }
 
         /* GAME ARENA STYLES */
-        .game-arena {
-            width: 100%;
-            animation: fadeIn 0.5s ease-in-out;
-            display: none;
-        }
+        .game-arena { width: 100%; animation: fadeIn 0.5s ease-in-out; display: none; }
+        .game-arena.active { display: block; }
 
-        .game-arena.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .game-container {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 16px;
             padding: 40px;
             position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 0 40px rgba(0,255,0,0.05);
             max-width: 900px;
             margin: 0 auto;
         }
 
         .btn-nav {
             background: transparent;
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
             padding: 10px 20px;
-            border-radius: 4px;
+            border-radius: 0;
             cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
             transition: 0.3s;
             margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        .btn-nav:hover {
-            background: var(--neon-blue);
-            color: var(--bg);
-            box-shadow: 0 0 15px var(--neon-blue);
-        }
+        .btn-nav:hover { background: var(--neon-green); color: var(--bg); box-shadow: 0 0 15px var(--neon-green); }
 
         /* PHISHING GAME STYLES */
         .email-card {
-            background: #ffffff;
-            color: #1a1a1a;
+            background: #000;
+            color: var(--neon-green);
             padding: 25px;
-            border-radius: 8px;
             margin-bottom: 25px;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            border-left: 6px solid #0078d4;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-left: 6px solid var(--neon-green);
         }
 
-        .email-header { border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 15px; font-size: 0.95rem; }
-        .email-body { font-size: 1.05rem; line-height: 1.6; }
+        .email-header { border-bottom: 1px solid var(--border); margin-bottom: 20px; padding-bottom: 15px; font-size: 0.85rem; }
+        .email-body { font-size: 1rem; line-height: 1.6; }
 
         .btn-group { display: flex; gap: 20px; justify-content: center; }
         .btn-action {
             padding: 14px 28px;
-            border: none;
-            border-radius: 8px;
+            border: 1px solid currentColor;
+            background: transparent;
             cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
             transition: 0.3s;
             text-transform: uppercase;
         }
 
-        .btn-safe { background: var(--neon-green); color: #000; box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
-        .btn-phish { background: var(--neon-red); color: #fff; box-shadow: 0 0 10px rgba(248, 81, 73, 0.4); }
-        .btn-action:hover { transform: scale(1.05); filter: brightness(1.2); }
+        .btn-safe { color: var(--neon-green); }
+        .btn-phish { color: var(--neon-red); }
+        .btn-action:hover { background: currentColor; color: #000; }
 
-        /* SOCIAL ENGINEERING CHAT STYLES */
-        .chat-container {
-            display: flex;
-            height: 500px;
-            background: #0d1117;
-            border: 1px solid var(--neon-purple);
-            border-radius: 12px;
-            overflow: hidden;
-        }
+        /* CHAT STYLES */
+        .chat-container { display: flex; height: 500px; background: #000; border: 1px solid var(--border); overflow: hidden; }
+        .chat-sidebar { width: 200px; background: #050505; border-right: 1px solid var(--border); padding: 15px; }
+        .sidebar-user { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-size: 0.8rem; color: var(--neon-green); opacity: 0.6; }
+        .user-status { width: 8px; height: 8px; border-radius: 50%; background: var(--neon-green); }
+        .chat-main { flex: 1; display: flex; flex-direction: column; padding: 20px; position: relative; }
+        .chat-history { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+        .message-bubble { max-width: 80%; padding: 12px 16px; font-size: 0.9rem; line-height: 1.4; border: 1px solid var(--border); }
+        .msg-received { align-self: flex-start; background: #001100; color: var(--neon-green); }
+        .msg-sent { align-self: flex-end; background: var(--neon-red); color: #000; font-weight: bold; }
+        .briefing-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.95); padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 100; border: 1px solid var(--neon-green); }
 
-        .chat-sidebar {
-            width: 200px;
-            background: #161b22;
-            border-right: 1px solid var(--border);
-            padding: 15px;
-        }
-
-        .sidebar-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
-            color: #8b949e;
-        }
-
-        .user-status {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--neon-green);
-        }
-
-        .chat-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            position: relative;
-        }
-
-        .chat-history {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .message-bubble {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-
-        .msg-received {
-            align-self: flex-start;
-            background: #21262d;
-            border: 1px solid var(--border);
-            color: var(--text);
-            border-bottom-left-radius: 2px;
-        }
-
-        .briefing-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(13, 17, 23, 0.95);
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 100;
-            border-radius: 12px;
-        }
-
-        /* DIGITAL FORENSICS STYLES */
+        /* FORENSICS STYLES */
         .virtual-desktop {
             width: 100%;
             height: 500px;
-            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-            border: 2px solid var(--border);
-            border-radius: 12px;
+            background: #000;
+            border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
-            background-image:
-                radial-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px, 100% 2px;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
+        .desktop-icon { position: absolute; width: 80px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; padding: 10px; transition: 0.2s; }
+        .desktop-icon:hover { background: rgba(0,255,0,0.1); }
+        .desktop-icon .icon-img { font-size: 2rem; filter: grayscale(1) sepia(1) hue-rotate(90deg) brightness(1.5); }
+        .desktop-icon .icon-label { font-size: 0.7rem; color: var(--neon-green); text-align: center; }
+        .leak-found { border: 1px solid var(--neon-red) !important; box-shadow: 0 0 10px var(--neon-red); }
+        .forensics-modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #000; border: 1px solid var(--neon-green); padding: 20px; z-index: 1000; min-width: 300px; }
 
-        .desktop-icon {
-            position: absolute;
-            width: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 8px;
-            transition: 0.2s;
-        }
-
-        .desktop-icon:hover {
-            background: rgba(255,255,255,0.05);
-        }
-
-        .desktop-icon .icon-img {
-            font-size: 2.5rem;
-        }
-
-        .desktop-icon .icon-label {
-            font-size: 0.75rem;
-            text-align: center;
-            text-shadow: 1px 1px 2px #000;
-        }
-
-        .leak-found {
-            border: 2px solid var(--neon-red) !important;
-            box-shadow: 0 0 15px var(--neon-red);
-            animation: pulse-red 1s infinite alternate;
-        }
-
-        @keyframes pulse-red {
-            from { box-shadow: 0 0 5px var(--neon-red); }
-            to { box-shadow: 0 0 20px var(--neon-red); }
-        }
-
-        .forensics-modal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #0d1117;
-            border: 1px solid var(--neon-red);
-            padding: 20px;
-            border-radius: 8px;
-            z-index: 1000;
-            min-width: 300px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
-        }
-
-        /* CRYPTO GAME STYLES */
-        .terminal-window {
-            background: #000;
-            border: 2px solid var(--terminal-green);
-            border-radius: 8px;
-            padding: 30px;
-            font-family: 'Courier New', Courier, monospace;
-            color: var(--terminal-green);
-            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
-            position: relative;
-        }
-
-        .terminal-header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: var(--terminal-green);
-            color: #000;
-            padding: 4px 10px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            box-sizing: border-box;
-        }
-
-        #encrypted-display {
-            font-size: 3rem;
-            text-align: center;
-            margin: 40px 0;
-            letter-spacing: 10px;
-            text-shadow: 0 0 10px var(--terminal-green);
-        }
-
-        .crypto-controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        #shift-slider {
-            width: 80%;
-            accent-color: var(--terminal-green);
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 16px;
-            margin: 20px 0;
-            background: #0d1117;
-            border: 1px solid var(--border);
-            color: white;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 1.1rem;
-        }
-
+        /* TERMINAL STYLE */
+        .terminal-window { background: #000; border: 1px solid var(--neon-green); padding: 30px; color: var(--neon-green); position: relative; }
+        .terminal-header { position: absolute; top: 0; left: 0; width: 100%; background: var(--neon-green); color: #000; padding: 4px 10px; font-size: 0.7rem; font-weight: bold; box-sizing: border-box; }
+        #encrypted-display { font-size: 2.5rem; text-align: center; margin: 40px 0; letter-spacing: 5px; }
+        input[type="text"], input[type="range"] { width: 100%; padding: 16px; margin: 20px 0; background: #000; border: 1px solid var(--border); color: var(--neon-green); font-family: 'Courier New', Courier, monospace; }
+        input[type="range"] { accent-color: var(--neon-green); }
         .hidden { display: none !important; }
+        footer { margin-top: 50px; padding-bottom: 40px; color: var(--border); font-size: 0.7rem; text-align: center; width: 100%; }
 
-        footer {
-            margin-top: 50px;
-            padding-bottom: 40px;
-            color: #555;
-            font-size: 0.85rem;
-            text-align: center;
-            width: 100%;
-        }
+        /* CIRCLE POSITIONING */
+        .orbit-item:nth-child(3) { transform: rotate(0deg) translate(280px) rotate(0deg); }
+        .orbit-item:nth-child(4) { transform: rotate(51.4deg) translate(280px) rotate(-51.4deg); }
+        .orbit-item:nth-child(5) { transform: rotate(102.8deg) translate(280px) rotate(-102.8deg); }
+        .orbit-item:nth-child(6) { transform: rotate(154.2deg) translate(280px) rotate(-154.2deg); }
+        .orbit-item:nth-child(7) { transform: rotate(205.6deg) translate(280px) rotate(-205.6deg); }
+        .orbit-item:nth-child(8) { transform: rotate(257deg) translate(280px) rotate(-257deg); }
+        .orbit-item:nth-child(9) { transform: rotate(308.4deg) translate(280px) rotate(-308.4deg); }
     </style>
 </head>
 <body>
 
-    <h1>🛡️ Cyber Defense Lab</h1>
+    <h1>[ ROOT@CYBER_LAB ]</h1>
 
     <div class="container">
-        
-        <!-- CIRCULAR DASHBOARD -->
         <div id="dashboard" class="active">
             <div class="dashboard-container">
-                <svg class="orbit-svg">
-                    <circle cx="350" cy="350" r="280" class="orbit-line" />
-                    <circle cx="350" cy="350" r="140" class="orbit-line" style="stroke-dasharray: 2; opacity: 0.1;" />
-                </svg>
-
-                <div class="hub-center">
-                    <h2>HACKING<br>SAFETY</h2>
-                </div>
-
-                <div class="orbit-item" onclick="openGame('phishing')">
-                    <div class="icon">📧</div>
-                    <h3>Phish or Legit?</h3>
-                    <p>Detect sophisticated social engineering.</p>
-                </div>
-                <div class="orbit-item" onclick="openGame('threathunter')">
-                    <div class="icon">🕵️‍♂️</div>
-                    <h3>Threat Hunter</h3>
-                    <p>Terminate malicious system processes.</p>
-                </div>
-                <div class="orbit-item" onclick="openGame('crypto')">
-                    <div class="icon">🔐</div>
-                    <h3>Crypto Lab</h3>
-                    <p>Decode secret historical messages.</p>
-                </div>
-                <div class="orbit-item" onclick="openGame('password')">
-                    <div class="icon">🔑</div>
-                    <h3>Password Vault</h3>
-                    <p>Test brute-force cracking speeds.</p>
-                </div>
-                <div class="orbit-item" onclick="openGame('quiz')">
-                    <div class="icon">🛡️</div>
-                    <h3>Security Trivia</h3>
-                    <p>Challenge your general knowledge.</p>
-                </div>
-                <div class="orbit-item" onclick="openGame('social')">
-                    <div class="icon">💬</div>
-                    <h3>Social Engineering</h3>
-                    <p>Identify human manipulation tactics.</p>
-                </div>
-                <div class="orbit-item" onclick="openGame('forensics')">
-                    <div class="icon">🔍</div>
-                    <h3>Digital Forensics</h3>
-                    <p>Audit system for data leaks.</p>
-                </div>
+                <svg class="orbit-svg"><circle cx="350" cy="350" r="280" class="orbit-line" /></svg>
+                <div class="hub-center"><h2>HACKING<br>SAFETY</h2></div>
+                <div class="orbit-item" onclick="openGame('phishing')"><div class="icon">📧</div><h3>Phish Hunter</h3><p>Identify malicious packets.</p></div>
+                <div class="orbit-item" onclick="openGame('threathunter')"><div class="icon">🕵️‍♂️</div><h3>Kernel Monitor</h3><p>Terminate rogue processes.</p></div>
+                <div class="orbit-item" onclick="openGame('crypto')"><div class="icon">🔐</div><h3>Cipher Breach</h3><p>Decrypt secure streams.</p></div>
+                <div class="orbit-item" onclick="openGame('password')"><div class="icon">🔑</div><h3>Brute Force</h3><p>Simulate entropy decay.</p></div>
+                <div class="orbit-item" onclick="openGame('quiz')"><div class="icon">🛡️</div><h3>SysAudit Quiz</h3><p>Validate security knowledge.</p></div>
+                <div class="orbit-item" onclick="openGame('social')"><div class="icon">💬</div><h3>SocEng Alert</h3><p>Analyze human vulnerabilities.</p></div>
+                <div class="orbit-item" onclick="openGame('forensics')"><div class="icon">🔍</div><h3>Data Recovery</h3><p>Extract forensic artifacts.</p></div>
             </div>
         </div>
 
-        <!-- GAME ARENA -->
         <div id="game-arena" class="game-arena">
-            <button class="btn-nav" onclick="closeGame()">⬅ Exit to Dashboard</button>
+            <button class="btn-nav" onclick="closeGame()">[ BACK TO TERMINAL ]</button>
 
-            <!-- PHISHING GAME -->
             <div id="game-phishing" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Email Intelligence Analysis</h2>
+                <h2 style="color: var(--neon-green);">PACKET INSPECTION: EMAIL</h2>
                 <div id="email-display" class="email-card"></div>
                 <div class="btn-group">
-                    <button id="phish-report-btn" class="btn-action btn-phish" onclick="checkPhish(true)">Report Phishing</button>
-                    <button id="phish-safe-btn" class="btn-action btn-safe" onclick="checkPhish(false)">Mark as Safe</button>
-                    <button id="phish-next-btn" class="btn-action btn-nav hidden" onclick="loadEmail()" style="margin-bottom: 0;">Next Email ➔</button>
+                    <button id="phish-report-btn" class="btn-action btn-phish" onclick="checkPhish(true)">[ BLOCK ]</button>
+                    <button id="phish-safe-btn" class="btn-action btn-safe" onclick="checkPhish(false)">[ ALLOW ]</button>
+                    <button id="phish-next-btn" class="btn-action btn-nav hidden" onclick="loadEmail()" style="margin-bottom: 0;">[ NEXT PACKET ]</button>
                 </div>
                 <p id="phish-feedback" style="text-align:center; min-height: 4rem; margin-top:20px;"></p>
-                <div style="text-align:center; font-weight: bold; font-size: 1.2rem; color: var(--neon-blue);">Score: <span id="score">0</span></div>
+                <div style="text-align:center; font-weight: bold; color: var(--neon-green);">SUCCESS_RATE: <span id="score">0</span></div>
             </div>
 
-            <!-- THREAT HUNTER GAME -->
             <div id="game-threathunter" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Threat Hunter: Process Monitor</h2>
+                <h2 style="color: var(--neon-green);">KERNEL PROCESS MONITOR</h2>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                    <span>System Stability: <span id="stability-text">100%</span></span>
-                    <span>Threats Neutralized: <span id="hunter-score">0</span></span>
+                    <span>SYS_STABILITY: <span id="stability-text">100%</span></span>
+                    <span>THREATS_KILLED: <span id="hunter-score">0</span></span>
                 </div>
-                <div style="height: 12px; background: #333; border-radius: 6px; overflow: hidden; margin-bottom: 20px;">
+                <div style="height: 4px; background: #111; border: 1px solid var(--border); margin-bottom: 20px;">
                     <div id="stability-fill" style="height:100%; width:100%; background: var(--neon-green); transition: 0.3s;"></div>
                 </div>
-                <div id="process-list-container" style="background: #000; border: 1px solid var(--border); border-radius: 8px; height: 350px; overflow-y: auto; font-family: monospace;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                        <thead style="background: #161b22; color: var(--neon-blue); position: sticky; top: 0;">
-                            <tr><th style="padding: 10px;">PID</th><th style="padding: 10px;">Process</th><th style="padding: 10px;">Path</th><th style="padding: 10px;">Action</th></tr>
+                <div id="process-list-container" style="background: #000; border: 1px solid var(--border); height: 350px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.8rem;">
+                        <thead style="background: #050505; color: var(--neon-green); position: sticky; top: 0; border-bottom: 1px solid var(--border);">
+                            <tr><th style="padding: 10px;">PID</th><th style="padding: 10px;">NAME</th><th style="padding: 10px;">SOURCE</th><th style="padding: 10px;">ACTION</th></tr>
                         </thead>
                         <tbody id="process-list-body"></tbody>
                     </table>
                 </div>
-                <div id="hunter-start-screen" style="text-align: center; margin-top: 20px;"><button class="btn-action btn-safe" onclick="startHunter()">Start Monitoring</button></div>
-                <div id="hunter-game-over" class="hidden" style="text-align: center; margin-top: 20px;"><h3 style="color: var(--neon-red);">SYSTEM COMPROMISED</h3><button class="btn-action btn-safe" onclick="startHunter()">Restart Monitor</button></div>
+                <div id="hunter-start-screen" style="text-align: center; margin-top: 20px;"><button class="btn-action btn-safe" onclick="startHunter()">[ INIT_MONITOR ]</button></div>
+                <div id="hunter-game-over" class="hidden" style="text-align: center; margin-top: 20px;"><h3 style="color: var(--neon-red);">CRITICAL_SYSTEM_FAILURE</h3><button class="btn-action btn-safe" onclick="startHunter()">[ REBOOT ]</button></div>
             </div>
 
-            <!-- CRYPTO GAME -->
             <div id="game-crypto" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Cryptography Lab: Caesar Cipher</h2>
+                <h2 style="color: var(--neon-green);">CIPHER BREACH: LEVEL <span id="crypto-level">1</span></h2>
                 <div class="terminal-window">
-                    <div class="terminal-header">SECURE_DECODER_V2.1</div>
-                    <p style="margin-top: 20px;">> LEVEL <span id="crypto-level">1</span></p>
+                    <div class="terminal-header">ENCRYPTED_STREAM_V2</div>
                     <div id="encrypted-display"></div>
                     <div class="crypto-controls">
-                        <div>SHIFT: <span id="shift-value" style="font-size: 1.5rem; color: #fff;">0</span></div>
+                        <div>KEY_OFFSET: <span id="shift-value" style="color: #fff;">0</span></div>
                         <input type="range" id="shift-slider" min="0" max="25" value="0" oninput="updateCrypto()">
-                        <div style="border-top: 1px solid var(--terminal-green); width: 100%; padding-top: 15px; text-align: center;">DECRYPTED PREVIEW: <span id="decrypted-preview" style="color: #fff; font-size: 1.2rem;"></span></div>
+                        <div style="border-top: 1px solid var(--border); width: 100%; padding-top: 15px; text-align: center;">DECODED_OUTPUT: <span id="decrypted-preview" style="color: #fff;"></span></div>
                     </div>
                 </div>
                 <div id="crypto-feedback" style="text-align:center; height: 1.5rem; margin: 20px 0; font-weight: bold; color: var(--neon-green);"></div>
             </div>
 
-            <!-- PASSWORD GAME -->
             <div id="game-password" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Password Brute-Force Simulator</h2>
-                <input type="text" id="pw-input" placeholder="Type a password to test..." oninput="calculatePassword()">
-                <div id="pw-result" style="font-size: 1.2rem; text-align:center;">Enter a password to begin analysis.</div>
+                <h2 style="color: var(--neon-green);">BRUTE FORCE SIMULATION</h2>
+                <input type="text" id="pw-input" placeholder="INPUT PASSWORD TO TEST..." oninput="calculatePassword()">
+                <div id="pw-result" style="text-align:center;">READY FOR ANALYSIS.</div>
             </div>
 
-            <!-- QUIZ GAME -->
             <div id="game-quiz" class="game-container hidden">
-                <h2 style="color: var(--neon-blue);">Security Awareness Trivia</h2>
-                <p id="quiz-question" style="font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5;"></p>
-                <div id="quiz-options" style="display: flex; flex-direction: column; gap: 15px;"></div>
+                <h2 style="color: var(--neon-green);">SECURITY AUDIT: TRIVIA</h2>
+                <p id="quiz-question" style="font-size: 1.1rem; margin-bottom: 30px;"></p>
+                <div id="quiz-options" style="display: flex; flex-direction: column; gap: 10px;"></div>
                 <p id="quiz-feedback" style="text-align:center; margin-top: 25px; min-height: 2rem; font-weight: bold;"></p>
             </div>
 
-            <!-- SOCIAL ENGINEERING GAME -->
             <div id="game-social" class="game-container hidden">
-                <h2 style="color: var(--neon-purple);">Social Engineering Defense</h2>
+                <h2 style="color: var(--neon-red);">SOC_ENG DETECTION</h2>
                 <div class="chat-container">
                     <div class="chat-sidebar">
-                        <div class="sidebar-user"><div class="user-status"></div> Sarah (HR)</div>
-                        <div class="sidebar-user"><div class="user-status"></div> Mike (IT)</div>
-                        <div class="sidebar-user"><div class="user-status"></div> David (Exec)</div>
+                        <div class="sidebar-user"><div class="user-status"></div> Sarah_HR</div>
+                        <div class="sidebar-user"><div class="user-status"></div> Mike_IT</div>
+                        <div class="sidebar-user"><div class="user-status"></div> Exec_Admin</div>
                     </div>
                     <div class="chat-main">
                         <div id="chat-history" class="chat-history"></div>
                         <div id="chat-controls" class="btn-group">
-                            <button class="btn-action btn-safe" onclick="handleChatAction(false)">Validate & Help</button>
-                            <button class="btn-action btn-phish" onclick="handleChatAction(true)" style="background: var(--neon-purple);">Flag as Suspicious</button>
+                            <button class="btn-action btn-safe" onclick="handleChatAction(false)">[ LEGIT ]</button>
+                            <button class="btn-action btn-phish" onclick="handleChatAction(true)">[ THREAT ]</button>
                         </div>
                         <div id="briefing-overlay" class="briefing-overlay hidden">
-                            <h3 id="briefing-title" style="color: var(--neon-purple);">SECURITY BRIEFING</h3>
-                            <p id="briefing-text" style="line-height: 1.6; margin: 20px 0;"></p>
-                            <button class="btn-nav" onclick="nextChatScenario()" style="border-color: var(--neon-purple); color: var(--neon-purple);">Next Message ➔</button>
+                            <h3 id="briefing-title">ANALYSIS</h3>
+                            <p id="briefing-text" style="margin: 20px 0;"></p>
+                            <button class="btn-nav" onclick="nextChatScenario()">[ NEXT_LOG ]</button>
                         </div>
                     </div>
                 </div>
-                <div style="text-align:center; font-weight: bold; font-size: 1.2rem; color: var(--neon-purple); margin-top: 20px;">Security Accuracy: <span id="social-score">100</span>%</div>
             </div>
 
-            <!-- DIGITAL FORENSICS GAME -->
             <div id="game-forensics" class="game-container hidden">
-                <h2 style="color: var(--neon-red);">Digital Forensics: OS Security Audit</h2>
+                <h2 style="color: var(--neon-green);">FORENSIC_DATA_RECOVERY</h2>
                 <div class="virtual-desktop" id="virtual-desktop">
-                    <div id="icon-sticky" class="desktop-icon" onclick="inspectDesktopItem('sticky')" style="top: 40px; left: 60px;">
-                        <div class="icon-img">📝</div><div class="icon-label">notes.txt</div>
-                    </div>
-                    <div id="icon-config" class="desktop-icon" onclick="inspectDesktopItem('config')" style="top: 40px; left: 180px;">
-                        <div class="icon-img">⚙️</div><div class="icon-label">config.js</div>
-                    </div>
-                    <div id="icon-logs" class="desktop-icon" onclick="inspectDesktopItem('logs')" style="top: 160px; left: 60px;">
-                        <div class="icon-img">📊</div><div class="icon-label">access.log</div>
-                    </div>
-                    <div id="icon-trash" class="desktop-icon" onclick="inspectDesktopItem('trash')" style="bottom: 40px; right: 40px;">
-                        <div class="icon-img">🗑️</div><div class="icon-label">Trash</div>
-                    </div>
-                    <div id="forensics-modal" class="forensics-modal hidden">
-                        <h3 id="modal-title" style="margin-top:0">FILE INSPECTION</h3>
-                        <div id="modal-content" style="font-family: monospace; background: #000; padding: 10px; margin: 15px 0; white-space: pre-wrap;"></div>
-                        <button class="btn-nav" onclick="closeForensicsModal()" style="margin-bottom:0">Close</button>
-                    </div>
-                    <div id="forensics-summary" class="briefing-overlay hidden" style="background: rgba(13, 17, 23, 0.98); border: 2px solid var(--neon-red);">
-                        <h2 style="color: var(--neon-red);">OPSEC SUMMARY COMPLETE</h2>
-                        <div style="text-align: left; max-width: 600px; margin: 20px 0;">
-                            <p><strong>Operational Security (OPSEC)</strong> process complete. Leaks found:</p>
-                            <ul>
-                                <li><strong>Plaintext Credentials:</strong> notes.txt</li>
-                                <li><strong>Hardcoded Secrets:</strong> config.js</li>
-                                <li><strong>Brute-force Evidence:</strong> access.log</li>
-                                <li><strong>Residual Data:</strong> Trash bin</li>
-                            </ul>
+                    <div id="icon-sticky" class="desktop-icon" onclick="inspectDesktopItem('sticky')" style="top: 40px; left: 60px;"><div class="icon-img">📝</div><div class="icon-label">secrets.txt</div></div>
+                    <div id="icon-config" class="desktop-icon" onclick="inspectDesktopItem('config')" style="top: 40px; left: 180px;"><div class="icon-img">⚙️</div><div class="icon-label">env.config</div></div>
+                    <div id="icon-logs" class="desktop-icon" onclick="inspectDesktopItem('logs')" style="top: 160px; left: 60px;"><div class="icon-img">📊</div><div class="icon-label">sys.log</div></div>
+                    <div id="icon-trash" class="desktop-icon" onclick="inspectDesktopItem('trash')" style="bottom: 40px; right: 40px;"><div class="icon-img">🗑️</div><div class="icon-label">RECOVERY</div></div>
+                    <div id="forensics-modal" class="forensics-modal hidden"><h3 id="modal-title">EXTRACTING...</h3><div id="modal-content" style="font-family: monospace; background: #000; padding: 10px; margin: 15px 0; white-space: pre-wrap; border: 1px solid var(--border);"></div><button class="btn-nav" onclick="closeForensicsModal()">[ EXIT_VIEW ]</button></div>
+                    <div id="forensics-summary" class="briefing-overlay hidden">
+                        <h2 style="color: var(--neon-red);">ARTIFACTS_COLLECTED</h2>
+                        <div style="text-align: left; max-width: 600px; margin: 20px 0; font-size: 0.8rem;">
+                            <p>> LEAKS_IDENTIFIED:</p>
+                            <ul><li>CREDENTIALS: secrets.txt</li><li>SECRETS: env.config</li><li>ATTACK_LOGS: sys.log</li><li>REMNANTS: RECOVERY bin</li></ul>
                         </div>
-                        <button class="btn-nav" onclick="closeGame()" style="border-color: var(--neon-red); color: var(--neon-red);">Return to Dashboard</button>
+                        <button class="btn-nav" onclick="closeGame()">[ CLOSE_CASE ]</button>
                     </div>
                 </div>
-                <div style="text-align:center; margin-top: 20px;">Leaks Detected: <span id="leaks-found-count">0</span> / 4</div>
             </div>
 
         </div>
     </div>
 
     <footer>
-        &copy; 2025 Cyber Defense Lab | Professional Cybersecurity Training Simulation
+        &copy; 2025 CYBER_DEF_LAB | V4.0.0_STABLE
     </footer>
 
     <script src="games.js"></script>

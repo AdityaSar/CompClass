@@ -223,15 +223,15 @@ function renderProcesses() {
 
     activeProcesses.slice().reverse().forEach(p => {
         const tr = document.createElement('tr');
-        tr.style.borderBottom = "1px solid #1b2733";
-        if (p.isThreat && Math.random() > 0.7) tr.style.color = "#ffb8b8";
+        tr.style.borderBottom = "1px solid var(--border)";
+        if (p.isThreat && Math.random() > 0.7) tr.style.color = "var(--neon-red)";
 
         tr.innerHTML = `
             <td style="padding: 10px;">${p.pid}</td>
             <td style="padding: 10px;">${p.name}</td>
             <td style="padding: 10px;">${p.path}</td>
             <td style="padding: 10px;">
-                <button onclick="killProcess(${p.id})" style="background: var(--neon-red); color: white; border: none; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-weight:bold;">TERMINATE</button>
+                <button onclick="killProcess(${p.id})" style="background: transparent; color: var(--neon-red); border: 1px solid var(--neon-red); padding: 4px 8px; cursor: pointer; font-weight:bold; font-family: 'Courier New', Courier, monospace;">KILL</button>
             </td>
         `;
         body.appendChild(tr);
@@ -262,7 +262,7 @@ function updateStabilityUI() {
     document.getElementById('stability-text').innerText = `${Math.floor(stability)}%`;
 
     if (stability < 30) fill.style.background = "var(--neon-red)";
-    else if (stability < 60) fill.style.background = "orange";
+    else if (stability < 60) fill.style.background = "var(--neon-yellow)";
     else fill.style.background = "var(--neon-green)";
 }
 
@@ -361,10 +361,10 @@ function calculatePassword() {
         result.style.color = "var(--neon-red)";
     } else if (crackTimeSeconds < 3600) {
         timeText = "MINUTES";
-        result.style.color = "orange";
+        result.style.color = "var(--neon-yellow)";
     } else if (crackTimeSeconds < 86400 * 30) {
         timeText = "DAYS";
-        result.style.color = "yellow";
+        result.style.color = "var(--neon-yellow)";
     } else if (crackTimeSeconds < 31536000 * 100) {
         timeText = "DECADES";
         result.style.color = "var(--neon-green)";
@@ -468,7 +468,7 @@ function nextChatScenario() {
         const history = document.getElementById('chat-history');
         const finalMsg = document.createElement('div');
         finalMsg.className = "message-bubble msg-received";
-        finalMsg.style.border = "1px solid var(--neon-purple)";
+        finalMsg.style.border = "1px solid var(--neon-red)";
         finalMsg.innerHTML = `<strong>SYSTEM:</strong><br>Social Engineering Simulation Complete. Final Score: ${socialScore}%`;
         history.appendChild(finalMsg);
     }
