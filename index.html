@@ -234,6 +234,21 @@
         .btn-phish { background: var(--danger); color: #fff; }
         .btn-action:hover { opacity: 0.9; transform: scale(1.05); }
 
+        /* Next Button Special Style */
+        .btn-next {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: #000;
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 242, 255, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(0, 242, 255, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(0, 242, 255, 0.4); }
+        }
+
         .terminal-box {
             background: #050505;
             border: 2px solid var(--neon-purple);
@@ -449,7 +464,7 @@
                 <div class="btn-group">
                     <button id="phish-report-btn" class="btn-action btn-phish" onclick="checkPhish(true)">Report Phish</button>
                     <button id="phish-safe-btn" class="btn-action btn-safe" onclick="checkPhish(false)">Mark as Safe</button>
-                    <button id="phish-next-btn" class="btn-action btn-nav hidden" onclick="loadEmail()" style="margin-bottom: 0;">Next Email</button>
+                    <button id="phish-next-btn" class="btn-action btn-next hidden" onclick="loadEmail()" style="margin-bottom: 0;">Next Email →</button>
                 </div>
                 <p id="phish-feedback" style="text-align:center; min-height: 4rem; margin-top:20px; font-weight: bold;"></p>
                 <div id="phish-summary" class="hidden" style="text-align:center; margin-top: 20px;">
@@ -465,7 +480,10 @@
                 <h2 style="color: var(--neon-blue);">Threat Hunter</h2>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                     <span>System Stability: <span id="stability-text" style="font-weight:bold;">100%</span></span>
-                    <span>Threats Neutralized: <span id="hunter-score" style="font-weight:bold;">0</span></span>
+                    <div style="text-align: right;">
+                        <div>Threats Neutralized: <span id="hunter-score" style="font-weight:bold;">0</span></div>
+                        <div style="color: var(--neon-yellow); font-size: 0.8rem;">Active Threats: <span id="threats-remaining">0</span></div>
+                    </div>
                 </div>
                 <div style="height: 10px; background: #000; border-radius: 5px; margin-bottom: 25px; overflow: hidden; border: 1px solid var(--border);">
                     <div id="stability-fill" style="height:100%; width:100%; background: var(--success); transition: 0.3s;"></div>
@@ -532,7 +550,10 @@
                 <h2 style="color: var(--neon-blue);">Security Trivia</h2>
                 <p id="quiz-question" style="font-size: 1.2rem; margin-bottom: 30px; line-height: 1.6;"></p>
                 <div id="quiz-options" style="display: grid; gap: 15px;"></div>
-                <p id="quiz-feedback" style="text-align:center; margin-top: 30px; min-height: 2rem; font-weight: bold; font-size: 1.2rem;"></p>
+                <p id="quiz-feedback" style="text-align:center; margin-top: 30px; min-height: 4rem; font-weight: bold; font-size: 1.1rem; border-top: 1px solid var(--border); padding-top: 20px;"></p>
+                <div id="quiz-next-container" class="hidden" style="text-align:center; margin-top: 20px;">
+                    <button class="btn-action btn-next" onclick="loadQuizQuestion()">Next Question →</button>
+                </div>
                 <div id="quiz-summary" class="hidden" style="text-align:center; margin-top: 20px;">
                     <h3 style="color: var(--success);">QUIZ COMPLETE</h3>
                     <p id="quiz-final-score" style="font-size: 1.5rem; margin: 20px 0;"></p>

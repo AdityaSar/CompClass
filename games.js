@@ -235,7 +235,15 @@ function spawnProcess() {
 
     const p = { ...template, pid, id: Date.now() + Math.random() };
     activeProcesses.push(p);
+    updateThreatCounter();
     renderProcesses();
+}
+
+function updateThreatCounter() {
+    let count = 0;
+    activeProcesses.forEach(p => { if (p.isThreat) count++; });
+    const counterEl = document.getElementById('threats-remaining');
+    if (counterEl) counterEl.innerText = count;
 }
 
 function renderProcesses() {
@@ -245,7 +253,6 @@ function renderProcesses() {
     activeProcesses.slice().reverse().forEach(p => {
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid var(--border)";
-        if (p.isThreat && Math.random() > 0.7) tr.style.color = "var(--neon-red)";
 
         tr.innerHTML = `
             <td style="padding: 10px;">${p.pid}</td>
@@ -276,6 +283,7 @@ function terminateProcess(id) {
     }
 
     activeProcesses.splice(idx, 1);
+    updateThreatCounter();
     renderProcesses();
 }
 
@@ -304,8 +312,8 @@ function victoryHunter() {
 
 // --- CRYPTOGRAPHY GAME LOGIC ---
 const cryptoLevels = [
-    { encrypted: "YVCCF", plain: "HELLO", shift: 17 },
-    { encrypted: "NZXPMZ", plain: "SECURE", shift: 21 },
+    { encrypted: "LIPPS", plain: "HELLO", shift: 4 },
+    { encrypted: "EQOGDQ", plain: "SECURE", shift: 12 },
     { encrypted: "VOOVXF VO YVRI", plain: "ATTACK AT DAWN", shift: 21 }
 ];
 
@@ -618,21 +626,96 @@ function closeForensicsModal() {
 
 // --- QUIZ GAME LOGIC ---
 const quizQuestions = [
-    { q: "What does 'MFA' stand for?", options: ["Multi-Factor Authentication", "Main Firewall Access", "Mobile File Archive"], a: "Multi-Factor Authentication" },
-    { q: "Strongest password strategy?", options: ["Pet's name", "Changing letter to number", "Long phrase with variety"], a: "Long phrase with variety" },
-    { q: "What is 'Social Engineering'?", options: ["Building apps", "Manipulating people for data", "Designing offices"], a: "Manipulating people for data" },
-    { q: "What is a 'Zero-Day'?", options: ["Fixed in 0 days", "Unknown flaw with no patch", "Virus that deletes itself"], a: "Unknown flaw with no patch" },
-    { q: "VPN primary purpose?", options: ["Faster internet", "Secure, encrypted tunnel", "Block all viruses"], a: "Secure, encrypted tunnel" },
-    { q: "What is 'Ransomware'?", options: ["Free software", "Encrypts files for payment", "Monitors screen"], a: "Encrypts files for payment" },
-    { q: "More secure protocol?", options: ["HTTP", "FTP", "HTTPS"], a: "HTTPS" },
-    { q: "What is 'Phishing'?", options: ["Search for files", "Fraudulent emails for info", "Cracking Wi-Fi"], a: "Fraudulent emails for info" },
-    { q: "What is '2FA'?", options: ["Two-Factor Authentication", "Secondary File Access", "Twice Fast Algorithm"], a: "Two-Factor Authentication" },
-    { q: "Which is a common Wi-Fi encryption?", options: ["WPA3", "WPF2", "WEP5"], a: "WPA3" },
-    { q: "What does 'DDoS' stand for?", options: ["Distributed Denial of Service", "Direct Data on System", "Digital Data over Socket"], a: "Distributed Denial of Service" },
-    { q: "What is 'SQL Injection'?", options: ["Database manipulation via code", "Injecting hardware", "Speeding up queries"], a: "Database manipulation via code" },
-    { q: "What is a 'Firewall'?", options: ["Network security monitor", "Burning hardware", "File backup system"], a: "Network security monitor" },
-    { q: "What is 'Encryption'?", options: ["Scrambling data for privacy", "Deleting data", "Compressing data"], a: "Scrambling data for privacy" },
-    { q: "What is 'Brute Force'?", options: ["Trying every possible combination", "Using physical force", "Speeding up CPU"], a: "Trying every possible combination" }
+    {
+        q: "What does 'MFA' stand for?",
+        options: ["Multi-Factor Authentication", "Main Firewall Access", "Mobile File Archive"],
+        a: "Multi-Factor Authentication",
+        explanation: "MFA requires multiple forms of verification (like a password + a code from your phone) to grant access."
+    },
+    {
+        q: "Strongest password strategy?",
+        options: ["Pet's name", "Changing letter to number", "Long phrase with variety"],
+        a: "Long phrase with variety",
+        explanation: "Long passphrases (15+ characters) are much harder for computers to 'brute-force' than short, complex passwords."
+    },
+    {
+        q: "What is 'Social Engineering'?",
+        options: ["Building apps", "Manipulating people for data", "Designing offices"],
+        a: "Manipulating people for data",
+        explanation: "Social engineering targets the 'human element' by tricking people into giving up secrets through psychological manipulation."
+    },
+    {
+        q: "What is a 'Zero-Day'?",
+        options: ["Fixed in 0 days", "Unknown flaw with no patch", "Virus that deletes itself"],
+        a: "Unknown flaw with no patch",
+        explanation: "A 'Zero-Day' is a vulnerability that is unknown to the software vendor, meaning they have had 'zero days' to fix it."
+    },
+    {
+        q: "VPN primary purpose?",
+        options: ["Faster internet", "Secure, encrypted tunnel", "Block all viruses"],
+        a: "Secure, encrypted tunnel",
+        explanation: "A Virtual Private Network (VPN) creates an encrypted connection over a less secure network, like the internet."
+    },
+    {
+        q: "What is 'Ransomware'?",
+        options: ["Free software", "Encrypts files for payment", "Monitors screen"],
+        a: "Encrypts files for payment",
+        explanation: "Ransomware locks your data and demands a ransom (usually in Bitcoin) to unlock it."
+    },
+    {
+        q: "More secure protocol?",
+        options: ["HTTP", "FTP", "HTTPS"],
+        a: "HTTPS",
+        explanation: "The 'S' in HTTPS stands for 'Secure'—it encrypts the data sent between your browser and the website."
+    },
+    {
+        q: "What is 'Phishing'?",
+        options: ["Search for files", "Fraudulent emails for info", "Cracking Wi-Fi"],
+        a: "Fraudulent emails for info",
+        explanation: "Phishing involves sending deceptive emails that appear to be from legitimate sources to steal sensitive data."
+    },
+    {
+        q: "What is '2FA'?",
+        options: ["Two-Factor Authentication", "Secondary File Access", "Twice Fast Algorithm"],
+        a: "Two-Factor Authentication",
+        explanation: "Similar to MFA, 2FA specifically refers to using exactly TWO methods of authentication."
+    },
+    {
+        q: "Which is a common Wi-Fi encryption?",
+        options: ["WPA3", "WPF2", "WEP5"],
+        a: "WPA3",
+        explanation: "WPA3 is the latest and most secure Wi-Fi encryption standard as of now."
+    },
+    {
+        q: "What does 'DDoS' stand for?",
+        options: ["Distributed Denial of Service", "Direct Data on System", "Digital Data over Socket"],
+        a: "Distributed Denial of Service",
+        explanation: "DDoS attacks flood a target with traffic from many different sources to crash it."
+    },
+    {
+        q: "What is 'SQL Injection'?",
+        options: ["Database manipulation via code", "Injecting hardware", "Speeding up queries"],
+        a: "Database manipulation via code",
+        explanation: "SQL injection is an attack where malicious code is inserted into a database query through input fields."
+    },
+    {
+        q: "What is a 'Firewall'?",
+        options: ["Network security monitor", "Burning hardware", "File backup system"],
+        a: "Network security monitor",
+        explanation: "A firewall monitors and controls incoming and outgoing network traffic based on security rules."
+    },
+    {
+        q: "What is 'Encryption'?",
+        options: ["Scrambling data for privacy", "Deleting data", "Compressing data"],
+        a: "Scrambling data for privacy",
+        explanation: "Encryption converts readable data into a format that can only be read by someone with the decryption key."
+    },
+    {
+        q: "What is 'Brute Force'?",
+        options: ["Trying every possible combination", "Using physical force", "Speeding up CPU"],
+        a: "Trying every possible combination",
+        explanation: "Brute force is a trial-and-error method used to crack passwords by trying all possible combinations."
+    }
 ];
 
 let currentQuizIdx = 0;
@@ -649,6 +732,8 @@ function initQuiz() {
 }
 
 function loadQuizQuestion() {
+    document.getElementById('quiz-next-container').classList.add('hidden');
+
     if (currentQuizIdx >= quizQuestions.length) {
         document.getElementById('quiz-question').classList.add('hidden');
         document.getElementById('quiz-options').classList.add('hidden');
@@ -685,28 +770,31 @@ function checkQuiz(idx, selectedOpt) {
     // Disable all buttons after choice
     buttons.forEach(b => b.onclick = null);
 
+    let explanationText = `<div style="margin-top:10px; font-size: 0.9rem; font-weight: normal; opacity: 0.8;">${question.explanation}</div>`;
+
     if (selectedOpt === question.a) {
         quizScore++;
         buttons[idx].style.background = "var(--neon-green)";
         buttons[idx].style.color = "#000";
-        feedback.innerText = "✓ CORRECT";
+        feedback.innerHTML = "✓ CORRECT" + explanationText;
         feedback.style.color = "var(--neon-green)";
     } else {
         buttons[idx].style.background = "var(--neon-red)";
         buttons[idx].style.color = "#fff";
-        feedback.innerText = "✗ INCORRECT";
+        feedback.innerHTML = "✗ INCORRECT" + explanationText;
         feedback.style.color = "var(--neon-red)";
 
         // Show correct answer
         buttons.forEach(b => {
             if (b.innerText.includes(question.a)) {
                 b.style.border = "2px solid var(--neon-green)";
+                b.style.color = "var(--neon-green)";
             }
         });
     }
 
     currentQuizIdx++;
-    setTimeout(loadQuizQuestion, 1500);
+    document.getElementById('quiz-next-container').classList.remove('hidden');
 }
 
 // --- NAVIGATION LOGIC ---
