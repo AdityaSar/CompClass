@@ -220,17 +220,17 @@ function startHunter() {
     hunterActive = true;
     initHunter();
 
-    // Spawn 3 threats initially among 7 benign processes
+    // Spawn 3 threats initially among 4 benign processes (Reduced to avoid scrolling)
     const initialThreats = [...threatTemplates].sort(() => Math.random() - 0.5).slice(0, 3);
     initialThreats.forEach(t => spawnSpecificProcess(t));
 
-    for(let i=0; i<7; i++) spawnSpecificProcess(benignTemplates[Math.floor(Math.random() * benignTemplates.length)]);
+    for(let i=0; i<4; i++) spawnSpecificProcess(benignTemplates[Math.floor(Math.random() * benignTemplates.length)]);
 
     processInterval = setInterval(() => {
         if (!hunterActive) return;
 
-        // Occasionally spawn more bait
-        if (Math.random() > 0.7) {
+        // Occasionally spawn more bait, but keep list short
+        if (Math.random() > 0.85 && activeProcesses.length < 10) {
             spawnSpecificProcess(benignTemplates[Math.floor(Math.random() * benignTemplates.length)]);
         }
 

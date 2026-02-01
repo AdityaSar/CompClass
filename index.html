@@ -18,13 +18,6 @@
             --neon-green: #00ff9d;
             --neon-red: #ff3131;
             --neon-yellow: #f0f000;
-
-            /* Investigation Board Colors */
-            --cork: #3d2b1f;
-            --sticky-yellow: #fef68c;
-            --sticky-blue: #b3e5fc;
-            --sticky-pink: #f8bbd0;
-            --sticky-green: #c8e6c9;
         }
 
         body {
@@ -57,102 +50,66 @@
             box-sizing: border-box;
         }
 
-        /* INVESTIGATION BOARD (MASONRY) */
+        /* BENTO BOX GRID */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 50px;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: minmax(180px, auto);
+            gap: 20px;
             width: 100%;
-            padding: 60px 40px;
-            background: #2a1e14;
-            background-image:
-                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px),
-                url('https://www.transparenttextures.com/patterns/cork-board.png');
-            border-radius: 20px;
-            border: 12px solid #3d2b1f;
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.8), 0 20px 50px rgba(0,0,0,0.5);
-            position: relative;
+            padding: 20px;
             box-sizing: border-box;
         }
 
         .module-card {
-            background: var(--sticky-yellow);
-            color: #222;
-            padding: 25px;
-            text-align: center;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: left;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             position: relative;
-            box-shadow: 5px 10px 20px rgba(0,0,0,0.4);
-            min-height: 200px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-end;
+            overflow: hidden;
+            background: linear-gradient(145deg, #1a1a2e, #151525);
         }
-
-        /* Sticky Note Variance */
-        .module-card:nth-child(1) { transform: rotate(-2deg); background: var(--sticky-yellow); }
-        .module-card:nth-child(2) { transform: rotate(3deg); background: var(--sticky-blue); }
-        .module-card:nth-child(3) { transform: rotate(-1.5deg); background: var(--sticky-pink); }
-        .module-card:nth-child(4) { transform: rotate(2deg); background: var(--sticky-green); }
-        .module-card:nth-child(5) { transform: rotate(-3deg); background: var(--sticky-yellow); }
-        .module-card:nth-child(6) { transform: rotate(1deg); background: var(--sticky-blue); }
-        .module-card:nth-child(7) { transform: rotate(-2.5deg); background: var(--sticky-pink); }
 
         .module-card:hover {
-            transform: scale(1.1) rotate(0deg) !important;
-            z-index: 20;
-            box-shadow: 10px 20px 40px rgba(0,0,0,0.6);
+            transform: translateY(-5px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.2);
         }
 
-        .module-card::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 15px;
-            height: 15px;
-            background: #ff3131;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset -2px -2px 4px rgba(0,0,0,0.2);
-            z-index: 5;
-        }
+        /* Bento Spans */
+        .card-phishing { grid-column: span 2; grid-row: span 2; }
+        .card-hunter { grid-column: span 2; grid-row: span 1; }
+        .card-forensics { grid-column: span 2; grid-row: span 1; }
+        .card-crypto { grid-column: span 1; grid-row: span 1; }
+        .card-password { grid-column: span 1; grid-row: span 1; }
+        .card-quiz { grid-column: span 1; grid-row: span 1; }
+        .card-social { grid-column: span 1; grid-row: span 1; }
 
-        .icon {
+        .module-card .icon {
             font-size: 2.5rem;
-            margin-bottom: 15px;
+            margin-bottom: auto;
             display: block;
-            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
         }
 
         .module-card h3 {
-            margin: 5px 0;
-            color: #000;
-            font-size: 1.2rem;
-            font-weight: 800;
-            font-family: 'Courier New', Courier, monospace;
-            text-transform: uppercase;
-        }
-
-        .module-card p {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            line-height: 1.4;
-            font-family: 'Courier New', Courier, monospace;
+            margin: 20px 0 10px 0;
+            color: var(--neon-blue);
+            font-size: 1.4rem;
             font-weight: 600;
         }
 
-        /* Connector Lines SVG */
-        .connector-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.3;
+        .module-card p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.7;
+            line-height: 1.5;
         }
 
         /* GAME ARENA */
@@ -444,50 +401,42 @@
     <div style="color: var(--neon-purple); font-weight: bold; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; font-size: 0.8rem; text-shadow: 0 0 5px var(--neon-purple);">HACKING SAFETY</div>
 
     <div class="container" style="position: relative;">
-        <!-- DASHBOARD -->
+        <!-- DASHBOARD (Bento Box) -->
         <div id="dashboard" class="dashboard-grid active">
-            <!-- Connector Lines -->
-            <svg class="connector-lines">
-                <line x1="15%" y1="20%" x2="45%" y2="25%" stroke="var(--neon-red)" stroke-width="2" stroke-dasharray="5,5" />
-                <line x1="50%" y1="25%" x2="80%" y2="20%" stroke="var(--neon-red)" stroke-width="2" stroke-dasharray="5,5" />
-                <line x1="20%" y1="50%" x2="20%" y2="80%" stroke="var(--neon-blue)" stroke-width="2" stroke-dasharray="8,4" />
-                <line x1="80%" y1="50%" x2="50%" y2="80%" stroke="var(--neon-purple)" stroke-width="2" />
-            </svg>
-
-            <div class="module-card" onclick="openGame('phishing')">
+            <div class="module-card card-phishing" onclick="openGame('phishing')">
                 <span class="icon">📧</span>
                 <h3>Phish or Legit?</h3>
-                <p>Detect sophisticated social engineering.</p>
+                <p>Detect sophisticated social engineering attempts and audit email headers.</p>
             </div>
-            <div class="module-card" onclick="openGame('threathunter')">
+            <div class="module-card card-hunter" onclick="openGame('threathunter')">
                 <span class="icon">🕵️‍♂️</span>
                 <h3>Threat Hunter</h3>
-                <p>Terminate malicious system processes.</p>
+                <p>Terminate malicious system processes in real-time.</p>
             </div>
-            <div class="module-card" onclick="openGame('crypto')">
+            <div class="module-card card-crypto" onclick="openGame('crypto')">
                 <span class="icon">🔐</span>
                 <h3>Crypto Lab</h3>
                 <p>Decode secret historical messages.</p>
             </div>
-            <div class="module-card" onclick="openGame('password')">
+            <div class="module-card card-password" onclick="openGame('password')">
                 <span class="icon">🔑</span>
                 <h3>Password Vault</h3>
                 <p>Test brute-force cracking speeds.</p>
             </div>
-            <div class="module-card" onclick="openGame('quiz')">
+            <div class="module-card card-quiz" onclick="openGame('quiz')">
                 <span class="icon">🛡️</span>
                 <h3>Security Trivia</h3>
-                <p>Challenge your general knowledge.</p>
+                <p>Challenge your knowledge.</p>
             </div>
-            <div class="module-card" onclick="openGame('social')">
+            <div class="module-card card-social" onclick="openGame('social')">
                 <span class="icon">💬</span>
                 <h3>Social Engineering</h3>
-                <p>Identify human manipulation tactics.</p>
+                <p>Identify human manipulation.</p>
             </div>
-            <div class="module-card" onclick="openGame('forensics')">
+            <div class="module-card card-forensics" onclick="openGame('forensics')">
                 <span class="icon">🔍</span>
                 <h3>Digital Forensics</h3>
-                <p>Audit system for data leaks.</p>
+                <p>Audit the system for critical data leaks and security artifacts.</p>
             </div>
         </div>
 

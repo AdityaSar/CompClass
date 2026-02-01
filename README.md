@@ -1,4 +1,4 @@
-# Cyber Defense Lab - Cybersecurity Training Simulation
+# Cyber Defense Lab - Cybersecurity Training Simulation v4.2.0
 
 An interactive, browser-based training platform designed to teach fundamental cybersecurity concepts through gamified simulations.
 
