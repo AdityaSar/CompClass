@@ -18,6 +18,13 @@
             --neon-green: #00ff9d;
             --neon-red: #ff3131;
             --neon-yellow: #f0f000;
+
+            /* Investigation Board Colors */
+            --cork: #3d2b1f;
+            --sticky-yellow: #fef68c;
+            --sticky-blue: #b3e5fc;
+            --sticky-pink: #f8bbd0;
+            --sticky-green: #c8e6c9;
         }
 
         body {
@@ -32,6 +39,7 @@
             min-height: 100vh;
             background-image:
                 radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a12 100%);
+            overflow-x: hidden;
         }
 
         h1 {
@@ -49,64 +57,102 @@
             box-sizing: border-box;
         }
 
-        /* DASHBOARD GRID */
+        /* INVESTIGATION BOARD (MASONRY) */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 50px;
             width: 100%;
+            padding: 60px 40px;
+            background: #2a1e14;
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px),
+                url('https://www.transparenttextures.com/patterns/cork-board.png');
+            border-radius: 20px;
+            border: 12px solid #3d2b1f;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8), 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            box-sizing: border-box;
         }
 
         .module-card {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
+            background: var(--sticky-yellow);
+            color: #222;
+            padding: 25px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            overflow: hidden;
+            box-shadow: 5px 10px 20px rgba(0,0,0,0.4);
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
+        /* Sticky Note Variance */
+        .module-card:nth-child(1) { transform: rotate(-2deg); background: var(--sticky-yellow); }
+        .module-card:nth-child(2) { transform: rotate(3deg); background: var(--sticky-blue); }
+        .module-card:nth-child(3) { transform: rotate(-1.5deg); background: var(--sticky-pink); }
+        .module-card:nth-child(4) { transform: rotate(2deg); background: var(--sticky-green); }
+        .module-card:nth-child(5) { transform: rotate(-3deg); background: var(--sticky-yellow); }
+        .module-card:nth-child(6) { transform: rotate(1deg); background: var(--sticky-blue); }
+        .module-card:nth-child(7) { transform: rotate(-2.5deg); background: var(--sticky-pink); }
+
         .module-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-blue);
-            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.15);
+            transform: scale(1.1) rotate(0deg) !important;
+            z-index: 20;
+            box-shadow: 10px 20px 40px rgba(0,0,0,0.6);
         }
 
         .module-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .module-card:hover::before {
-            opacity: 1;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 15px;
+            background: #ff3131;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset -2px -2px 4px rgba(0,0,0,0.2);
+            z-index: 5;
         }
 
         .icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
             display: block;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
         }
 
         .module-card h3 {
-            margin: 10px 0;
-            color: var(--neon-blue);
-            font-size: 1.4rem;
+            margin: 5px 0;
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: 800;
+            font-family: 'Courier New', Courier, monospace;
+            text-transform: uppercase;
         }
 
         .module-card p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            line-height: 1.5;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            line-height: 1.4;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+
+        /* Connector Lines SVG */
+        .connector-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
         }
 
         /* GAME ARENA */
@@ -397,9 +443,17 @@
     <h1 style="margin-bottom: 5px;">🛡️ Cyber Defense Lab</h1>
     <div style="color: var(--neon-purple); font-weight: bold; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; font-size: 0.8rem; text-shadow: 0 0 5px var(--neon-purple);">HACKING SAFETY</div>
 
-    <div class="container">
+    <div class="container" style="position: relative;">
         <!-- DASHBOARD -->
         <div id="dashboard" class="dashboard-grid active">
+            <!-- Connector Lines -->
+            <svg class="connector-lines">
+                <line x1="15%" y1="20%" x2="45%" y2="25%" stroke="var(--neon-red)" stroke-width="2" stroke-dasharray="5,5" />
+                <line x1="50%" y1="25%" x2="80%" y2="20%" stroke="var(--neon-red)" stroke-width="2" stroke-dasharray="5,5" />
+                <line x1="20%" y1="50%" x2="20%" y2="80%" stroke="var(--neon-blue)" stroke-width="2" stroke-dasharray="8,4" />
+                <line x1="80%" y1="50%" x2="50%" y2="80%" stroke="var(--neon-purple)" stroke-width="2" />
+            </svg>
+
             <div class="module-card" onclick="openGame('phishing')">
                 <span class="icon">📧</span>
                 <h3>Phish or Legit?</h3>

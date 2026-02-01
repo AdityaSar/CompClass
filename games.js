@@ -171,26 +171,38 @@ let hunterActive = false;
 let stability = 100;
 let hunterScore = 0;
 let processInterval;
-const THREAT_GOAL = 15;
+const THREAT_GOAL = 3;
 const activeProcesses = [];
 
-const processTemplates = [
+const benignTemplates = [
     { name: "explorer.exe", path: "C:\\Windows\\", isThreat: false },
     { name: "svchost.exe", path: "C:\\Windows\\System32\\", isThreat: false },
     { name: "chrome.exe", path: "C:\\Program Files\\Google\\", isThreat: false },
+    { name: "spoolsv.exe", path: "C:\\Windows\\System32\\", isThreat: false },
+    { name: "winlogon.exe", path: "C:\\Windows\\System32\\", isThreat: false },
+    { name: "zoom.exe", path: "C:\\Users\\Admin\\AppData\\Local\\", isThreat: false },
+    { name: "lsass.exe", path: "C:\\Windows\\System32\\", isThreat: false },
+    { name: "taskmgr.exe", path: "C:\\Windows\\System32\\", isThreat: false },
+    { name: "calculator.exe", path: "C:\\Windows\\System32\\", isThreat: false },
+    { name: "notepad.exe", path: "C:\\Windows\\System32\\", isThreat: false },
+    { name: "teams.exe", path: "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\", isThreat: false },
+    { name: "outlook.exe", path: "C:\\Program Files\\Microsoft Office\\", isThreat: false },
+    { name: "spotify.exe", path: "C:\\Users\\Admin\\AppData\\Roaming\\", isThreat: false },
+    { name: "onedrive.exe", path: "C:\\Users\\Admin\\AppData\\Local\\Microsoft\\", isThreat: false },
+    { name: "slack.exe", path: "C:\\Users\\Admin\\AppData\\Local\\slack\\", isThreat: false }
+];
+
+const threatTemplates = [
     { name: "wannacry.exe", path: "C:\\Temp\\", isThreat: true },
     { name: "cryptominer.exe", path: "C:\\Users\\Public\\", isThreat: true },
     { name: "svchost.exe", path: "C:\\Temp\\", isThreat: true },
     { name: "backdoor.py", path: "C:\\Users\\Admin\\Downloads\\", isThreat: true },
-    { name: "spoolsv.exe", path: "C:\\Windows\\System32\\", isThreat: false },
     { name: "sys_diag.exe", path: "C:\\Windows\\Temp\\", isThreat: true },
-    { name: "winlogon.exe", path: "C:\\Windows\\System32\\", isThreat: false },
     { name: "keylogger.exe", path: "C:\\Users\\Public\\Roaming\\", isThreat: true },
-    { name: "zoom.exe", path: "C:\\Users\\Admin\\AppData\\Local\\", isThreat: false },
-    { name: "lsass.exe", path: "C:\\Windows\\System32\\", isThreat: false },
     { name: "lsass.exe", path: "C:\\Users\\Public\\", isThreat: true },
-    { name: "taskmgr.exe", path: "C:\\Windows\\System32\\", isThreat: false },
-    { name: "trojan.ps1", path: "C:\\Windows\\System32\\Drivers\\", isThreat: true }
+    { name: "trojan.ps1", path: "C:\\Windows\\System32\\Drivers\\", isThreat: true },
+    { name: "botnet.exe", path: "C:\\Users\\Default\\", isThreat: true },
+    { name: "rootkit.sys", path: "C:\\Windows\\System32\\drivers\\", isThreat: true }
 ];
 
 function initHunter() {
@@ -208,19 +220,27 @@ function startHunter() {
     hunterActive = true;
     initHunter();
 
-    for(let i=0; i<5; i++) spawnProcess();
+    // Spawn 3 threats initially among 7 benign processes
+    const initialThreats = [...threatTemplates].sort(() => Math.random() - 0.5).slice(0, 3);
+    initialThreats.forEach(t => spawnSpecificProcess(t));
+
+    for(let i=0; i<7; i++) spawnSpecificProcess(benignTemplates[Math.floor(Math.random() * benignTemplates.length)]);
 
     processInterval = setInterval(() => {
         if (!hunterActive) return;
-        spawnProcess();
+
+        // Occasionally spawn more bait
+        if (Math.random() > 0.7) {
+            spawnSpecificProcess(benignTemplates[Math.floor(Math.random() * benignTemplates.length)]);
+        }
 
         let threatCount = 0;
         activeProcesses.forEach(p => { if (p.isThreat) threatCount++; });
-        stability -= (threatCount * 1.5);
+        stability -= (threatCount * 2.0); // Slightly faster decay
 
         updateStabilityUI();
         if (stability <= 0) gameOverHunter();
-    }, 1500);
+    }, 2000);
 }
 
 function stopHunter() {
@@ -229,14 +249,18 @@ function stopHunter() {
     activeProcesses.length = 0;
 }
 
-function spawnProcess() {
-    const template = processTemplates[Math.floor(Math.random() * processTemplates.length)];
+function spawnSpecificProcess(template) {
     const pid = Math.floor(Math.random() * 9000) + 1000;
-
     const p = { ...template, pid, id: Date.now() + Math.random() };
     activeProcesses.push(p);
     updateThreatCounter();
     renderProcesses();
+}
+
+function spawnProcess() {
+    const allTemplates = [...benignTemplates, ...threatTemplates];
+    const template = allTemplates[Math.floor(Math.random() * allTemplates.length)];
+    spawnSpecificProcess(template);
 }
 
 function updateThreatCounter() {
@@ -807,7 +831,7 @@ const missionIntros = {
     threathunter: {
         title: "Threat Hunter",
         icon: "🕵️‍♂️",
-        description: "The system is under attack! Monitor the active processes and terminate any malicious entities (red-flagged or suspicious paths) before they compromise system stability. Avoid terminating critical system services."
+        description: "The system is under attack! Your objective is to identify and terminate 3 active malicious threats hidden within the system processes. Watch out for bait processes—terminating legitimate system services will severely destabilize the machine."
     },
     crypto: {
         title: "Crypto Lab",
