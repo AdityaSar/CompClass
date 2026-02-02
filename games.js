@@ -918,31 +918,31 @@ function selectCarouselItem(index) {
 }
 
 function updateCarousel() {
-    const track = document.getElementById('carousel-track');
     const wrapper = document.getElementById('dashboard');
     const items = document.querySelectorAll('.carousel-item');
     const bgOverlay = document.getElementById('bg-overlay');
 
-    if (!items.length) return;
+    if (!items.length || !wrapper) return;
 
-    const itemWidth = (items[0].offsetWidth || 350) + 40; // width + gap
-    const wrapperWidth = wrapper.offsetWidth || window.innerWidth;
-    const centerOffset = (wrapperWidth / 2) - ((items[0].offsetWidth || 350) / 2) - 50; // 50 is track padding
+    const activeItem = items[carouselIndex];
 
-    const offset = centerOffset - (carouselIndex * itemWidth);
+    // Use scrollIntoView with centering for robust, responsive alignment
+    activeItem.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+    });
 
-    track.style.transform = `translateX(${offset}px)`;
-
+    // Update visual classes and background atmosphere
     items.forEach((item, idx) => {
-        if (idx === carouselIndex) {
-            item.classList.add('active');
-            // Change background based on active item
+        const isActive = idx === carouselIndex;
+        item.classList.toggle('active', isActive);
+
+        if (isActive) {
             const rgb = item.style.getPropertyValue('--item-rgb');
-            if (bgOverlay) {
-                bgOverlay.style.background = `radial-gradient(circle at 50% 50%, rgba(${rgb}, 0.15) 0%, #0a0a12 100%)`;
+            if (bgOverlay && rgb) {
+                bgOverlay.style.background = `radial-gradient(circle at 50% 50%, rgba(${rgb}, 0.18) 0%, #0a0a12 100%)`;
             }
-        } else {
-            item.classList.remove('active');
         }
     });
 }
