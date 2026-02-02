@@ -30,17 +30,29 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            background-image:
-                radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a12 100%);
             overflow-x: hidden;
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            background-attachment: fixed;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: background 1s ease;
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a12 100%);
         }
 
         h1 {
             color: var(--neon-blue);
             text-transform: uppercase;
             letter-spacing: 4px;
-            margin: 40px 0;
+            margin: 40px 0 5px 0;
             text-shadow: 0 0 10px var(--neon-blue);
+            z-index: 10;
         }
 
         .container {
@@ -48,75 +60,153 @@
             width: 100%;
             padding: 20px;
             box-sizing: border-box;
-        }
-
-        /* BENTO BOX GRID */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: minmax(180px, auto);
-            gap: 20px;
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .module-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            overflow: hidden;
-            background: linear-gradient(145deg, #1a1a2e, #151525);
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
         }
 
-        .module-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-blue);
-            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.2);
+        /* MISSION CAROUSEL */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+            margin: 40px 0;
         }
 
-        /* Bento Spans */
-        .card-phishing { grid-column: span 2; grid-row: span 2; }
-        .card-hunter { grid-column: span 2; grid-row: span 1; }
-        .card-forensics { grid-column: span 2; grid-row: span 1; }
-        .card-crypto { grid-column: span 1; grid-row: span 1; }
-        .card-password { grid-column: span 1; grid-row: span 1; }
-        .card-quiz { grid-column: span 1; grid-row: span 1; }
-        .card-social { grid-column: span 1; grid-row: span 1; }
-
-        .module-card .icon {
-            font-size: 2.5rem;
-            margin-bottom: auto;
-            display: block;
+        .carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            gap: 40px;
+            padding: 0 50px;
         }
 
-        .module-card h3 {
-            margin: 20px 0 10px 0;
-            color: var(--neon-blue);
-            font-size: 1.4rem;
-            font-weight: 600;
+        .carousel-item {
+            min-width: 350px;
+            height: 450px;
+            background: rgba(21, 21, 37, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            position: relative;
+            opacity: 0.3;
+            transform: scale(0.8) rotateY(15deg);
         }
 
-        .module-card p {
-            margin: 0;
-            font-size: 0.95rem;
-            opacity: 0.7;
-            line-height: 1.5;
+        .carousel-item.active {
+            opacity: 1;
+            transform: scale(1.1) rotateY(0deg);
+            border-color: var(--item-color);
+            box-shadow: 0 0 50px rgba(var(--item-rgb), 0.3);
+            background: rgba(21, 21, 37, 0.9);
+            animation: borderPulse 3s infinite;
         }
+
+        @keyframes borderPulse {
+            0% { border-color: rgba(var(--item-rgb), 0.5); box-shadow: 0 0 20px rgba(var(--item-rgb), 0.2); }
+            50% { border-color: var(--item-color); box-shadow: 0 0 50px rgba(var(--item-rgb), 0.4); }
+            100% { border-color: rgba(var(--item-rgb), 0.5); box-shadow: 0 0 20px rgba(var(--item-rgb), 0.2); }
+        }
+
+        .carousel-item .icon {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 10px var(--item-color));
+        }
+
+        .carousel-item h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .carousel-item p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .btn-launch {
+            background: var(--item-color);
+            color: #000;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(var(--item-rgb), 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        .carousel-item.active .btn-launch {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .btn-launch:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--item-color);
+        }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 100;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-arrow:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #fff;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .arrow-prev { left: -80px; }
+        .arrow-next { right: -80px; }
 
         /* GAME ARENA */
         .game-arena {
             width: 100%;
             animation: fadeIn 0.5s ease-in-out;
             display: none;
+            z-index: 20;
         }
 
         .game-arena.active {
@@ -395,49 +485,75 @@
         }
     </style>
 </head>
-<body>
+<body id="main-body">
+    <div class="bg-overlay" id="bg-overlay"></div>
 
-    <h1 style="margin-bottom: 5px;">🛡️ Cyber Defense Lab</h1>
-    <div style="color: var(--neon-purple); font-weight: bold; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; font-size: 0.8rem; text-shadow: 0 0 5px var(--neon-purple);">HACKING SAFETY</div>
+    <h1>🛡️ Cyber Defense Lab</h1>
+    <div style="color: var(--neon-purple); font-weight: bold; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; font-size: 0.8rem; text-shadow: 0 0 5px var(--neon-purple); z-index: 10;">HACKING SAFETY</div>
 
-    <div class="container" style="position: relative;">
-        <!-- DASHBOARD (Bento Box) -->
-        <div id="dashboard" class="dashboard-grid active">
-            <div class="module-card card-phishing" onclick="openGame('phishing')">
-                <span class="icon">📧</span>
-                <h3>Phish or Legit?</h3>
-                <p>Detect sophisticated social engineering attempts and audit email headers.</p>
+    <div class="container">
+        <!-- MISSION CAROUSEL -->
+        <div id="dashboard" class="carousel-wrapper active">
+            <button class="nav-arrow arrow-prev" onclick="moveCarousel(-1)">❮</button>
+            <div class="carousel-track" id="carousel-track">
+                <!-- Phish or Legit -->
+                <div class="carousel-item" style="--item-color: #1a73e8; --item-rgb: 26, 115, 232;" onclick="selectCarouselItem(0)">
+                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <span class="icon">📧</span>
+                    <h3>Phish or Legit?</h3>
+                    <p>Detect sophisticated social engineering attempts and audit email headers.</p>
+                    <button class="btn-launch" onclick="event.stopPropagation(); openGame('phishing')">Start Mission</button>
+                </div>
+                <!-- Threat Hunter -->
+                <div class="carousel-item" style="--item-color: #ff3131; --item-rgb: 255, 49, 49;" onclick="selectCarouselItem(1)">
+                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <span class="icon">🕵️‍♂️</span>
+                    <h3>Threat Hunter</h3>
+                    <p>Terminate malicious system processes in real-time.</p>
+                    <button class="btn-launch" onclick="event.stopPropagation(); openGame('threathunter')">Start Mission</button>
+                </div>
+                <!-- Crypto Lab -->
+                <div class="carousel-item" style="--item-color: #bc13fe; --item-rgb: 188, 19, 254;" onclick="selectCarouselItem(2)">
+                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <span class="icon">🔐</span>
+                    <h3>Crypto Lab</h3>
+                    <p>Decode secret historical messages with a Caesar Cipher.</p>
+                    <button class="btn-launch" onclick="event.stopPropagation(); openGame('crypto')">Start Mission</button>
+                </div>
+                <!-- Password Vault -->
+                <div class="carousel-item" style="--item-color: #00ff9d; --item-rgb: 0, 255, 157;" onclick="selectCarouselItem(3)">
+                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <span class="icon">🔑</span>
+                    <h3>Password Vault</h3>
+                    <p>Test brute-force cracking speeds and entropy.</p>
+                    <button class="btn-launch" onclick="event.stopPropagation(); openGame('password')">Start Mission</button>
+                </div>
+                <!-- Security Trivia -->
+                <div class="carousel-item" style="--item-color: #f0f000; --item-rgb: 240, 240, 0;" onclick="selectCarouselItem(4)">
+                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <span class="icon">🛡️</span>
+                    <h3>Security Trivia</h3>
+                    <p>Challenge your fundamental security knowledge.</p>
+                    <button class="btn-launch" onclick="event.stopPropagation(); openGame('quiz')">Start Mission</button>
+                </div>
+                <!-- Social Engineering -->
+                <div class="carousel-item" style="--item-color: #ff00c8; --item-rgb: 255, 0, 200;" onclick="selectCarouselItem(5)">
+                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <span class="icon">💬</span>
+                    <h3>Social Engineering</h3>
+                    <p>Identify human manipulation in chat scenarios.</p>
+                    <button class="btn-launch" onclick="event.stopPropagation(); openGame('social')">Start Mission</button>
+                </div>
+                <!-- Digital Forensics -->
+                <div class="carousel-item" style="--item-color: #00f2ff; --item-rgb: 0, 242, 255;" onclick="selectCarouselItem(6)">
+                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <span class="icon">🔍</span>
+                    <h3>Digital Forensics</h3>
+                    <p>Audit the system for critical data leaks.</p>
+                    <button class="btn-launch" onclick="event.stopPropagation(); openGame('forensics')">Start Mission</button>
+                </div>
             </div>
-            <div class="module-card card-hunter" onclick="openGame('threathunter')">
-                <span class="icon">🕵️‍♂️</span>
-                <h3>Threat Hunter</h3>
-                <p>Terminate malicious system processes in real-time.</p>
-            </div>
-            <div class="module-card card-crypto" onclick="openGame('crypto')">
-                <span class="icon">🔐</span>
-                <h3>Crypto Lab</h3>
-                <p>Decode secret historical messages.</p>
-            </div>
-            <div class="module-card card-password" onclick="openGame('password')">
-                <span class="icon">🔑</span>
-                <h3>Password Vault</h3>
-                <p>Test brute-force cracking speeds.</p>
-            </div>
-            <div class="module-card card-quiz" onclick="openGame('quiz')">
-                <span class="icon">🛡️</span>
-                <h3>Security Trivia</h3>
-                <p>Challenge your knowledge.</p>
-            </div>
-            <div class="module-card card-social" onclick="openGame('social')">
-                <span class="icon">💬</span>
-                <h3>Social Engineering</h3>
-                <p>Identify human manipulation.</p>
-            </div>
-            <div class="module-card card-forensics" onclick="openGame('forensics')">
-                <span class="icon">🔍</span>
-                <h3>Digital Forensics</h3>
-                <p>Audit the system for critical data leaks and security artifacts.</p>
-            </div>
+            <button class="nav-arrow arrow-next" onclick="moveCarousel(1)">❯</button>
         </div>
 
         <!-- GAME ARENA -->

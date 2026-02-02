@@ -861,6 +861,7 @@ const missionIntros = {
 };
 
 function openGame(gameId) {
+    document.getElementById('dashboard').classList.remove('active');
     document.getElementById('dashboard').classList.add('hidden');
     document.getElementById('game-arena').classList.add('active');
     document.querySelectorAll('.game-container').forEach(g => g.classList.add('hidden'));
@@ -896,6 +897,74 @@ function launchGame(gameId) {
 
 function closeGame() {
     document.getElementById('dashboard').classList.remove('hidden');
+    document.getElementById('dashboard').classList.add('active');
     document.getElementById('game-arena').classList.remove('active');
     stopHunter();
+    updateCarousel();
 }
+
+// --- CAROUSEL LOGIC ---
+let carouselIndex = 0;
+
+function moveCarousel(direction) {
+    const items = document.querySelectorAll('.carousel-item');
+    carouselIndex = (carouselIndex + direction + items.length) % items.length;
+    updateCarousel();
+}
+
+function selectCarouselItem(index) {
+    carouselIndex = index;
+    updateCarousel();
+}
+
+function updateCarousel() {
+    const track = document.getElementById('carousel-track');
+    const wrapper = document.getElementById('dashboard');
+    const items = document.querySelectorAll('.carousel-item');
+    const bgOverlay = document.getElementById('bg-overlay');
+
+    if (!items.length) return;
+
+    const itemWidth = (items[0].offsetWidth || 350) + 40; // width + gap
+    const wrapperWidth = wrapper.offsetWidth || window.innerWidth;
+    const centerOffset = (wrapperWidth / 2) - ((items[0].offsetWidth || 350) / 2) - 50; // 50 is track padding
+
+    const offset = centerOffset - (carouselIndex * itemWidth);
+
+    track.style.transform = `translateX(${offset}px)`;
+
+    items.forEach((item, idx) => {
+        if (idx === carouselIndex) {
+            item.classList.add('active');
+            // Change background based on active item
+            const rgb = item.style.getPropertyValue('--item-rgb');
+            if (bgOverlay) {
+                bgOverlay.style.background = `radial-gradient(circle at 50% 50%, rgba(${rgb}, 0.15) 0%, #0a0a12 100%)`;
+            }
+        } else {
+            item.classList.remove('active');
+        }
+    });
+}
+
+// Initialize Carousel on Load
+document.addEventListener('DOMContentLoaded', () => {
+    updateCarousel();
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+        if (document.getElementById('dashboard').classList.contains('active')) {
+            if (e.key === 'ArrowLeft') moveCarousel(-1);
+            if (e.key === 'ArrowRight') moveCarousel(1);
+        }
+    });
+
+    // Prevent carousel movement when clicking launch button
+    document.querySelectorAll('.btn-launch').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    });
+
+    window.addEventListener('resize', updateCarousel);
+});
