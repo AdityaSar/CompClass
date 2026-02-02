@@ -46,6 +46,20 @@
             background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a12 100%);
         }
 
+        .bg-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
         h1 {
             color: var(--neon-blue);
             text-transform: uppercase;
@@ -71,18 +85,26 @@
         .carousel-wrapper {
             position: relative;
             width: 100%;
-            max-width: 1000px;
-            height: 550px;
+            max-width: 1100px;
+            height: 500px;
             margin: 20px 0;
-            overflow-x: auto; /* Allow scrolling for centeredIntoView */
-            border: 1px solid rgba(255,255,255,0.05);
-            scrollbar-width: none; /* Hide scrollbar */
+            overflow: visible; /* Changed to visible to allow arrows outside if needed, but we'll manage it */
         }
-        .carousel-wrapper::-webkit-scrollbar { display: none; }
+
+        .carousel-container {
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            display: flex;
+            align-items: center;
+            -webkit-overflow-scrolling: touch;
+        }
+        .carousel-container::-webkit-scrollbar { display: none; }
 
         .carousel-track {
             display: flex;
-            padding: 0 450px; /* Large padding to allow centering first/last items */
+            padding: 0 calc(50% - 150px);
             height: 100%;
             align-items: center;
             gap: 40px;
@@ -90,14 +112,14 @@
         }
 
         .carousel-item {
-            flex: 0 0 350px;
-            width: 350px;
-            height: 450px;
-            background: rgba(21, 21, 37, 0.8);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 40px;
+            flex: 0 0 300px;
+            width: 300px;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(21, 21, 37, 0.9) 0%, rgba(10, 10, 18, 0.95) 100%);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -105,23 +127,46 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            opacity: 0.3;
-            transform: scale(0.8) rotateY(15deg);
+            opacity: 0.4;
+            transform: scale(0.85) rotateY(20deg);
             perspective: 1000px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                rgba(var(--item-rgb), 0.05) 40%,
+                rgba(var(--item-rgb), 0.2) 50%,
+                rgba(var(--item-rgb), 0.05) 60%,
+                transparent
+            );
+            transition: 0.5s;
+            pointer-events: none;
+        }
+
+        .carousel-item.active::before {
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: -100%; }
+            100% { top: 100%; }
         }
 
         .carousel-item.active {
             opacity: 1;
             transform: scale(1.05) rotateY(0deg);
             border-color: var(--item-color);
-            box-shadow: 0 0 50px rgba(var(--item-rgb), 0.4);
-            background: rgba(21, 21, 37, 0.95);
-        }
-
-        @keyframes borderPulse {
-            0% { border-color: rgba(var(--item-rgb), 0.5); box-shadow: 0 0 20px rgba(var(--item-rgb), 0.2); }
-            50% { border-color: var(--item-color); box-shadow: 0 0 50px rgba(var(--item-rgb), 0.4); }
-            100% { border-color: rgba(var(--item-rgb), 0.5); box-shadow: 0 0 20px rgba(var(--item-rgb), 0.2); }
+            box-shadow: 0 0 40px rgba(var(--item-rgb), 0.3), inset 0 0 20px rgba(var(--item-rgb), 0.1);
         }
 
         .carousel-item .icon {
@@ -146,20 +191,22 @@
         }
 
         .btn-launch {
-            background: var(--item-color);
-            color: #000;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
+            background: transparent;
+            color: var(--item-color);
+            border: 2px solid var(--item-color);
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.9rem;
             text-transform: uppercase;
+            letter-spacing: 2px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(var(--item-rgb), 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 10px rgba(var(--item-rgb), 0.2);
             opacity: 0;
             transform: translateY(20px);
             pointer-events: none;
+            text-shadow: 0 0 5px var(--item-color);
         }
 
         .carousel-item.active .btn-launch {
@@ -169,39 +216,59 @@
         }
 
         .btn-launch:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px var(--item-color);
+            background: var(--item-color);
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--item-color);
+            text-shadow: none;
         }
 
         .nav-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            width: 60px;
-            height: 60px;
+            background: rgba(15, 15, 25, 0.8);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             z-index: 100;
-            transition: 0.3s;
-            backdrop-filter: blur(5px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
         }
 
         .nav-arrow:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: #fff;
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            background: var(--neon-blue);
+            color: #000;
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 0 30px var(--neon-blue);
         }
 
-        .arrow-prev { left: -80px; }
-        .arrow-next { right: -80px; }
+        .arrow-prev { left: 20px; }
+        .arrow-next { right: 20px; }
+
+        @media (max-width: 1200px) {
+            .nav-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            .arrow-prev { left: 10px; }
+            .arrow-next { right: 10px; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-arrow {
+                display: none; /* Rely on touch/scroll on mobile */
+            }
+        }
 
         /* GAME ARENA */
         .game-arena {
@@ -212,7 +279,7 @@
         }
 
         .game-arena.active {
-            display: block;
+            display: block !important;
         }
 
         @keyframes fadeIn {
@@ -255,6 +322,10 @@
         }
 
         .hidden { display: none !important; }
+
+        #game-arena {
+            min-height: 600px;
+        }
 
         /* GAME SPECIFIC UI */
         .email-client {
@@ -490,17 +561,18 @@
 <body id="main-body">
     <div class="bg-overlay" id="bg-overlay"></div>
 
-    <h1>🛡️ Cyber Defense Lab</h1>
-    <div style="color: var(--neon-purple); font-weight: bold; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; font-size: 0.8rem; text-shadow: 0 0 5px var(--neon-purple); z-index: 10;">HACKING SAFETY</div>
+    <h1 style="font-size: 3rem; margin-top: 60px;">🛡️ <span style="background: linear-gradient(to right, var(--neon-blue), var(--neon-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">CYBER DEFENSE</span> LAB</h1>
+    <div style="color: var(--neon-purple); font-weight: 800; letter-spacing: 8px; margin-bottom: 50px; text-transform: uppercase; font-size: 0.7rem; opacity: 0.8; z-index: 10; border-top: 1px solid rgba(188, 19, 254, 0.3); border-bottom: 1px solid rgba(188, 19, 254, 0.3); padding: 5px 20px;">ADVANCED THREAT NEUTRALIZATION UNIT</div>
 
     <div class="container">
         <!-- MISSION CAROUSEL -->
         <div id="dashboard" class="carousel-wrapper active">
-            <button class="nav-arrow arrow-prev" onclick="moveCarousel(-1)">❮</button>
-            <div class="carousel-track" id="carousel-track">
+            <button class="nav-arrow arrow-prev" onclick="moveCarousel(-1)" aria-label="Previous Mission">❮</button>
+            <div class="carousel-container" id="carousel-container">
+                <div class="carousel-track" id="carousel-track">
                 <!-- Phish or Legit -->
                 <div class="carousel-item" style="--item-color: #1a73e8; --item-rgb: 26, 115, 232;" onclick="selectCarouselItem(0)">
-                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(26, 115, 232, 0.4); padding: 2px 8px; border-radius: 4px; color: #1a73e8; font-family: monospace; font-weight: bold; background: rgba(26, 115, 232, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">📧</span>
                     <h3>Phish or Legit?</h3>
                     <p>Detect sophisticated social engineering attempts and audit email headers.</p>
@@ -508,7 +580,7 @@
                 </div>
                 <!-- Threat Hunter -->
                 <div class="carousel-item" style="--item-color: #ff3131; --item-rgb: 255, 49, 49;" onclick="selectCarouselItem(1)">
-                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(255, 49, 49, 0.4); padding: 2px 8px; border-radius: 4px; color: #ff3131; font-family: monospace; font-weight: bold; background: rgba(255, 49, 49, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🕵️‍♂️</span>
                     <h3>Threat Hunter</h3>
                     <p>Terminate malicious system processes in real-time.</p>
@@ -516,7 +588,7 @@
                 </div>
                 <!-- Crypto Lab -->
                 <div class="carousel-item" style="--item-color: #bc13fe; --item-rgb: 188, 19, 254;" onclick="selectCarouselItem(2)">
-                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(188, 19, 254, 0.4); padding: 2px 8px; border-radius: 4px; color: #bc13fe; font-family: monospace; font-weight: bold; background: rgba(188, 19, 254, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🔐</span>
                     <h3>Crypto Lab</h3>
                     <p>Decode secret historical messages with a Caesar Cipher.</p>
@@ -524,7 +596,7 @@
                 </div>
                 <!-- Password Vault -->
                 <div class="carousel-item" style="--item-color: #00ff9d; --item-rgb: 0, 255, 157;" onclick="selectCarouselItem(3)">
-                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(0, 255, 157, 0.4); padding: 2px 8px; border-radius: 4px; color: #00ff9d; font-family: monospace; font-weight: bold; background: rgba(0, 255, 157, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🔑</span>
                     <h3>Password Vault</h3>
                     <p>Test brute-force cracking speeds and entropy.</p>
@@ -532,7 +604,7 @@
                 </div>
                 <!-- Security Trivia -->
                 <div class="carousel-item" style="--item-color: #f0f000; --item-rgb: 240, 240, 0;" onclick="selectCarouselItem(4)">
-                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(240, 240, 0, 0.4); padding: 2px 8px; border-radius: 4px; color: #f0f000; font-family: monospace; font-weight: bold; background: rgba(240, 240, 0, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🛡️</span>
                     <h3>Security Trivia</h3>
                     <p>Challenge your fundamental security knowledge.</p>
@@ -540,7 +612,7 @@
                 </div>
                 <!-- Social Engineering -->
                 <div class="carousel-item" style="--item-color: #ff00c8; --item-rgb: 255, 0, 200;" onclick="selectCarouselItem(5)">
-                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(255, 0, 200, 0.4); padding: 2px 8px; border-radius: 4px; color: #ff00c8; font-family: monospace; font-weight: bold; background: rgba(255, 0, 200, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">💬</span>
                     <h3>Social Engineering</h3>
                     <p>Identify human manipulation in chat scenarios.</p>
@@ -548,14 +620,14 @@
                 </div>
                 <!-- Digital Forensics -->
                 <div class="carousel-item" style="--item-color: #00f2ff; --item-rgb: 0, 242, 255;" onclick="selectCarouselItem(6)">
-                    <div style="position: absolute; top: 20px; right: 20px; font-size: 0.7rem; border: 1px solid var(--item-color); padding: 2px 8px; border-radius: 10px; color: var(--item-color);">STATUS: READY</div>
+                    <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(0, 242, 255, 0.4); padding: 2px 8px; border-radius: 4px; color: #00f2ff; font-family: monospace; font-weight: bold; background: rgba(0, 242, 255, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🔍</span>
                     <h3>Digital Forensics</h3>
                     <p>Audit the system for critical data leaks.</p>
                     <button class="btn-launch" onclick="event.stopPropagation(); openGame('forensics')">Start Mission</button>
                 </div>
             </div>
-            <button class="nav-arrow arrow-next" onclick="moveCarousel(1)">❯</button>
+            <button class="nav-arrow arrow-next" onclick="moveCarousel(1)" aria-label="Next Mission">❯</button>
         </div>
 
         <!-- GAME ARENA -->
