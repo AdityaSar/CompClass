@@ -141,26 +141,21 @@ function closeGame() {
 
 // --- 1. PHISHING GAME (15 EXAMPLES) ---
 const emails = [
-    { from: "support@netfIix.com", subject: "Payment Failed", body: "Update your card <a href='#'>here</a> or account will be deleted.", isPhish: true, reason: "Fake domain (netfIix with 'I') and artificial urgency." },
-    { from: "noreply@github.com", subject: "New Login", body: "A new login was detected from London. If this was you, ignore.", isPhish: false, reason: "Legitimate security alert from a verified domain." },
-    { from: "admin@your-bank-secure.biz", subject: "Unusual Activity", body: "Download Secure_Login.exe to verify your identity.", isPhish: true, reason: "Banks never send .exe files or use .biz domains." },
-    { from: "hr@company.com", subject: "Annual Survey", body: "Please complete the internal satisfaction survey by Friday.", isPhish: false, reason: "Plausible internal communication." },
-    { from: "security@amaz0n.com", subject: "Order Issue", body: "Verify your order details <a href='#'>here</a>.", isPhish: true, reason: "Domain uses a zero instead of 'o'." },
-    { from: "no-reply@microsoft.com", subject: "Password Changed", body: "Your account password was successfully changed.", isPhish: false, reason: "Standard security notification." },
-    { from: "shipping@fedex-claims.net", subject: "Package Delay", body: "Pay $2.00 redelivery fee <a href='#'>here</a>.", isPhish: true, reason: "Smishing tactic: small fees for card harvesting." },
-    { from: "ceo@company-direct.com", subject: "Quick Task", body: "Are you at your desk? Need a discrete wire transfer done.", isPhish: true, reason: "Whaling/CEO Fraud: unusual requests from executives." },
-    { from: "updates@linkedin.com", subject: "Profile Views", body: "3 people viewed your profile today.", isPhish: false, reason: "Standard social network update." },
-    { from: "refund@irs.gov.co", subject: "Tax Refund", body: "Submit bank details <a href='#'>here</a> for your $1,200 refund.", isPhish: true, reason: "IRS doesn't email about refunds; fake domain .gov.co." },
-    { from: "support@steam-community.com", subject: "Trade Offer", body: "Review your new items <a href='#'>here</a>.", isPhish: false, reason: "Legitimate platform notification." },
-    { from: "billing@hulu-promo.vip", subject: "50% OFF FOR LIFE", body: "Renew in 10 mins for this exclusive deal!", isPhish: true, reason: "Extreme urgency and unusual .vip TLD." },
-    { from: "it@company-helpdesk.com", subject: "Maintenance", body: "Servers will be down tonight at 2 AM.", isPhish: false, reason: "Routine IT announcement." },
-    { from: "alert@paypal-security.com", subject: "Account Locked", body: "Unauthorized access detected. Unlock <a href='#'>here</a>.", isPhish: true, reason: "Phishing site mimicking PayPal security." },
-    { from: "noreply@spotify.com", subject: "Family Plan Update", body: "Your monthly invoice is ready for review.", isPhish: false, reason: "Legitimate billing notification." },
-    { from: "ceo@ourcorp.com", subject: "Urgent Wire", body: "I'm in a meeting, need $50k sent to this vendor immediately. Don't call me.", isPhish: true, reason: "CEO Fraud: attackers use urgency and discourage verification." },
-    { from: "it-support@mircosoft.com", subject: "MFA Update", body: "New security policy. Approve the push notification on your phone now.", isPhish: true, reason: "MFA Fatigue: attackers spam notifications until you approve. Note 'mircosoft' spelling." },
-    { from: "no-reply@hr-portal.com", subject: "Salary Update", body: "Scan this QR code to view your 2026 salary adjustment.", isPhish: true, reason: "Quishing: QR codes bypass many email scanners and hide malicious URLs." },
-    { from: "accounts@google.com", subject: "Security Review", body: "Your account is being audited. No action required.", isPhish: false, reason: "Informational security message from a valid source." },
-    { from: "admin@login-microsoft.com", subject: "Session Expired", body: "Please <a href='#'>re-login</a> to keep your session active.", isPhish: true, reason: "Browser-in-the-Browser (BiB): The link opens a fake popup that looks like a real login window." }
+    { from: "it-support@mircosoft-security.com", subject: "CRITICAL: Suspicious Activity Detected", body: "Dear User,<br><br>Our systems have detected an unauthorized login attempt from an unknown IP address in Eastern Europe. For your protection, we have temporarily restricted access to your Outlook account.<br><br>To restore access and verify your identity, please click the secure link below within the next 4 hours:<br><br><a href='#'>https://portal-mircosoft.com/auth/verify</a><br><br>Failure to comply will result in permanent account suspension.", isPhish: true, reason: "Misspelled domain 'mircosoft' and extreme artificial urgency." },
+    { from: "hr@global-corp.com", subject: "Updated Employee Handbook - 2026", body: "Hello Team,<br><br>Please find the updated 2026 Employee Handbook attached. It is mandatory for all staff members to review the new policies regarding remote work and cybersecurity protocols by the end of this week.<br><br>You can access the document via our internal SharePoint folder or view the PDF attached to this message.<br><br>Thank you,<br>Corporate HR", isPhish: false, reason: "Internal communication from a verified corporate domain with no red flags." },
+    { from: "ceo@company-executive-desk.net", subject: "Urgent Assistance Required", body: "I'm currently in a confidential board meeting and cannot take calls. I need you to process an urgent wire transfer for a new vendor immediately. The invoice is $42,500.00. I'll send you the banking details once you confirm you're at your desk.<br><br>Please handle this discreetly and don't mention it to the rest of the finance team yet.<br><br>Sent from my iPhone", isPhish: true, reason: "Classic Whaling/CEO Fraud using authority, secrecy, and discouraging verification." },
+    { from: "no-reply@github.com", subject: "[GitHub] A new personal access token was created", body: "Hey there!<br><br>A new personal access token (classic) was just created on your account. If you did not create this token, you should visit your settings immediately to revoke it and secure your account.<br><br>GitHub Security Team", isPhish: false, reason: "Standard security notification from the correct domain." },
+    { from: "billing@netfIix-payments.com", subject: "Your subscription has been suspended", body: "We were unable to process your last monthly payment. As a result, your Netflix subscription has been paused. To continue watching your favorite shows, please update your payment method.<br><br><a href='#'>Update Billing Information Now</a><br><br>If no action is taken within 24 hours, your account profile will be deleted.", isPhish: true, reason: "Look-alike domain (netfIix with a capital 'I') and threat of data loss." },
+    { from: "noreply@linkedin.com", subject: "You appeared in 12 searches this week", body: "See who's looking! You had 12 new profile views this week. Upgrade to Premium to see the full list of people and companies interested in your profile.<br><br><button style='padding:10px; background:#0a66c2; color:white; border:none; border-radius:5px;'>View My Stats</button>", isPhish: false, reason: "Legitimate social media marketing email." },
+    { from: "shipping@fedex-tracking.org", subject: "Delivery Exception: Action Required", body: "Your package #FX-99281-ZA is currently held at our local distribution center due to an incomplete shipping address. A nominal redelivery fee of $1.95 is required to release the package.<br><br>Please pay the fee here to schedule a new delivery slot:<br><br><a href='#'>https://fedex-parcel-claims.org/pay</a>", isPhish: true, reason: "Smishing/Phishing combo using a small fee to harvest credit card details." },
+    { from: "it-desk@our-internal-help.com", subject: "Scheduled Server Maintenance", body: "This is an automated notification that the internal VPN and Jira servers will be offline for scheduled maintenance this Saturday between 12:00 AM and 04:00 AM UTC. Please ensure all your work is saved and synced before the maintenance window starts.<br><br>System Administration Team", isPhish: false, reason: "Typical IT maintenance announcement." },
+    { from: "security-alert@amaz0n.host", subject: "Sign-in attempt from a new device", body: "Your Amazon account was accessed from a new device in San Francisco, CA. If this was not you, please secure your account immediately by clicking the link below.<br><br><a href='#'>https://amaz0n-security-check.host/report</a><br><br>We take your security very seriously.", isPhish: true, reason: "Domain uses '0' (zero) and an unusual .host TLD." },
+    { from: "refunds@irs.gov.us", subject: "Notice of Tax Overpayment", body: "Our records indicate that you are eligible for a tax refund of $1,429.50 from the previous fiscal year. To claim your refund, you must complete the online form with your valid banking information.<br><br><a href='#'>https://irs-refund-portal.gov.us/form</a><br><br>IRS Internal Revenue Service", isPhish: true, reason: "The IRS does not initiate contact by email to request personal or financial information." },
+    { from: "support@google.com", subject: "Security Alert: New device logged into your account", body: "A new sign-in was detected on a Windows device. If this was you, you can safely ignore this email. If not, please review your recent activity.<br><br><a href='#'>Check Activity</a>", isPhish: false, reason: "Standard Google security alert." },
+    { from: "accounts@microsoft-office.vip", subject: "Your Office 365 License is Expiring", body: "Important: Your corporate Office 365 subscription will expire in 12 hours. To avoid losing access to your Outlook, OneDrive, and Word documents, please renew your license immediately using the discounted corporate rate.<br><br><a href='#'>Renew License</a>", isPhish: true, reason: "Unusual .vip domain and extreme time pressure." },
+    { from: "service@paypal.com", subject: "You have received a payment", body: "You've got money! $50.00 USD from 'Online Rewards Inc.' is now available in your PayPal balance. Log in to your account to view the transaction details.<br><br>Transaction ID: 9X822104J422", isPhish: false, reason: "Generic but legitimate transaction notification." },
+    { from: "admin@internal-security-audit.com", subject: "Action Required: QR Code MFA Enrollment", body: "As part of our new 'Zero Trust' policy, all employees must re-enroll their mobile devices for Multi-Factor Authentication. Please scan the QR code below using your phone's camera to initiate the secure setup process.<br><br>[QR CODE IMAGE]<br><br>Security Compliance Department", isPhish: true, reason: "Quishing (QR Phishing) used to bypass email security filters and hide malicious URLs." },
+    { from: "no-reply@spotify.com", subject: "Your Premium plan is renewing soon", body: "Thanks for being a loyal listener! This is a reminder that your Spotify Premium Family plan will automatically renew on Feb 20, 2026. Your payment method on file will be charged $16.99.<br><br>Spotify Team", isPhish: false, reason: "Routine billing reminder from a verified source." }
 ];
 
 let curEmail = 0, phishScore = 0;
@@ -220,6 +215,7 @@ const hunts = [];
 function startHunter() {
     hunterActive = true; stability = 100; hunterScore = 0; hunts.length = 0;
     document.getElementById('hunter-score').innerText = "0";
+    document.getElementById('threats-remaining').innerText = "3";
     document.getElementById('hunter-game-over').classList.add('hidden');
     document.getElementById('hunter-victory').classList.add('hidden');
     for(let i=0; i<6; i++) spawnProc(i < 3); // 3 Initial threats
@@ -227,6 +223,7 @@ function startHunter() {
         if (!hunterActive) return;
         if (Math.random() > 0.8 && hunts.length < 10) spawnProc(false);
         let activeThreats = hunts.filter(p => p.isThreat).length;
+        document.getElementById('threats-remaining').innerText = activeThreats;
         stability -= (activeThreats * 1.5);
         updateStabilityUI();
         if (stability <= 0) { hunterActive = false; document.getElementById('hunter-game-over').classList.remove('hidden'); }
@@ -253,9 +250,19 @@ function renderHunts() {
 function termProc(id) {
     const idx = hunts.findIndex(p => p.id === id); if (idx === -1) return;
     const p = hunts[idx];
-    if (p.isThreat) { hunterScore++; document.getElementById('hunter-score').innerText = hunterScore; if (hunterScore >= 3) { hunterActive = false; document.getElementById('hunter-victory').classList.remove('hidden'); } }
+    if (p.isThreat) {
+        hunterScore++;
+        document.getElementById('hunter-score').innerText = hunterScore;
+        if (hunterScore >= 3) {
+            hunterActive = false;
+            document.getElementById('hunter-victory').classList.remove('hidden');
+        }
+    }
     else { stability -= 20; }
-    hunts.splice(idx, 1); updateStabilityUI(); renderHunts();
+    hunts.splice(idx, 1);
+    let activeThreats = hunts.filter(proc => proc.isThreat).length;
+    document.getElementById('threats-remaining').innerText = activeThreats;
+    updateStabilityUI(); renderHunts();
 }
 
 function updateStabilityUI() {
@@ -292,7 +299,16 @@ function updateCrypto() {
     document.getElementById('decrypted-preview').innerText = res;
     if (res === c.plain) {
         document.getElementById('crypto-feedback').innerText = "✓ DECRYPTED";
-        if (curCrypto < 2) { curCrypto++; setTimeout(loadCrypto, 1000); }
+        if (curCrypto < 2) {
+            curCrypto++;
+            document.getElementById('shift-slider').disabled = true;
+            setTimeout(() => {
+                document.getElementById('shift-slider').disabled = false;
+                document.getElementById('decrypted-preview').innerText = "";
+                document.getElementById('crypto-feedback').innerText = "";
+                loadCrypto();
+            }, 5000);
+        }
         else { document.getElementById('crypto-feedback').innerText = "★ MISSION ACCOMPLISHED"; }
     }
 }
@@ -311,14 +327,14 @@ function calculatePassword() {
 
 // --- 5. SECURITY TRIVIA (EXPLANATIONS + RANDOM) ---
 const quizQ = [
-    { q: "What is MFA?", opts: ["Multi-Factor Authentication", "Main Firewall Access", "Mobile File Archive"], a: "Multi-Factor Authentication", exp: "MFA requires 2+ forms of verification." },
-    { q: "What is a Zero-Day?", opts: ["Known bug", "Unknown flaw with no patch", "A 0-byte virus"], a: "Unknown flaw with no patch", exp: "Vendors have had 'zero days' to fix it." },
-    { q: "Social Engineering targets what?", opts: ["Hardware", "The human element", "Database indexes"], a: "The human element", exp: "It tricks people into giving up secrets." },
-    { q: "What was Log4j?", opts: ["A logging library vulnerability", "A new type of firewall", "An encrypted chat app"], a: "A logging library vulnerability", exp: "It allowed remote code execution on millions of devices." },
-    { q: "SQL Injection targets what?", opts: ["Relational Databases", "Network Cables", "Graphic Cards"], a: "Relational Databases", exp: "Attackers insert malicious SQL code into input fields." },
-    { q: "What is Zero Trust?", opts: ["Never trust, always verify", "A system with no passwords", "Trusting only internal users"], a: "Never trust, always verify", exp: "Every request is authenticated as if it originated from an open network." },
-    { q: "A 'Man-in-the-Middle' attack does what?", opts: ["Intercepts communication", "Crashes a server", "Steals physical hard drives"], a: "Intercepts communication", exp: "The attacker sits between two parties to eavesdrop or alter data." },
-    { q: "Principle of Least Privilege means:", opts: ["Users get only necessary access", "No one has admin rights", "Everyone has the same access"], a: "Users get only necessary access", exp: "Minimizing access rights reduces the potential blast radius of a breach." }
+    { q: "Which of these is the most secure way to store passwords?", opts: ["Plaintext in a text file", "Encrypted with a static key", "Hashed with a unique salt"], a: "Hashed with a unique salt", exp: "Salting and hashing protects against rainbow table attacks and ensures that identical passwords have different hashes." },
+    { q: "What does 'HTTPS' stand for?", opts: ["HyperText Transfer Protocol Secure", "High Tech Transfer Program System", "Hidden Text Transfer Protocol Secure"], a: "HyperText Transfer Protocol Secure", exp: "The 'S' at the end indicates that the communication is encrypted using TLS/SSL." },
+    { q: "What is 'Shoulder Surfing'?", opts: ["A type of surfing sport", "Watching someone enter credentials over their shoulder", "Remotely accessing a webcam"], a: "Watching someone enter credentials over their shoulder", exp: "It is a physical social engineering technique used to steal PINs, passwords, or sensitive data." },
+    { q: "What is the primary goal of Ransomware?", opts: ["To steal your identity", "To encrypt your files and demand payment", "To make your computer faster"], a: "To encrypt your files and demand payment", exp: "Ransomware locks your data and demands a 'ransom' (usually in crypto) to provide the decryption key." },
+    { q: "Which of these is a 'Strong' password?", opts: ["Password123", "p@$$w0rd", "Correct-Horse-Battery-Staple-2026!"], a: "Correct-Horse-Battery-Staple-2026!", exp: "Length and randomness (entropy) are more important than simple character substitutions. Long passphrases are extremely hard to crack." },
+    { q: "What is 'Spear Phishing'?", opts: ["Phishing that targets a specific individual or organization", "A type of deep-sea fishing", "Phishing that uses a spear-shaped icon"], a: "Phishing that targets a specific individual or organization", exp: "Spear phishing is highly targeted and often uses personal information to appear more convincing than generic phishing." },
+    { q: "What is a 'Firewall'?", opts: ["A literal wall that is on fire", "Software or hardware that monitors and filters network traffic", "A program that deletes all your files"], a: "Software or hardware that monitors and filters network traffic", exp: "Firewalls act as a barrier between a trusted network and an untrusted network (like the internet)." },
+    { q: "What is 'Two-Factor Authentication' (2FA)?", opts: ["Using two different passwords", "Using something you know and something you have", "Entering your password twice"], a: "Using something you know and something you have", exp: "2FA adds a second layer of security, such as a code from an app or a physical key, in addition to your password." }
 ];
 let curQuiz = 0, qScore = 0;
 
@@ -352,9 +368,13 @@ function loadQuizQuestion() {
 const chats = [
     { s: "Exec_Admin", m: "I'm locked out. RESET my password to 'Summer2025' NOW. Bypass MFA, I'm busy!", isPhish: true, exp: "Authority and urgency used to bypass security." },
     { s: "Sarah_HR", m: "Hi, I'm new! Can you send me the link to the internal benefits portal?", isPhish: false, exp: "Reasonable request for internal info." },
+    { s: "IT_Security", m: "Important: We've detected a possible breach on your workstation. Please do not log off and wait for a technician to contact you.", isPhish: false, exp: "Legitimate security advisory following standard procedure." },
     { s: "Mike_IT", m: "Security check. Install 'Update.exe' from this link immediately.", isPhish: true, exp: "IT won't ask users to install executables via chat." },
+    { s: "Finance_Dept", m: "Hi, could you please verify the account number for the last payroll run? I want to make sure the digit isn't a typo.", isPhish: false, exp: "Normal internal verification between colleagues." },
     { s: "Vendor_John", m: "Hey, I'm at the front gate for the equipment repair. Can you buz me in? I forgot my badge.", isPhish: true, exp: "Pretexting: Attackers create a scenario to gain physical or logical access." },
+    { s: "Project_Manager", m: "Great work on the presentation! I've uploaded the final version to our shared drive. Can you double-check the client's name on slide 5?", isPhish: false, exp: "Standard work-related request with no red flags." },
     { s: "Survey_Bot", m: "Win a $50 gift card! Just fill out this survey about your office software.", isPhish: true, exp: "Quid Pro Quo: Offering a benefit in exchange for information." },
+    { s: "Marketing_Team", m: "We are launching the new campaign tomorrow. Here is the link to the preview site (internal only). Let us know if the images load correctly.", isPhish: false, exp: "Routine internal preview request." },
     { s: "New_Recruit", m: "Sorry to bother you, but I'm having trouble with the VPN. What's the naming convention for the servers?", isPhish: true, exp: "Baiting: Seeking technical details by appearing helpless or new." }
 ];
 let curChat = 0;
@@ -363,6 +383,7 @@ function initSocialChat() { curChat = 0; document.getElementById('chat-history')
 function loadChat() {
     const c = chats[curChat], h = document.getElementById('chat-history');
     h.innerHTML += `<div class='message-bubble msg-received'><strong>${c.s}:</strong> ${c.m}</div>`;
+    h.scrollTop = h.scrollHeight;
 }
 function handleChatAction(guess) {
     const c = chats[curChat];

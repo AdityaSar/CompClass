@@ -61,12 +61,12 @@
         }
 
         h1 {
-            color: var(--neon-blue);
+            color: #fff;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
             margin: 40px 0 5px 0;
-            text-shadow: 0 0 10px var(--neon-blue);
             z-index: 10;
+            text-align: center;
         }
 
         .container {
@@ -117,38 +117,54 @@
         }
 
         .carousel-item {
-            flex: 0 0 280px;
-            width: 280px;
-            height: 380px;
-            background: linear-gradient(to bottom, rgba(21, 21, 37, 0.98) 0%, rgba(10, 10, 18, 1) 100%);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 25px;
+            flex: 0 0 320px;
+            width: 320px;
+            height: 480px;
+            background: rgba(15, 15, 25, 0.9);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.3;
-            transform: scale(0.85);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0.4;
+            transform: scale(0.9);
             position: relative;
-            overflow: hidden;
             box-sizing: border-box;
         }
 
         .carousel-item.active {
             opacity: 1;
             transform: scale(1.05);
-            border-color: var(--item-color);
-            box-shadow: 0 0 30px rgba(var(--item-rgb), 0.3), inset 0 0 10px rgba(var(--item-rgb), 0.1);
+            border: 3px solid var(--item-color);
+            box-shadow: 0 0 40px rgba(var(--item-rgb), 0.4);
             z-index: 10;
         }
 
+        /* Vertical Glow Effect (Side Glows) */
+        .carousel-item.active::after {
+            content: '';
+            position: absolute;
+            top: 5%;
+            bottom: 5%;
+            left: -2px;
+            right: -2px;
+            background: transparent;
+            box-shadow:
+                -20px 0 40px -10px rgba(var(--item-rgb), 0.7),
+                 20px 0 40px -10px rgba(var(--item-rgb), 0.7);
+            border-radius: 24px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
         /* 3D Reflection Effect */
-        .carousel-item.active::before {
+        .carousel-item::before {
             content: '';
             position: absolute;
             top: 0;
@@ -568,7 +584,7 @@
 <body id="main-body">
     <div class="bg-overlay" id="bg-overlay"></div>
 
-    <h1 style="font-size: 3rem; margin-top: 60px;">🛡️ <span style="background: linear-gradient(to right, var(--neon-blue), var(--neon-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">CYBER DEFENSE</span> LAB</h1>
+    <h1 style="font-size: 3rem; margin-top: 60px;">🛡️ <span style="color: var(--neon-blue); text-shadow: 0 0 20px var(--neon-blue);">CYBER DEFENSE</span> LAB</h1>
     <div style="color: var(--neon-purple); font-weight: 800; letter-spacing: 8px; margin-bottom: 50px; text-transform: uppercase; font-size: 0.7rem; opacity: 0.8; z-index: 10; border-top: 1px solid rgba(188, 19, 254, 0.3); border-bottom: 1px solid rgba(188, 19, 254, 0.3); padding: 5px 20px;">ADVANCED THREAT NEUTRALIZATION UNIT</div>
 
     <div class="container">
@@ -844,7 +860,7 @@
         </div>
     </div>
 
-    <footer>© 2026 Cyber Defense Training Lab | v4.2.1 Stable</footer>
+    <footer>© 2026 Cyber Defense Training Lab | v4.2.2 Stable</footer>
 
     <script src="games.js"></script>
 </body>
