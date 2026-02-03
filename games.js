@@ -54,9 +54,13 @@ function moveCarousel(direction) {
     updateCarousel();
 }
 
-function selectCarouselItem(index) {
-    carouselIndex = index;
-    updateCarousel();
+function selectCarouselItem(index, gameId) {
+    if (carouselIndex === index) {
+        openGame(gameId);
+    } else {
+        carouselIndex = index;
+        updateCarousel();
+    }
 }
 
 function updateCarousel() {
@@ -93,23 +97,6 @@ function updateCarousel() {
     });
 }
 
-// Add mouse tracking for 3D card tilt effect
-document.addEventListener('mousemove', (e) => {
-    const activeItem = document.querySelector('.carousel-item.active');
-    if (!activeItem) return;
-
-    const rect = activeItem.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-    activeItem.style.setProperty('--mouse-x', `${x}%`);
-    activeItem.style.setProperty('--mouse-y', `${y}%`);
-
-    // Subtle tilt
-    const tiltX = (y - 50) / 5;
-    const tiltY = -(x - 50) / 5;
-    activeItem.style.transform = `perspective(1000px) scale(1.1) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-});
 
 function openGame(gameId) {
     document.getElementById('dashboard').classList.add('hidden');

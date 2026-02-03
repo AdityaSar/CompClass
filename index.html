@@ -109,54 +109,41 @@
 
         .carousel-track {
             display: flex;
-            padding: 0 calc(50% - 150px);
+            padding: 0 calc(50% - 140px);
             height: 100%;
             align-items: center;
-            gap: 40px;
+            gap: 30px;
             width: max-content;
         }
 
         .carousel-item {
-            flex: 0 0 320px;
-            width: 320px;
-            height: 450px;
-            background: linear-gradient(135deg, rgba(21, 21, 37, 0.9) 0%, rgba(10, 10, 18, 0.95) 100%);
+            flex: 0 0 280px;
+            width: 280px;
+            height: 380px;
+            background: linear-gradient(to bottom, rgba(21, 21, 37, 0.98) 0%, rgba(10, 10, 18, 1) 100%);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 30px;
+            border-radius: 20px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             cursor: pointer;
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0.3;
-            transform: perspective(1000px) scale(0.8) rotateY(25deg);
+            transform: scale(0.85);
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
         }
 
-        .carousel-item::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.1) 0%, transparent 80%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .carousel-item:hover::after {
-            opacity: 1;
-        }
-
         .carousel-item.active {
             opacity: 1;
-            transform: perspective(1000px) scale(1.1) rotateY(0deg);
+            transform: scale(1.05);
             border-color: var(--item-color);
-            box-shadow: 0 0 50px rgba(var(--item-rgb), 0.4), inset 0 0 20px rgba(var(--item-rgb), 0.1);
+            box-shadow: 0 0 30px rgba(var(--item-rgb), 0.3), inset 0 0 10px rgba(var(--item-rgb), 0.1);
             z-index: 10;
         }
 
@@ -186,24 +173,24 @@
         }
 
         .carousel-item .icon {
-            font-size: 5rem;
-            margin-bottom: 30px;
+            font-size: 4rem;
+            margin-bottom: 20px;
             filter: drop-shadow(0 0 10px var(--item-color));
         }
 
         .carousel-item h3 {
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
             color: #fff;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .carousel-item p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+            font-size: 0.95rem;
+            line-height: 1.5;
             opacity: 0.8;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .btn-launch {
@@ -591,7 +578,7 @@
             <div class="carousel-container" id="carousel-container">
                 <div class="carousel-track" id="carousel-track">
                 <!-- Phish or Legit -->
-                <div class="carousel-item" style="--item-color: #1a73e8; --item-rgb: 26, 115, 232;" onclick="selectCarouselItem(0)">
+                <div class="carousel-item" style="--item-color: #1a73e8; --item-rgb: 26, 115, 232;" onclick="selectCarouselItem(0, 'phishing')">
                     <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(26, 115, 232, 0.4); padding: 2px 8px; border-radius: 4px; color: #1a73e8; font-family: monospace; font-weight: bold; background: rgba(26, 115, 232, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">📧</span>
                     <h3>Phish or Legit?</h3>
@@ -599,7 +586,7 @@
                     <button class="btn-launch" onclick="event.stopPropagation(); openGame('phishing')">Start Mission</button>
                 </div>
                 <!-- Threat Hunter -->
-                <div class="carousel-item" style="--item-color: #ff3131; --item-rgb: 255, 49, 49;" onclick="selectCarouselItem(1)">
+                <div class="carousel-item" style="--item-color: #ff3131; --item-rgb: 255, 49, 49;" onclick="selectCarouselItem(1, 'threathunter')">
                     <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(255, 49, 49, 0.4); padding: 2px 8px; border-radius: 4px; color: #ff3131; font-family: monospace; font-weight: bold; background: rgba(255, 49, 49, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🕵️‍♂️</span>
                     <h3>Threat Hunter</h3>
@@ -607,7 +594,7 @@
                     <button class="btn-launch" onclick="event.stopPropagation(); openGame('threathunter')">Start Mission</button>
                 </div>
                 <!-- Crypto Lab -->
-                <div class="carousel-item" style="--item-color: #bc13fe; --item-rgb: 188, 19, 254;" onclick="selectCarouselItem(2)">
+                <div class="carousel-item" style="--item-color: #bc13fe; --item-rgb: 188, 19, 254;" onclick="selectCarouselItem(2, 'crypto')">
                     <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(188, 19, 254, 0.4); padding: 2px 8px; border-radius: 4px; color: #bc13fe; font-family: monospace; font-weight: bold; background: rgba(188, 19, 254, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🔐</span>
                     <h3>Crypto Lab</h3>
@@ -615,7 +602,7 @@
                     <button class="btn-launch" onclick="event.stopPropagation(); openGame('crypto')">Start Mission</button>
                 </div>
                 <!-- Password Vault -->
-                <div class="carousel-item" style="--item-color: #00ff9d; --item-rgb: 0, 255, 157;" onclick="selectCarouselItem(3)">
+                <div class="carousel-item" style="--item-color: #00ff9d; --item-rgb: 0, 255, 157;" onclick="selectCarouselItem(3, 'password')">
                     <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(0, 255, 157, 0.4); padding: 2px 8px; border-radius: 4px; color: #00ff9d; font-family: monospace; font-weight: bold; background: rgba(0, 255, 157, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🔑</span>
                     <h3>Password Vault</h3>
@@ -623,7 +610,7 @@
                     <button class="btn-launch" onclick="event.stopPropagation(); openGame('password')">Start Mission</button>
                 </div>
                 <!-- Security Trivia -->
-                <div class="carousel-item" style="--item-color: #f0f000; --item-rgb: 240, 240, 0;" onclick="selectCarouselItem(4)">
+                <div class="carousel-item" style="--item-color: #f0f000; --item-rgb: 240, 240, 0;" onclick="selectCarouselItem(4, 'quiz')">
                     <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(240, 240, 0, 0.4); padding: 2px 8px; border-radius: 4px; color: #f0f000; font-family: monospace; font-weight: bold; background: rgba(240, 240, 0, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🛡️</span>
                     <h3>Security Trivia</h3>
@@ -631,7 +618,7 @@
                     <button class="btn-launch" onclick="event.stopPropagation(); openGame('quiz')">Start Mission</button>
                 </div>
                 <!-- Social Engineering -->
-                <div class="carousel-item" style="--item-color: #ff00c8; --item-rgb: 255, 0, 200;" onclick="selectCarouselItem(5)">
+                <div class="carousel-item" style="--item-color: #ff00c8; --item-rgb: 255, 0, 200;" onclick="selectCarouselItem(5, 'social')">
                     <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(255, 0, 200, 0.4); padding: 2px 8px; border-radius: 4px; color: #ff00c8; font-family: monospace; font-weight: bold; background: rgba(255, 0, 200, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">💬</span>
                     <h3>Social Engineering</h3>
@@ -639,7 +626,7 @@
                     <button class="btn-launch" onclick="event.stopPropagation(); openGame('social')">Start Mission</button>
                 </div>
                 <!-- Digital Forensics -->
-                <div class="carousel-item" style="--item-color: #00f2ff; --item-rgb: 0, 242, 255;" onclick="selectCarouselItem(6)">
+                <div class="carousel-item" style="--item-color: #00f2ff; --item-rgb: 0, 242, 255;" onclick="selectCarouselItem(6, 'forensics')">
                     <div style="position: absolute; top: 15px; right: 15px; font-size: 0.6rem; border: 1px solid rgba(0, 242, 255, 0.4); padding: 2px 8px; border-radius: 4px; color: #00f2ff; font-family: monospace; font-weight: bold; background: rgba(0, 242, 255, 0.05);">CMD::ACTIVE</div>
                     <span class="icon">🔍</span>
                     <h3>Digital Forensics</h3>
@@ -857,7 +844,7 @@
         </div>
     </div>
 
-    <footer>© 2026 Cyber Defense Training Lab | v4.2.0 Stable</footer>
+    <footer>© 2026 Cyber Defense Training Lab | v4.2.1 Stable</footer>
 
     <script src="games.js"></script>
 </body>
